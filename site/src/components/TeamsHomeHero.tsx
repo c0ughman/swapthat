@@ -277,6 +277,14 @@ export function TeamsHomeHero({
     [viewportSize.w, viewportSize.h]
   );
 
+  const isDesktop = viewportSize.w >= 1024;
+  const sistemaInnerTranslateY = swapThatSystemHero
+    ? isDesktop ? "translateY(-22px)" : "translateY(0)"
+    : "translateY(-35px)";
+  const sistemaHeadlineTranslate = swapThatSystemHero
+    ? isDesktop ? "translateY(-24px) scale(0.918)" : "scale(0.918)"
+    : "translateY(-38px) scale(0.918)";
+
   const heroTextAlign = swapThatSystemHero ? "max-lg:text-center lg:text-left" : "text-center";
   const heroItemsMain = swapThatSystemHero ? "max-lg:items-center lg:items-start" : "items-center";
   const heroJustify = swapThatSystemHero ? "max-lg:justify-center lg:justify-start" : "justify-center";
@@ -454,14 +462,14 @@ export function TeamsHomeHero({
         <div
           className={
             swapThatSystemHero
-              ? "flex min-h-0 min-w-0 flex-1 translate-y-[50px] flex-col gap-0 lg:min-h-0 lg:flex-row lg:items-center"
+              ? "flex min-h-0 min-w-0 flex-1 lg:translate-y-[50px] flex-col gap-0 lg:min-h-0 lg:flex-row lg:items-center"
               : "translate-y-[50px]"
           }
         >
           <div
             className={
             swapThatSystemHero
-              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center max-lg:text-center lg:text-left -translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
+              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center max-lg:text-center lg:text-left lg:-translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
               : "contents"
             }
           >
@@ -470,7 +478,7 @@ export function TeamsHomeHero({
             swapThatSystemHero ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0" : "justify-center px-6 md:px-10"
           } ${swapThatSystemHero ? "" : "pt-8"}`}
           style={{
-            transform: swapThatSystemHero ? "translateY(-22px)" : "translateY(-35px)",
+            transform: sistemaInnerTranslateY,
             zIndex: HERO_RAISED_COPY_Z,
           }}
         >
@@ -502,7 +510,7 @@ export function TeamsHomeHero({
             swapThatSystemHero ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0" : "justify-center px-4 sm:px-6 md:px-10"
           }`}
           style={{
-            transform: swapThatSystemHero ? "translateY(-22px)" : "translateY(-35px)",
+            transform: sistemaInnerTranslateY,
             zIndex: HERO_TITLE_Z,
           }}
         >
@@ -515,7 +523,7 @@ export function TeamsHomeHero({
               <div className="relative z-10 w-full">
                 <div
                   className={`flex w-full flex-col ${heroItemsMain} ${heroJustify} leading-[0.85]`}
-                  style={{ transform: "translateY(-24px) scale(0.918)" }}
+                  style={{ transform: sistemaHeadlineTranslate }}
                 >
                   {headlineInner}
                 </div>
@@ -534,11 +542,11 @@ export function TeamsHomeHero({
         <div
           className={`relative flex shrink-0 flex-col overflow-visible ${
             swapThatSystemHero
-              ? "items-start justify-start px-0 pt-3 pb-4 md:pb-5"
+              ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0 pt-3 pb-4 md:pb-5"
               : "items-center px-6 py-3 pb-4 md:px-10 md:pb-5"
           }`}
           style={{
-            transform: swapThatSystemHero ? "translateY(-22px)" : "translateY(-35px)",
+            transform: sistemaInnerTranslateY,
             zIndex: HERO_RAISED_COPY_Z,
           }}
         >
@@ -673,7 +681,7 @@ export function TeamsHomeHero({
 
       {swapThatSystemHero ? (
         <div
-          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none"
+          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none hidden lg:block"
           aria-hidden
         >
           <div className="relative h-full w-full">
