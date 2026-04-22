@@ -9,7 +9,6 @@ import Marquee from "@/components/Marquee";
 import { DotGrid } from "@/components/DecorativeSVGs";
 import Image from "next/image";
 import Link from "next/link";
-import { cartoon3dPath } from "@/lib/cartoonAssets";
 
 const PROBLEM_HEADLINE_CHARS: { char: string; italic: boolean }[] = [
   ..."El problema no es invertir en marketing. ".split("").map((char) => ({ char, italic: false })),
@@ -379,20 +378,6 @@ function ProblemSection() {
           </div>
 
           <AnimatedSection delay={0.1} direction="left" light>
-            <div className="relative flex flex-col gap-8 lg:gap-10">
-              <div
-                className="relative ml-auto h-[min(58vh,520px)] w-full max-w-[min(100%,560px)] shrink-0 pointer-events-none select-none"
-                aria-hidden
-              >
-                <Image
-                  src={cartoon3dPath("clock.png")}
-                  alt=""
-                  fill
-                  className="object-contain object-right-top drop-shadow-[0_12px_40px_rgba(0,0,0,0.14)]"
-                  sizes="(min-width: 1024px) 45vw, 92vw"
-                  priority
-                />
-              </div>
             <div className="relative overflow-visible rounded-3xl border border-white/20 bg-white/10 p-8 text-white md:p-10">
               <div
                 className={`${MKT_X_STICKER_BASE} right-0 top-0 translate-x-[calc(40%-120px)] translate-y-[calc(-36%_-_15px)] rotate-[5deg]`}
@@ -419,7 +404,6 @@ function ProblemSection() {
                   El marketing sin sistema no escala. <span className="font-semibold text-white">Se agota.</span>
                 </p>
               </div>
-            </div>
             </div>
           </AnimatedSection>
         </div>

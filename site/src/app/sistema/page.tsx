@@ -97,7 +97,7 @@ function ProblemSection() {
             </AnimatedSection>
           </div>
 
-          <div className="relative -mx-2 h-[min(52vh,480px)] w-full max-w-xl shrink-0 justify-self-end lg:mx-0 lg:h-[min(62vh,560px)] lg:max-w-none pointer-events-none select-none" aria-hidden>
+          <div className="relative -mx-2 h-[min(38vh,280px)] w-full max-w-xl shrink-0 justify-self-end md:h-[min(52vh,480px)] lg:mx-0 lg:h-[min(62vh,560px)] lg:max-w-none pointer-events-none select-none" aria-hidden>
             <Image
               src={CARTOON_CLOCK_SRC}
               alt=""
@@ -204,7 +204,7 @@ function PhilosophySection() {
           {/* Language contrast */}
           <AnimatedSection direction="left" light>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-4 sm:p-6 border border-white/10">
                 <h4 className="text-sm font-semibold text-background mb-4 uppercase tracking-wider">Evitamos</h4>
                 <ul className="space-y-3">
                   {['"debes"', '"toca"', '"no falles"', '"no te saltes"'].map((item, i) => (
@@ -217,7 +217,7 @@ function PhilosophySection() {
                 <p className="text-xs text-white/30 mt-4">Porque la vida no funciona así.</p>
               </div>
 
-              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-4 sm:p-6 border border-white/10">
                 <h4 className="text-sm font-semibold text-background mb-4 uppercase tracking-wider">Usamos</h4>
                 <ul className="space-y-3">
                   {['"elige"', '"prueba"', '"si hoy puedes"', '"esto también cuenta"'].map((item, i) => (
@@ -313,7 +313,7 @@ function WhatIsSection() {
           </div>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 items-start gap-4 perspective-[1200px] sm:gap-5 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-7 lg:gap-y-4">
+        <div className="grid grid-cols-1 items-start gap-4 perspective-[1200px] sm:grid-cols-2 sm:gap-5 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-7 lg:gap-y-4">
           {features.map((feature, i) => (
             <motion.div
               key={i}
@@ -409,7 +409,7 @@ function ForWhomSection() {
           <AnimatedSection delay={0.05} light>
             <div className="relative z-0 overflow-visible">
               <div
-                className="pointer-events-none absolute -left-7.5 -top-7.5 z-10 h-[7.5rem] w-[7.5rem] sm:-left-8 sm:-top-8 sm:h-[8rem] sm:w-[8rem]"
+                className="pointer-events-none absolute -left-7.5 -top-7.5 z-10 h-[7.5rem] w-[7.5rem] sm:-left-8 sm:-top-8 sm:h-[8rem] sm:w-[8rem] hidden sm:block"
                 aria-hidden
               >
                 {FOR_WHOM_TL_STICKERS.map((s) => (
@@ -460,7 +460,7 @@ function ForWhomSection() {
           <AnimatedSection delay={0.1} light>
             <div className="relative z-0 overflow-visible">
               <div
-                className="pointer-events-none absolute -right-7.5 -top-7.5 z-10 h-[7.5rem] w-[7.5rem] sm:-right-8 sm:-top-8 sm:h-[8rem] sm:w-[8rem]"
+                className="pointer-events-none absolute -right-7.5 -top-7.5 z-10 h-[7.5rem] w-[7.5rem] sm:-right-8 sm:-top-8 sm:h-[8rem] sm:w-[8rem] hidden sm:block"
                 aria-hidden
               >
                 {FOR_WHOM_TR_STICKERS.map((s) => (
@@ -568,8 +568,8 @@ function GrowthSection() {
 
           <div>
             <AnimatedSection light>
-              <div className="relative min-h-[7.5rem] sm:min-h-[8.5rem]">
-                <div className="relative z-10 pr-[4.25rem] sm:pr-[5.5rem] md:pr-[6.5rem]">
+              <div className="relative min-h-0 sm:min-h-[8.5rem]">
+                <div className="relative z-10 pr-0 sm:pr-[5.5rem] md:pr-[6.5rem]">
                   <span className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-2 block">
                     Más que fitness
                   </span>
@@ -579,7 +579,7 @@ function GrowthSection() {
                   </h2>
                 </div>
                 <div
-                  className="pointer-events-none absolute -right-2 top-0 z-0 h-[12rem] w-[14rem] max-w-[min(100%,18rem)] overflow-visible sm:right-0 sm:h-[13rem] sm:w-[16rem] translate-x-6 -translate-y-4"
+                  className="pointer-events-none absolute -right-2 top-0 z-0 h-[12rem] w-[14rem] max-w-[min(100%,18rem)] overflow-visible sm:right-0 sm:h-[13rem] sm:w-[16rem] translate-x-6 -translate-y-4 hidden sm:block"
                   aria-hidden
                 >
                   {GROWTH_TOPRIGHT_STICKERS.map((s) => (
@@ -667,12 +667,12 @@ const HOW_IT_WORKS_CARTOONS = [
   cartoon3dPath("vacation.png"),
 ] as const;
 
-/** Floating bubbles on the “Eliges cómo entrenar” slide — tight cluster on the 3D figure (over the art). */
-// Percents are of the figure box; ~44–57% h / ~43–55% v keeps all icons on torso/face (1.3× image).
+/** Floating bubbles on the “Eliges cómo entrenar” slide — spread over the figure (can overlap art). */
+// Wider h (~17–83%) and taller v (~30–72%) so the set breathes; still anchored on the 3D render.
 const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[] = [
   {
     key: "modal",
-    className: "left-1/2 top-[43%] z-[2] -translate-x-1/2 -translate-y-1/2",
+    className: "left-1/2 top-[30%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg
         viewBox="0 0 24 24"
@@ -696,7 +696,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "alta",
-    className: "left-[40%] top-[50%] z-[2] -translate-x-1/2 -translate-y-1/2",
+    className: "left-[17%] top-[46%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg
         viewBox="0 0 24 24"
@@ -715,7 +715,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "media",
-    className: "left-[60%] top-[50%] z-[2] -translate-x-1/2 -translate-y-1/2",
+    className: "left-[83%] top-[50%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
         <rect x="4" y="12" width="3.5" height="8" rx="0.5" className="opacity-40" />
@@ -726,7 +726,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "baja",
-    className: "left-[45%] top-[55%] z-[2] -translate-x-1/2 -translate-y-1/2",
+    className: "left-[30%] top-[66%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg
         viewBox="0 0 24 24"
@@ -743,7 +743,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "elegir",
-    className: "left-[55%] top-[55%] z-[2] -translate-x-1/2 -translate-y-1/2",
+    className: "left-[70%] top-[72%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
         <rect x="3" y="3" width="7" height="7" rx="1" className="opacity-80" />
@@ -885,7 +885,7 @@ function HowItWorksSection() {
         {steps.map((step, i) => (
           <div
             key={i}
-            className="relative z-0 flex h-full min-h-0 flex-shrink-0 flex-col overflow-visible pt-16 px-12 pb-12 md:px-16 lg:px-20"
+            className="relative z-0 flex h-full min-h-0 flex-shrink-0 flex-col overflow-visible pt-16 px-8 pb-12 sm:px-12 md:px-16 lg:px-20"
             style={{
               width: "50vw",
               minWidth: "300px",
@@ -908,10 +908,10 @@ function HowItWorksSection() {
               {step.desc}
             </p>
 
-            {/* 3D cartoon — lower panel (~1.3× scale, can overlap copy); CTA slide uses its own layout */}
+            {/* 3D cartoon — ~1.17× (10% under prior 1.3×); CTA uses its own layout */}
             <div className="relative z-10 mt-auto flex min-h-0 flex-1 items-end justify-center overflow-visible pt-10 lg:justify-end">
               <div className="relative h-[min(57vh,630px)] w-full min-h-[300px] max-w-[min(100%,660px)] overflow-visible">
-                <div className="absolute inset-0 origin-bottom scale-[1.3] will-change-transform">
+                <div className="absolute inset-0 origin-bottom scale-[1.17] will-change-transform">
                   <Image
                     src={HOW_IT_WORKS_CARTOONS[i]!}
                     alt=""
@@ -934,7 +934,7 @@ function HowItWorksSection() {
           <BlobShape color="#ffffff" size={400} className="-top-20 -right-20" opacity={0.06} />
           <BlobShape color="#ffffff" size={300} className="bottom-0 -left-20" opacity={0.05} />
 
-          <div className="relative z-0 w-full max-w-lg shrink-0 lg:mx-0">
+          <div className="relative z-10 w-full max-w-lg shrink-0 lg:mx-0">
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-6 block">
               Ahora ya sabes cómo funciona
             </span>
@@ -970,18 +970,16 @@ function HowItWorksSection() {
           </div>
 
           <div
-            className="relative z-10 h-[min(52vh,560px)] w-full min-h-[280px] max-w-xl shrink-0 overflow-visible lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
+            className="relative z-[5] h-[min(52vh,560px)] w-full min-h-[280px] max-w-xl shrink-0 lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
             aria-hidden
           >
-            <div className="absolute inset-0 origin-bottom scale-[1.3] will-change-transform lg:origin-bottom-right">
-              <Image
-                src={cartoon3dPath("run.png")}
-                alt=""
-                fill
-                className="object-contain object-right"
-                sizes="(min-width: 1024px) 55vw, 100vw"
-              />
-            </div>
+            <Image
+              src={cartoon3dPath("run.png")}
+              alt=""
+              fill
+              className="object-contain object-right"
+              sizes="(min-width: 1024px) 55vw, 100vw"
+            />
           </div>
         </div>
       </HorizontalScroll>
