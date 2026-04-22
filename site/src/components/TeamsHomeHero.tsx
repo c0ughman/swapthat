@@ -196,8 +196,9 @@ function stickerOutwardOffset(leftPctStr: string, topPctStr: string): { ox: numb
   return { ox: 0, oy: STICKER_OUTWARD_NUDGE_PX };
 }
 
-function StickerFloat({ item, i }: { item: ScatterItem; i: number }) {
-  const px = item.src === HERO_CAT_STICKER_SRC ? HERO_CAT_STICKER_PX : HERO_STICKER_PX;
+function StickerFloat({ item, i, scale = 1 }: { item: ScatterItem; i: number; scale?: number }) {
+  const basePx = item.src === HERO_CAT_STICKER_SRC ? HERO_CAT_STICKER_PX : HERO_STICKER_PX;
+  const px = Math.round(basePx * scale);
   const { ox, oy } = item.wave ? { ox: 0, oy: 0 } : stickerOutwardOffset(item.left, item.top);
   return (
     <div
@@ -276,12 +277,12 @@ export function TeamsHomeHero({
     [viewportSize.w, viewportSize.h]
   );
 
-  const heroTextAlign = swapThatSystemHero ? "text-left" : "text-center";
-  const heroItemsMain = swapThatSystemHero ? "items-start" : "items-center";
-  const heroJustify = swapThatSystemHero ? "justify-start" : "justify-center";
+  const heroTextAlign = swapThatSystemHero ? "max-lg:text-center lg:text-left" : "text-center";
+  const heroItemsMain = swapThatSystemHero ? "max-lg:items-center lg:items-start" : "items-center";
+  const heroJustify = swapThatSystemHero ? "max-lg:justify-center lg:justify-start" : "justify-center";
   /** One shared inset so eyebrow, headline, and body share the same left edge. */
   const sistemaCopyGutterClass =
-    "pl-5 pr-3 sm:pl-8 sm:pr-4 md:pl-[100px] md:pr-6";
+    "px-5 sm:px-8 lg:pl-[100px] lg:pr-6";
 
   const headlineFontSize = swapThatSystemHero
     ? "clamp(3.4rem, 8.8vw, 6.9rem)"
@@ -294,7 +295,7 @@ export function TeamsHomeHero({
   const eyebrowLabelClass = swapThatSystemHero ? "text-black" : "text-blue";
   const paraAccentClass = swapThatSystemHero ? "italic font-light text-black" : "italic font-light text-blue";
   const subDividerClass = swapThatSystemHero
-    ? "h-0.5 w-[9rem] origin-left shrink-0 bg-gradient-to-r from-black/35 to-black/15"
+    ? "h-0.5 w-[9rem] max-lg:mx-auto max-lg:origin-center lg:origin-left shrink-0 bg-gradient-to-r from-black/35 to-black/15"
     : "h-0.5 w-[9rem] shrink-0 bg-gradient-to-r from-blue/45 to-coral/35";
   const primaryCtaClass = swapThatSystemHero
     ? `group inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-md shadow-black/18 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`
@@ -460,13 +461,13 @@ export function TeamsHomeHero({
           <div
             className={
             swapThatSystemHero
-              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center text-left -translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
+              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center max-lg:text-center lg:text-left -translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
               : "contents"
             }
           >
         <div
           className={`relative flex shrink-0 overflow-visible ${
-            swapThatSystemHero ? "items-start justify-start px-0" : "justify-center px-6 md:px-10"
+            swapThatSystemHero ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0" : "justify-center px-6 md:px-10"
           } ${swapThatSystemHero ? "" : "pt-8"}`}
           style={{
             transform: swapThatSystemHero ? "translateY(-22px)" : "translateY(-35px)",
@@ -483,7 +484,7 @@ export function TeamsHomeHero({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className={`mb-0.5 flex items-center gap-2 ${heroJustify} ${
-                swapThatSystemHero ? "-translate-x-[10px]" : ""
+                swapThatSystemHero ? "lg:-translate-x-[10px]" : ""
               }`}
             >
               <span className={`h-0.5 w-7 shrink-0 ${eyebrowLineClass}`} />
@@ -498,7 +499,7 @@ export function TeamsHomeHero({
 
         <div
           className={`relative flex shrink-0 overflow-visible ${
-            swapThatSystemHero ? "items-start justify-start px-0" : "justify-center px-4 sm:px-6 md:px-10"
+            swapThatSystemHero ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0" : "justify-center px-4 sm:px-6 md:px-10"
           }`}
           style={{
             transform: swapThatSystemHero ? "translateY(-22px)" : "translateY(-35px)",
@@ -544,7 +545,7 @@ export function TeamsHomeHero({
           <div
             className={
               swapThatSystemHero
-                ? "flex w-full max-w-4xl flex-col items-start text-left lg:max-w-[min(100%,32rem)] xl:max-w-[36rem]"
+                ? "flex w-full max-w-4xl flex-col max-lg:items-center max-lg:text-center lg:items-start lg:text-left lg:max-w-[min(100%,32rem)] xl:max-w-[36rem]"
                 : "flex w-full max-w-4xl flex-col items-center text-center"
             }
             >
@@ -554,7 +555,7 @@ export function TeamsHomeHero({
               transition={{ duration: 0.6, delay: 0.55 }}
               className={
                 swapThatSystemHero
-                  ? "relative mt-[clamp(-2.75rem,-7.5vw,-1.35rem)] flex w-full flex-col items-start gap-1.5"
+                  ? "relative mt-[clamp(-2.75rem,-7.5vw,-1.35rem)] flex w-full flex-col max-lg:items-center lg:items-start gap-1.5"
                   : "relative mt-[clamp(-2rem,-5.5vw,-0.75rem)] flex w-full flex-col items-center gap-2.5"
               }
             >
@@ -566,7 +567,7 @@ export function TeamsHomeHero({
               />
 
               <div
-                className={`max-w-md space-y-1.5 ${swapThatSystemHero ? "text-left" : "text-center"}`}
+                className={`max-w-md space-y-1.5 ${swapThatSystemHero ? "max-lg:text-center lg:text-left" : "text-center"}`}
               >
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
@@ -601,7 +602,7 @@ export function TeamsHomeHero({
                 transition={{ duration: 0.5, delay: 0.8 }}
                 className={
                   swapThatSystemHero
-                    ? "flex w-full max-w-lg flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-start"
+                    ? "flex w-full max-w-lg flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center lg:justify-start"
                     : "flex w-full max-w-lg flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
                 }
               >
@@ -631,7 +632,7 @@ export function TeamsHomeHero({
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
                 className={`mt-4 flex w-full flex-wrap gap-1.5 ${
-                  swapThatSystemHero ? "justify-start" : "justify-center"
+                  swapThatSystemHero ? "max-lg:justify-center lg:justify-start" : "justify-center"
                 }`}
               >
                 {["Sin presión", "A tu ritmo", "Retomas, no empiezas de cero"].map((pill, i) => (
@@ -676,9 +677,16 @@ export function TeamsHomeHero({
           aria-hidden
         >
           <div className="relative h-full w-full">
-            {sistemaCornerStickerItems.map((item, i) => (
-              <StickerFloat key={`sistema-corner-${item.src}`} item={item} i={i} />
-            ))}
+            {sistemaCornerStickerItems
+              .filter((_, idx) => viewportSize.w < 640 ? idx % 5 < 2 : true)
+              .map((item, i) => (
+                <StickerFloat
+                  key={`sistema-corner-${i}-${item.src}`}
+                  item={item}
+                  i={i}
+                  scale={viewportSize.w < 640 ? 0.52 : 1}
+                />
+              ))}
           </div>
         </div>
       ) : null}
