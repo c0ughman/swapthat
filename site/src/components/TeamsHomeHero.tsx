@@ -288,7 +288,7 @@ export function TeamsHomeHero({
     : "clamp(2.8rem, 7.1vw, 5.65rem)";
   /** Sistema: larger type on small screens; desktop keeps `headlineFontSize` via md: */
   const sistemaHeadlineSizeClass =
-    "max-md:text-[clamp(3.9rem,11vw,6.3rem)] md:text-[clamp(3.4rem,8.8vw,6.9rem)]";
+    "text-[clamp(2.2rem,9vw,3.2rem)] sm:text-[clamp(2.8rem,9.5vw,3.9rem)] md:text-[clamp(3.4rem,8.8vw,6.9rem)]";
 
   const eyebrowLineClass = swapThatSystemHero ? "bg-black" : "bg-blue";
   const eyebrowLabelClass = swapThatSystemHero ? "text-black" : "text-blue";
@@ -460,7 +460,7 @@ export function TeamsHomeHero({
           <div
             className={
             swapThatSystemHero
-              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center text-left -translate-y-[50px] translate-x-[50px] ${sistemaCopyGutterClass}`
+              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center text-left -translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
               : "contents"
             }
           >
@@ -649,7 +649,7 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative z-40 -mx-1 flex w-full min-h-[min(40vh,400px)] shrink-0 items-center justify-center overflow-visible pr-0 sm:min-h-[min(46vh,460px)] sm:pr-0 lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible lg:pr-0"
+              className="relative z-40 -mx-1 flex w-full min-h-[min(24vh,160px)] shrink-0 items-center justify-center overflow-visible pr-0 sm:min-h-[min(34vh,280px)] sm:pr-0 lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible lg:pr-0"
               aria-hidden
             >
               <div className="flex h-full w-full max-w-[min(100%,780px)] items-center justify-end px-0 sm:px-0 lg:min-h-0 lg:pl-0 lg:pr-0">
@@ -658,7 +658,7 @@ export function TeamsHomeHero({
                   alt=""
                   width={1350}
                   height={1350}
-                  className="h-[min(78vh,660px)] w-auto max-w-[min(100%,870px)] scale-[1.05] object-contain object-bottom object-right origin-bottom-right drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform sm:h-[min(87vh,780px)] md:h-[min(96vh,1020px)] lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
+                  className="h-[min(46vh,320px)] w-auto max-w-[min(100%,870px)] scale-[1.05] object-contain object-bottom object-right origin-bottom-right drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform sm:h-[min(62vh,520px)] md:h-[min(80vh,860px)] lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
                   quality={Q.hero}
                   priority
                   sizes="(min-width: 1024px) 60vw, 100vw"

@@ -70,7 +70,7 @@ const CARTOON_CLOCK_SRC = cartoon3dPath("clock.png");
 
 function ProblemSection() {
   return (
-    <section className="py-24 md:py-32 relative">
+    <section className="py-14 md:py-32 relative">
       <BlobShape color="var(--foreground)" size={300} className="top-0 right-0" opacity={0.04} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -174,7 +174,7 @@ function PhilosophySection() {
       <BlobShape color="#ffffff" size={400} className="-top-40 -right-40" opacity={0.06} />
       <BlobShape color="#ffffff" size={300} className="bottom-0 -left-20" opacity={0.05} />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 md:pt-32 pb-24 md:pb-32">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 md:pt-32 pb-16 md:pb-32">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <AnimatedSection light>
@@ -387,13 +387,13 @@ const FOR_WHOM_TR_STICKERS: { src: string; className: string }[] = [
 
 function ForWhomSection() {
   return (
-    <section className="relative overflow-x-clip overflow-y-visible py-24 md:py-32">
+    <section className="relative overflow-x-clip overflow-y-visible py-14 md:py-32">
       <div className="absolute inset-0 bg-gradient-to-b from-cream/50 to-transparent" />
       <BlobShape color="var(--foreground)" size={250} className="top-20 left-0" opacity={0.04} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <AnimatedSection>
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 md:mb-16">
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-4 block">
               ¿Es para ti?
             </span>
@@ -544,7 +544,7 @@ const GROWTH_TOPRIGHT_STICKERS: { src: string; className: string }[] = [
 
 function GrowthSection() {
   return (
-    <section className="py-24 md:py-32 relative">
+    <section className="py-14 md:py-32 relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           {/* Image */}
@@ -823,7 +823,7 @@ function HowItWorksSection() {
   return (
     <section className="relative bg-white">
       {/* ── Section header — scrolls past before the sticky horizontal section takes over ── */}
-      <div className="relative overflow-x-clip overflow-y-visible bg-white px-6 pb-16 pt-24 md:pt-32 md:pb-16 lg:px-8">
+      <div className="relative overflow-x-clip overflow-y-visible bg-white px-6 pb-10 pt-16 md:pt-32 md:pb-16 lg:px-8">
         <AbstractShape className="absolute -top-10 -left-10" color="var(--foreground)" />
         <div className="max-w-7xl mx-auto">
           <AnimatedSection light>
@@ -836,7 +836,7 @@ function HowItWorksSection() {
               </h2>
               <div className="relative w-full max-w-sm shrink-0 self-stretch">
                 <div
-                  className="pointer-events-none absolute right-0 top-0 z-0 h-[5.5rem] w-[16rem] max-w-[min(100%,17rem)] translate-x-2 -translate-y-1.5 sm:w-[17rem] sm:translate-x-2.5 sm:-translate-y-1"
+                  className="pointer-events-none absolute right-0 top-0 z-0 h-[5.5rem] w-[16rem] max-w-[min(100%,17rem)] translate-x-2 -translate-y-1.5 sm:w-[17rem] sm:translate-x-2.5 sm:-translate-y-1 hidden sm:block"
                   aria-hidden
                 >
                   {HOW_HEADER_STICKERS.map((s) => (
@@ -857,7 +857,7 @@ function HowItWorksSection() {
                     </div>
                   ))}
                 </div>
-                <p className="relative z-10 max-w-sm pt-20 pr-0 text-lg leading-relaxed text-gray sm:pr-1 sm:pt-[5.5rem]">
+                <p className="relative z-10 max-w-sm pt-0 pr-0 text-lg leading-relaxed text-gray sm:pr-1 sm:pt-[5.5rem]">
                   Cuatro pasos. Sin complicar. Sin presión.{" "}
                   <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
                     Desliza para ver
@@ -1003,7 +1003,7 @@ function ctaRound6(n: number) {
 function CTASection() {
   const nArc = HERO_STICKER_SRCS.length;
   return (
-    <section id="cta" className="relative overflow-x-clip py-24 pb-28 md:py-32 md:pb-32">
+    <section id="cta" className="relative overflow-x-clip py-14 pb-16 md:py-32 md:pb-32">
       <BlobShape color="var(--foreground)" size={400} className="-top-40 right-0" opacity={0.04} />
       <BlobShape color="var(--foreground)" size={300} className="bottom-0 left-0" opacity={0.04} />
 
