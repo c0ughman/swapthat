@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f7f4;
+  --foreground: #1a1a1a;
+  --blue: #6366f1;
+  --blue-light: #818cf8;
+  --blue-dark: #4f46e5;
+  --coral: #e85d75;
+  --coral-light: #f472b6;
+  --coral-dark: #dc2626;
+  --cream: #f5f1e8;
+  --gray: #6b7280;
+  --gray-light: #e5e5e5;
+  --beige-dark: #e8e3d6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-blue: var(--blue);
+  --color-blue-light: var(--blue-light);
+  --color-blue-dark: var(--blue-dark);
+  --color-coral: var(--coral);
+  --color-coral-light: var(--coral-light);
+  --color-coral-dark: var(--coral-dark);
+  --color-cream: var(--cream);
+  --color-gray: var(--gray);
+  --color-gray-light: var(--gray-light);
+  --color-beige-dark: var(--beige-dark);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  /* overflow-x: clip instead of hidden — clip doesn't create a scroll container,
+     so position:sticky and GSAP ScrollTrigger work correctly in all browsers.
+     overflow-x: hidden computes overflow-y to `auto`, silently creating a scroll
+     container that breaks sticky (especially in Firefox). */
+  overflow-x: clip;
+  /* Stable gutter prevents layout shift from Chrome's non-overlay scrollbar */
+  scrollbar-gutter: stable;
+}
+
+/*
+ * Scale to match design built at 80% browser zoom.
+ * font-size: 80% scales all rem/Tailwind classes consistently across
+ * every browser (Chrome, Safari, Firefox) without breaking JS scroll
+ * calculations (window.innerHeight is unaffected by font-size unlike zoom).
+ * Hard-coded px values in components are scaled ×0.8 to match.
+ */
+html {
+  font-size: 80%;
+  /* clip instead of hidden — see body comment above */
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gray-light);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray);
+}
+
+/* Selection color */
+::selection {
+  background: var(--blue);
+  color: white;
+}
+
+/* Blob shape animation */
+@keyframes blob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+  75% { border-radius: 60% 40% 60% 30% / 60% 40% 30% 70%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-15px) rotate(2deg); }
+  66% { transform: translateY(-8px) rotate(-1deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(10px) rotate(-2deg); }
+  66% { transform: translateY(5px) rotate(1deg); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes draw-line {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cta-bounce {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  25% { transform: translate(-50%, -50%) scale(1.02); }
+  50% { transform: translate(-50%, -50%) scale(0.98); }
+  75% { transform: translate(-50%, -50%) scale(1.01); }
+}
+
+.animate-cta-bounce {
+  animation: cta-bounce 2.5s ease-in-out infinite;
+}
+
+.animate-blob {
+  animation: blob 8s ease-in-out infinite;
+}
+
+/* Lightweight scroll indicator bounce — use instead of framer-motion repeat */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+.animate-scroll-bounce {
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 7s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Vertical flowing line */
+.flowing-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw-line 3s ease forwards;
+}
+
+/* Gradient text
+ * Safari fix: use background-image (not shorthand) + explicit background-color: transparent.
+ * Safari's background-clip:text fails when the background shorthand sets an implicit opaque
+ * background-color, which renders as a solid coloured square over the text.
+ */
+.gradient-text-blue {
+  background-color: transparent;
+  background-image: linear-gradient(135deg, var(--blue), var(--blue-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-coral {
+  background-color: transparent;
+  background-image: linear-gradient(135deg, var(--coral), var(--coral-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Irregular card shapes */
+.card-shape-1 {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+.card-shape-2 {
+  border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+}
+
+.card-shape-3 {
+  border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+}

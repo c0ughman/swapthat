@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#f8f7f4"/>
+  <rect x="1300" y="100" width="500" height="300" rx="40" fill="#e85d75" opacity="0.15"/>
+  <rect x="1400" y="200" width="400" height="300" rx="40" fill="#e85d75" opacity="0.25"/>
+  <text x="960" y="500" text-anchor="middle" fill="#e85d75" font-size="72" font-family="sans-serif" font-weight="bold">Marketing &amp; Performance</text>
+  <text x="960" y="580" text-anchor="middle" fill="#6b7280" font-size="36" font-family="sans-serif">Page Screenshot Placeholder</text>
+</svg>
