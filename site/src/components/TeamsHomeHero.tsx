@@ -396,7 +396,7 @@ export function TeamsHomeHero({
     <section
       className={
         swapThatSystemHero
-          ? "relative flex h-screen min-w-0 flex-col overflow-x-clip overflow-y-visible bg-foreground pt-[calc(3.5rem+20px)] pb-2 sm:pb-4 md:pb-8 lg:pb-10"
+          ? "relative flex h-screen min-w-0 flex-col overflow-x-clip overflow-y-visible bg-foreground pt-[calc(3.5rem+20px)] pb-4 sm:pb-5 md:pb-8 lg:pb-10"
           : "relative flex h-screen min-w-0 flex-col overflow-hidden bg-foreground pt-[calc(3.5rem+10px)] pb-5 md:pb-8 lg:pb-10"
       }
     >
@@ -421,7 +421,7 @@ export function TeamsHomeHero({
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative z-[2] mx-5 mt-0 flex min-h-0 min-w-0 flex-1 flex-col rounded-[2.5rem] border border-beige-dark/55 bg-white shadow-[0_14px_44px_-12px_rgba(26,26,26,0.11)] md:mx-8 md:rounded-[3rem] lg:mx-10 ${
           swapThatSystemHero
-            ? "max-md:mb-[50px] overflow-visible pt-10 md:pt-11"
+            ? "max-lg:overflow-hidden max-lg:pt-8 lg:overflow-visible lg:pt-11"
             : "overflow-hidden pt-8"
         }`}
       >
@@ -469,7 +469,7 @@ export function TeamsHomeHero({
           <div
             className={
             swapThatSystemHero
-              ? `relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col justify-center max-lg:text-center lg:text-left lg:-translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
+              ? `relative z-[1] flex min-h-0 min-w-0 max-lg:flex-none lg:flex-1 lg:justify-center flex-col max-lg:text-center lg:text-left lg:-translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
               : "contents"
             }
           >
@@ -563,7 +563,7 @@ export function TeamsHomeHero({
               transition={{ duration: 0.6, delay: 0.55 }}
               className={
                 swapThatSystemHero
-                  ? "relative mt-[clamp(-2.75rem,-7.5vw,-1.35rem)] flex w-full flex-col max-lg:items-center lg:items-start gap-1.5"
+                  ? "relative max-lg:mt-3 lg:mt-[clamp(-2.75rem,-7.5vw,-1.35rem)] flex w-full flex-col max-lg:items-center lg:items-start gap-1.5"
                   : "relative mt-[clamp(-2rem,-5.5vw,-0.75rem)] flex w-full flex-col items-center gap-2.5"
               }
             >
@@ -658,16 +658,16 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative z-40 -mx-1 flex w-full min-h-[min(24vh,160px)] shrink-0 items-center justify-center overflow-visible pr-0 sm:min-h-[min(34vh,280px)] sm:pr-0 lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible lg:pr-0"
+              className="relative z-40 flex w-full shrink-0 items-end justify-center overflow-hidden max-lg:h-[min(38vh,280px)] lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible"
               aria-hidden
             >
-              <div className="flex h-full w-full max-w-[min(100%,780px)] items-center justify-end px-0 sm:px-0 lg:min-h-0 lg:pl-0 lg:pr-0">
+              <div className="flex h-full w-full items-end justify-center lg:items-center lg:justify-end lg:max-w-[min(100%,780px)]">
                 <Image
                   src={cartoon3dPath("jump.png")}
                   alt=""
                   width={1350}
                   height={1350}
-                  className="h-[min(46vh,320px)] w-auto max-w-[min(100%,870px)] scale-[1.05] object-contain object-bottom object-right origin-bottom-right drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform sm:h-[min(62vh,520px)] md:h-[min(80vh,860px)] lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
+                  className="max-lg:h-full max-lg:w-auto max-lg:max-w-full max-lg:object-contain max-lg:object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform lg:scale-[1.05] lg:origin-bottom-right lg:object-contain lg:object-right lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
                   quality={Q.hero}
                   priority
                   sizes="(min-width: 1024px) 60vw, 100vw"
@@ -681,7 +681,7 @@ export function TeamsHomeHero({
 
       {swapThatSystemHero ? (
         <div
-          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none hidden lg:block"
+          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none lg:block hidden"
           aria-hidden
         >
           <div className="relative h-full w-full">
