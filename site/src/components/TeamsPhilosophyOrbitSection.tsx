@@ -140,9 +140,9 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
             </div>
           </div>
 
-          {/* Mobile image grid — visible only below lg */}
+          {/* Mobile image grid — visible only below lg (`/sistema`: 4 photos, no last tile). */}
           <div className="lg:hidden grid grid-cols-3 gap-2 mb-4 -mx-2">
-            {PHIL_IMGS.map((img, i) => (
+            {(sistemaVariant ? PHIL_IMGS.slice(0, 4) : PHIL_IMGS).map((img, i) => (
               <div
                 key={i}
                 className={`overflow-hidden rounded-2xl shadow-md ${i === 0 ? "col-span-2" : ""} ${i === 3 ? "col-span-2" : ""}`}

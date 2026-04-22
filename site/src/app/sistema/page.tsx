@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useLayoutEffect, useState, type CSSProperties, type ReactNode } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlobShape from "@/components/BlobShape";
 import Marquee from "@/components/Marquee";
@@ -240,6 +240,16 @@ function PhilosophySection() {
 }
 
 function WhatIsSection() {
+  /** Mobile: no card/icon tilt; keeps spring entrance (y, scale) only. */
+  const [noTilt, setNoTilt] = useState(false);
+  useLayoutEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setNoTilt(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   /** `public/icons` webp — grayscale in UI; chosen to loosely match each line. */
   const features = [
     {
@@ -278,10 +288,10 @@ function WhatIsSection() {
     "-translate-y-1 md:-translate-y-2 lg:-translate-y-3",
   ];
 
-  /** Subtle resting tilt (deg) after entrance — slight lean left/right per card. */
+  /** Subtle resting tilt (deg) after entrance — desktop only; mobile uses `noTilt`. */
   const restRotateZ = [-2.25, 2.5, -1.75, 2.25, -2] as const;
 
-  /** Per-icon nudge + twist (no wrapper box). */
+  /** Per-icon nudge + twist (desktop; mobile is undecorated). */
   const iconPoseClass = [
     "-translate-x-0.5 -rotate-6 sm:-translate-x-1",
     "translate-x-0.5 rotate-5 sm:translate-x-1",
@@ -289,6 +299,8 @@ function WhatIsSection() {
     "translate-y-1 rotate-6",
     "-translate-x-1 rotate-[-4deg] sm:-translate-x-1.5",
   ];
+  const iconBaseClass =
+    "h-14 w-14 shrink-0 object-contain grayscale sm:h-16 sm:w-16 md:h-[4.25rem] md:w-[4.25rem]";
 
   return (
     <section
@@ -323,15 +335,15 @@ function WhatIsSection() {
                 opacity: 0,
                 y: 72,
                 scale: 0.78,
-                rotateX: 14,
-                rotateZ: (restRotateZ[i] ?? 0) * 1.6,
+                rotateX: noTilt ? 0 : 14,
+                rotateZ: noTilt ? 0 : (restRotateZ[i] ?? 0) * 1.6,
               }}
               whileInView={{
                 opacity: 1,
                 y: 0,
                 scale: 1,
                 rotateX: 0,
-                rotateZ: restRotateZ[i] ?? 0,
+                rotateZ: noTilt ? 0 : restRotateZ[i] ?? 0,
               }}
               viewport={{ once: true, margin: "-12% 0px -12% 0px", amount: 0.1 }}
               transition={{
@@ -342,14 +354,14 @@ function WhatIsSection() {
                 delay: i * 0.165,
               }}
             >
-              <div className={`h-full ${floatYClass[i] ?? ""}`}>
+              <div className={`h-full ${noTilt ? "" : floatYClass[i] ?? ""}`}>
                 <div className="group relative flex min-h-0 w-full flex-row items-start gap-3.5 rounded-2xl border border-white/10 bg-neutral-900 px-5 py-5 shadow-lg transition-all duration-300 hover:z-[1] hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl sm:gap-5 sm:px-6 sm:py-6 md:rounded-3xl md:gap-6 md:px-7 md:py-6">
                   <Image
                     src={feature.iconSrc}
                     alt=""
                     width={80}
                     height={80}
-                    className={`h-14 w-14 shrink-0 object-contain grayscale sm:h-16 sm:w-16 md:h-[4.25rem] md:w-[4.25rem] ${iconPoseClass[i] ?? ""}`}
+                    className={noTilt ? iconBaseClass : `${iconBaseClass} ${iconPoseClass[i] ?? ""}`}
                     quality={Q.icon}
                     sizes="(max-width: 640px) 56px, 68px"
                   />
@@ -885,7 +897,7 @@ function HowItWorksSection() {
         {steps.map((step, i) => (
           <div
             key={i}
-            className="relative z-0 flex h-full min-h-0 flex-shrink-0 flex-col overflow-visible pt-16 px-8 pb-12 sm:px-12 md:px-16 lg:px-20"
+            className="relative z-0 flex h-full min-h-0 flex-shrink-0 flex-col overflow-visible pt-16 max-md:pt-28 px-8 pb-12 sm:px-12 md:px-16 lg:px-20"
             style={{
               width: "50vw",
               minWidth: "300px",
@@ -909,7 +921,7 @@ function HowItWorksSection() {
             </p>
 
             {/* 3D cartoon — ~1.17× (10% under prior 1.3×); CTA uses its own layout */}
-            <div className="relative z-10 mt-auto flex min-h-0 flex-1 items-end justify-center overflow-visible pt-10 lg:justify-end">
+            <div className="relative z-10 mt-auto flex min-h-0 flex-1 items-end justify-center overflow-visible pt-10 max-md:pt-16 lg:justify-end">
               <div className="relative h-[min(57vh,630px)] w-full min-h-[300px] max-w-[min(100%,660px)] overflow-visible">
                 <div className="absolute inset-0 origin-bottom scale-[1.17] will-change-transform">
                   <Image
@@ -928,7 +940,7 @@ function HowItWorksSection() {
 
         {/* ── CTA Panel — full viewport width, dark background + run cartoon (right) ── */}
         <div
-          className="relative h-full flex-shrink-0 flex flex-col items-center justify-start overflow-x-clip overflow-y-auto gap-6 px-8 pt-10 pb-8 text-center md:px-12 md:gap-10 md:pt-16 md:pb-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left lg:overflow-hidden"
+          className="relative h-full flex-shrink-0 flex flex-col items-center justify-start overflow-x-clip overflow-y-auto gap-6 px-8 pt-10 max-md:pt-[146px] max-md:pb-10 max-md:gap-8 pb-8 text-center md:px-12 md:gap-10 md:pt-16 md:pb-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left lg:overflow-hidden"
           style={{ width: "100vw", backgroundColor: "#000000" }}
         >
           <BlobShape color="#ffffff" size={400} className="-top-20 -right-20" opacity={0.06} />
@@ -970,7 +982,7 @@ function HowItWorksSection() {
           </div>
 
           <div
-            className="relative z-[5] h-[min(38vh,340px)] w-full min-h-[200px] max-w-xl shrink-0 md:h-[min(52vh,560px)] lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
+            className="relative z-[5] h-[min(38vh,340px)] w-full min-h-[200px] max-w-xl shrink-0 max-md:mt-4 md:h-[min(52vh,560px)] lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] md:mt-0 pointer-events-none select-none"
             aria-hidden
           >
             <Image
@@ -1003,7 +1015,10 @@ function ctaRound6(n: number) {
 function CTASection() {
   const nArc = HERO_STICKER_SRCS.length;
   return (
-    <section id="cta" className="relative overflow-x-clip py-14 pb-16 md:py-32 md:pb-32">
+    <section
+      id="cta"
+      className="relative overflow-x-clip overflow-y-visible py-14 pb-16 max-md:pb-7 md:py-32 md:pb-32"
+    >
       <BlobShape color="var(--foreground)" size={400} className="-top-40 right-0" opacity={0.04} />
       <BlobShape color="var(--foreground)" size={300} className="bottom-0 left-0" opacity={0.04} />
 
@@ -1039,14 +1054,61 @@ function CTASection() {
       </div>
 
       <AnimatedSection delay={0.15} light>
+        {/* Mobile: wrapped cluster, no horizontal scrollbar */}
         <div
-          className="pointer-events-none relative z-[1] mt-10 w-full max-w-6xl overflow-x-auto px-4 pt-14 [scrollbar-width:thin] sm:mx-auto sm:mt-12 sm:max-w-7xl sm:px-6 sm:pt-16 md:mt-14 md:overflow-visible md:pt-0"
+          className="pointer-events-none relative z-[1] mt-5 w-full px-2 pb-0 pt-6 md:hidden"
           aria-hidden
         >
-          <div className="mx-auto flex w-max min-w-0 max-w-full flex-nowrap items-end justify-center gap-0 pb-1">
+          <div className="relative mx-auto h-[5.5rem] w-full max-w-md sm:h-24">
+            {/** Fewer stickers: one wavy (sine) row across the width */}
+            {(
+              [0, 2, 5, 8, 11, 14, 16, 18] as const
+            ).map((srcIdx, i) => {
+              const src = HERO_STICKER_SRCS[srcIdx]!;
+              const n = 8;
+              const t = n <= 1 ? 0.5 : i / (n - 1);
+              const leftP = 3 + t * 92;
+              const wave = Math.sin(t * Math.PI * 2.8);
+              const topP = 50 + wave * 28;
+              const sc = ctaRound6(0.9 + ctaStickerRnd01(srcIdx, 0) * 0.1);
+              return (
+                <div
+                  key={`m-squiggle-${src}-${i}`}
+                  className="absolute left-0 top-0 w-[52px] drop-shadow-[0_3px_8px_rgba(0,0,0,0.08)] [transform-origin:center_center]"
+                  style={
+                    {
+                      zIndex: i + 1,
+                      left: `${ctaRound6(leftP)}%`,
+                      top: `${ctaRound6(topP)}%`,
+                      transform: `translate(-50%, -50%) scale(${sc})`,
+                    } as CSSProperties
+                  }
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    width={CTA_STICKER_ARC_PX}
+                    height={CTA_STICKER_ARC_PX}
+                    className="h-full w-full object-contain"
+                    sizes="52px"
+                    quality={Q.section}
+                    loading="lazy"
+                    draggable={false}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* sm+ (tablet/desktop): single arc row */}
+        <div
+          className="pointer-events-none relative z-[1] mt-10 hidden w-full max-w-6xl overflow-x-auto overflow-y-visible px-4 pt-14 pb-8 [scrollbar-width:thin] sm:mx-auto sm:mt-12 sm:max-w-7xl sm:px-6 sm:pt-16 sm:pb-1 md:mt-14 md:overflow-visible md:pt-0 md:block"
+          aria-hidden
+        >
+          <div className="mx-auto flex w-max min-w-0 max-w-full flex-nowrap items-center justify-center gap-0 pb-4 sm:items-end sm:pb-1">
             {HERO_STICKER_SRCS.map((src, i) => {
               const t = nArc <= 1 ? 0.5 : i / (nArc - 1);
-              // Soft arc, then organic jitter (still reads as one band)
               const arcY = Math.sin(t * Math.PI) * 46;
               const baseRot = (t - 0.5) * 12;
               const r0 = ctaStickerRnd01(i, 0);

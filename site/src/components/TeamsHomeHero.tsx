@@ -57,7 +57,15 @@ export const HERO_STICKER_SRCS = [
   "/stickers/0d827d9703620429cda1e20e26e3769f-9.webp",
 ] as const;
 
-type ScatterItem = { src: string; left: string; top: string; wave?: boolean };
+type ScatterItem = {
+  src: string;
+  left: string;
+  top: string;
+  wave?: boolean;
+  rotateDeg?: number;
+  /** Extra translateY (px) on the anchor, e.g. lower hero band. */
+  offsetYpx?: number;
+};
 
 /**
  * Home hero: wavy line through the squircle — each sticker source appears twice for density.
@@ -136,16 +144,19 @@ function buildSistemaCornerStickerItems(viewportW: number, viewportH: number): S
 
   const w = Math.max(320, viewportW);
   const h = Math.max(480, viewportH);
+  const isNarrow = w < 1024;
   /** Same nominal gap in px on both arms; % steps differ so spacing stays visually even (~≤10% variance vs ideal). */
   const gapPx = 46;
   const stepH = (gapPx / w) * 100;
   const stepV = (gapPx / h) * 100;
 
+  /** Mobile: nudge L-corner clusters upward so stickers read clearly on the white squircle. */
+  const nudgeY = isNarrow ? -4.2 : 0;
   const corners = {
-    tl: { l: 5.4, t: 6.2 },
-    tr: { l: 94.6, t: 6.2 },
-    bl: { l: 5.4, t: 85.8 },
-    br: { l: 94.6, t: 85.8 },
+    tl: { l: 5.4, t: 6.2 + nudgeY },
+    tr: { l: 94.6, t: 6.2 + nudgeY },
+    bl: { l: 5.4, t: 85.8 + nudgeY },
+    br: { l: 94.6, t: 85.8 + nudgeY },
   } as const;
 
   const base = Math.floor(n / 4);
@@ -178,6 +189,40 @@ function buildSistemaCornerStickerItems(viewportW: number, viewportH: number): S
   }));
 }
 
+/** Deterministic 0..1 for lower hero scatter (SSR-safe). */
+function sistemaLowerRnd01(i: number, channel: number) {
+  const v = Math.sin((i + 1) * 19.11 + channel * 62.4 + 11.7 * (channel + i)) * 40123.7;
+  return v - Math.floor(v);
+}
+
+/** Five smaller stickers, loosely scattered in the lower band (avoids reusing the corner L-arms). */
+const SISTEMA_LOWER_STICKER_INDICES = [1, 4, 7, 12, 16] as const;
+
+function buildSistemaLowerScatterItems(_viewportW: number, _viewportH: number): ScatterItem[] {
+  const items: ScatterItem[] = [];
+  for (let i = 0; i < SISTEMA_LOWER_STICKER_INDICES.length; i++) {
+    const srcIdx = SISTEMA_LOWER_STICKER_INDICES[i]!;
+    const r0 = sistemaLowerRnd01(i, 0);
+    const r1 = sistemaLowerRnd01(i, 1);
+    const r2 = sistemaLowerRnd01(i, 2);
+    const r3 = sistemaLowerRnd01(i, 3);
+    /** Wide spread across the lower two-fifths of the hero; not grid-aligned. */
+    const left = 7 + r0 * 86 + (r2 - 0.5) * 4;
+    const top = 56 + r1 * 28 + (r3 - 0.5) * 3;
+    const rot = (sistemaLowerRnd01(i, 4) - 0.5) * 24;
+    items.push({
+      src: HERO_STICKER_SRCS[srcIdx]!,
+      left: `${Math.min(95, Math.max(5, left)).toFixed(1)}%`,
+      top: `${Math.min(92, Math.max(52, top)).toFixed(1)}%`,
+      /** Skip corner outward nudge so positions stay as authored. */
+      wave: true,
+      rotateDeg: Math.round(rot * 10) / 10,
+      offsetYpx: 50,
+    });
+  }
+  return items;
+}
+
 const STICKER_OUTWARD_NUDGE_PX = 16; // was 20, scaled ×0.8
 
 /** Shift outward toward whichever edge (L/R/T/B) the sticker is closest to, in % space. */
@@ -200,18 +245,19 @@ function StickerFloat({ item, i, scale = 1 }: { item: ScatterItem; i: number; sc
   const basePx = item.src === HERO_CAT_STICKER_SRC ? HERO_CAT_STICKER_PX : HERO_STICKER_PX;
   const px = Math.round(basePx * scale);
   const { ox, oy } = item.wave ? { ox: 0, oy: 0 } : stickerOutwardOffset(item.left, item.top);
+  const offY = item.offsetYpx ?? 0;
   return (
     <div
       className="absolute"
       style={{
         left: item.left,
         top: item.top,
-        transform: `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`,
+        transform: `translate(calc(-50% + ${ox}px), calc(-50% + ${oy + offY}px))`,
       }}
     >
       <motion.div
         className="flex shrink-0 items-center justify-center"
-        style={{ width: px, height: px, opacity: 1 }}
+        style={{ width: px, height: px, opacity: 1, rotate: item.rotateDeg ?? 0 }}
         initial={{ opacity: 0, scale: 0.58, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{
@@ -276,11 +322,17 @@ export function TeamsHomeHero({
     () => buildSistemaCornerStickerItems(viewportSize.w, viewportSize.h),
     [viewportSize.w, viewportSize.h]
   );
+  const sistemaLowerStickerItems = useMemo(
+    () => buildSistemaLowerScatterItems(viewportSize.w, viewportSize.h),
+    [viewportSize.w, viewportSize.h]
+  );
 
   const isDesktop = viewportSize.w >= 1024;
   const sistemaInnerTranslateY = swapThatSystemHero
     ? isDesktop ? "translateY(-22px)" : "translateY(0)"
     : "translateY(-35px)";
+  /** Mobile sistema: move hero 3D (jump) down without shifting copy block. */
+  const sistemaHeroImageTranslateY = swapThatSystemHero && !isDesktop ? "translateY(80px)" : undefined;
   const sistemaHeadlineTranslate = swapThatSystemHero
     ? isDesktop ? "translateY(-24px) scale(0.918)" : "scale(0.918)"
     : "translateY(-38px) scale(0.918)";
@@ -661,7 +713,10 @@ export function TeamsHomeHero({
               className="relative z-40 flex w-full shrink-0 items-end justify-center overflow-visible max-lg:h-[min(46vh,340px)] lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible"
               aria-hidden
             >
-              <div className="flex h-full w-full items-end justify-center lg:items-center lg:justify-end lg:max-w-[min(100%,780px)]">
+              <div
+                className="flex h-full w-full items-end justify-center lg:items-center lg:justify-end lg:max-w-[min(100%,780px)]"
+                style={sistemaHeroImageTranslateY ? { transform: sistemaHeroImageTranslateY } : undefined}
+              >
                 <Image
                   src={cartoon3dPath("jump.png")}
                   alt=""
@@ -681,20 +736,28 @@ export function TeamsHomeHero({
 
       {swapThatSystemHero ? (
         <div
-          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none"
+          className="pointer-events-none absolute inset-0 z-[100] max-lg:translate-y-0 translate-y-[50px] overflow-visible select-none"
           aria-hidden
         >
           <div className="relative h-full w-full">
             {sistemaCornerStickerItems
-              .filter((_, idx) => viewportSize.w < 640 ? idx % 5 === 0 : true)
+              .filter((_, idx) => (viewportSize.w < 640 ? idx % 2 === 0 : true))
               .map((item, i) => (
                 <StickerFloat
                   key={`sistema-corner-${i}-${item.src}`}
                   item={item}
                   i={i}
-                  scale={viewportSize.w < 640 ? 0.5 : 1}
+                  scale={viewportSize.w < 640 ? 0.86 : 1}
                 />
               ))}
+            {sistemaLowerStickerItems.map((item, i) => (
+              <StickerFloat
+                key={`sistema-lower-${i}-${item.src}`}
+                item={item}
+                i={i + 24}
+                scale={viewportSize.w < 640 ? 0.38 : 0.46}
+              />
+            ))}
           </div>
         </div>
       ) : null}
