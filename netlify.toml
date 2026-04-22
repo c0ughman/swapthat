@@ -1,12 +1,9 @@
-# Base = app in /site. Build copies output to repo-root `.next` (netlify-build script) so
-# publish (`.next`) is never the same directory as `base` (`/site`).
+# With `base = "site"`, `publish` is relative to that base, so use `.next` (→ `…/site/.next`), never
+# `.` or the app folder alone — that makes publishDir === PACKAGE_PATH and @netlify/plugin-nextjs fails.
 [build]
   base = "site"
-  command = "npm ci && npm run netlify-build"
+  command = "npm ci && npm run build"
   publish = ".next"
-
-[[plugins]]
-  package = "./netlify/plugins/swapthat-next-publish"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Required by @netlify/plugin-nextjs: verification expects .next/standalone to exist.
+  output: "standalone",
   async redirects() {
     return [{ source: "/teams", destination: "/", permanent: true }];
   },
