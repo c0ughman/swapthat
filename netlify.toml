@@ -1,0 +1,11 @@
+# Monorepo: Next.js app lives in /site — do not set a different “Base directory” in the UI
+# unless you remove this file from the repo root.
+[build]
+  base = "site"
+  command = "npm run build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "22"
