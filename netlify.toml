@@ -1,8 +1,12 @@
-# Monorepo: Next.js app lives in /site — do not set a different “Base directory” in the UI
-# unless you remove this file from the repo root.
+# Monorepo: Next.js app lives in /site
+#
+# @netlify/plugin-nextjs requires publish (resolved) !== base. If the Netlify UI has
+# “Publish directory” = site, the build fails with exit 2. This line overrides the UI
+# and points at the build output, not the app root. The plugin still runs the right deploy.
 [build]
   base = "site"
   command = "npm run build"
+  publish = "site/.next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
