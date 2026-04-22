@@ -659,19 +659,20 @@ function GrowthSection() {
   );
 }
 
-/** One cartoon per horizontal step (app → front → climb → vacation); `run` is on the final CTA panel. */
+/** One cartoon per horizontal step (app → front → stairs → vacation); `run` is on the final CTA panel. */
 const HOW_IT_WORKS_CARTOONS = [
   cartoon3dPath("app.png"),
   cartoon3dPath("front.png"),
-  cartoon3dPath("climb.png"),
+  cartoon3dPath("stairs.png"),
   cartoon3dPath("vacation.png"),
 ] as const;
 
-/** Floating bubbles on the “Eliges cómo entrenar” slide: choice modes + modal, energy levels, grid. */
+/** Floating bubbles on the “Eliges cómo entrenar” slide — tight cluster on the 3D figure (over the art). */
+// Percents are of the figure box; ~44–57% h / ~43–55% v keeps all icons on torso/face (1.3× image).
 const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[] = [
   {
     key: "modal",
-    className: "right-[3%] top-[2%] md:right-[5%] md:top-[4%] z-[2]",
+    className: "left-1/2 top-[43%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg
         viewBox="0 0 24 24"
@@ -695,7 +696,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "alta",
-    className: "left-[2%] top-[20%] md:left-[4%] md:top-[22%] z-[2]",
+    className: "left-[40%] top-[50%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg
         viewBox="0 0 24 24"
@@ -714,7 +715,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "media",
-    className: "right-[5%] top-[32%] md:right-[6%] z-[2]",
+    className: "left-[60%] top-[50%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
         <rect x="4" y="12" width="3.5" height="8" rx="0.5" className="opacity-40" />
@@ -725,7 +726,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "baja",
-    className: "left-[1%] bottom-[32%] md:bottom-[30%] md:left-[3%] z-[2]",
+    className: "left-[45%] top-[55%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg
         viewBox="0 0 24 24"
@@ -742,7 +743,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
   },
   {
     key: "elegir",
-    className: "right-[0%] bottom-[16%] md:right-[1%] md:bottom-[18%] z-[2]",
+    className: "left-[55%] top-[55%] z-[2] -translate-x-1/2 -translate-y-1/2",
     node: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
         <rect x="3" y="3" width="7" height="7" rx="1" className="opacity-80" />
@@ -757,7 +758,7 @@ const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[]
 function HowItWorksChoiceBubbles() {
   return (
     <ul
-      className="pointer-events-none absolute inset-0 z-[2] m-0 list-none p-0"
+      className="pointer-events-none absolute inset-0 z-20 m-0 list-none p-0"
       role="presentation"
     >
       {CHOICE_BUBBLE_ICONS.map((b, i) => (
@@ -765,7 +766,7 @@ function HowItWorksChoiceBubbles() {
           <motion.div
             className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground/10 bg-white/90 text-foreground shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:h-12 sm:w-12"
             initial={false}
-            animate={{ y: [0, -7, 0] }}
+            animate={{ y: [0, -4, 0] }}
             transition={{
               duration: 3.2 + i * 0.15,
               repeat: Infinity,
@@ -884,7 +885,7 @@ function HowItWorksSection() {
         {steps.map((step, i) => (
           <div
             key={i}
-            className={`relative h-full flex-shrink-0 flex flex-col pt-16 px-12 md:px-16 lg:px-20 pb-12 ${i === 1 ? "z-[1] overflow-visible" : ""}`}
+            className="relative z-0 flex h-full min-h-0 flex-shrink-0 flex-col overflow-visible pt-16 px-12 pb-12 md:px-16 lg:px-20"
             style={{
               width: "50vw",
               minWidth: "300px",
@@ -907,20 +908,18 @@ function HowItWorksSection() {
               {step.desc}
             </p>
 
-            {/* 3D cartoon — lower panel (CTA slide uses its own layout) */}
-            <div
-              className={`mt-auto flex min-h-0 flex-1 items-end justify-center pt-10 lg:justify-end ${i === 1 ? "overflow-visible" : ""}`}
-            >
-              <div
-                className={`relative h-[min(57vh,630px)] w-full min-h-[300px] max-w-[min(100%,660px)] ${i === 1 ? "overflow-visible" : ""}`}
-              >
-                <Image
-                  src={HOW_IT_WORKS_CARTOONS[i]!}
-                  alt=""
-                  fill
-                  className="object-contain object-bottom"
-                  sizes="(min-width: 768px) 55vw, 92vw"
-                />
+            {/* 3D cartoon — lower panel (~1.3× scale, can overlap copy); CTA slide uses its own layout */}
+            <div className="relative z-10 mt-auto flex min-h-0 flex-1 items-end justify-center overflow-visible pt-10 lg:justify-end">
+              <div className="relative h-[min(57vh,630px)] w-full min-h-[300px] max-w-[min(100%,660px)] overflow-visible">
+                <div className="absolute inset-0 origin-bottom scale-[1.3] will-change-transform">
+                  <Image
+                    src={HOW_IT_WORKS_CARTOONS[i]!}
+                    alt=""
+                    fill
+                    className={i === 1 ? "object-contain object-bottom z-0" : "object-contain object-bottom"}
+                    sizes="(min-width: 768px) 55vw, 92vw"
+                  />
+                </div>
                 {i === 1 ? <HowItWorksChoiceBubbles /> : null}
               </div>
             </div>
@@ -929,13 +928,13 @@ function HowItWorksSection() {
 
         {/* ── CTA Panel — full viewport width, dark background + run cartoon (right) ── */}
         <div
-          className="relative h-full flex-shrink-0 flex flex-col items-center justify-center gap-10 overflow-hidden px-8 py-16 text-center md:px-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left"
+          className="relative h-full flex-shrink-0 flex flex-col items-center justify-center gap-10 overflow-x-clip overflow-y-visible px-8 py-16 text-center md:px-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left"
           style={{ width: "100vw", backgroundColor: "#000000" }}
         >
           <BlobShape color="#ffffff" size={400} className="-top-20 -right-20" opacity={0.06} />
           <BlobShape color="#ffffff" size={300} className="bottom-0 -left-20" opacity={0.05} />
 
-          <div className="relative z-10 w-full max-w-lg shrink-0 lg:mx-0">
+          <div className="relative z-0 w-full max-w-lg shrink-0 lg:mx-0">
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-6 block">
               Ahora ya sabes cómo funciona
             </span>
@@ -971,16 +970,18 @@ function HowItWorksSection() {
           </div>
 
           <div
-            className="relative z-[5] h-[min(52vh,560px)] w-full min-h-[280px] max-w-xl shrink-0 lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
+            className="relative z-10 h-[min(52vh,560px)] w-full min-h-[280px] max-w-xl shrink-0 overflow-visible lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
             aria-hidden
           >
-            <Image
-              src={cartoon3dPath("run.png")}
-              alt=""
-              fill
-              className="object-contain object-right"
-              sizes="(min-width: 1024px) 55vw, 100vw"
-            />
+            <div className="absolute inset-0 origin-bottom scale-[1.3] will-change-transform lg:origin-bottom-right">
+              <Image
+                src={cartoon3dPath("run.png")}
+                alt=""
+                fill
+                className="object-contain object-right"
+                sizes="(min-width: 1024px) 55vw, 100vw"
+              />
+            </div>
           </div>
         </div>
       </HorizontalScroll>
