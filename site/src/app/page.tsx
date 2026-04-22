@@ -582,10 +582,12 @@ function TrustedByLogoCloudSection() {
               Menos exigencia. Más estructura consciente.
             </p>
             <p className="max-w-md text-sm leading-snug text-foreground/80 md:text-base md:leading-relaxed md:text-[17px]">
-              <span className="md:hidden">Filosofía Swap That para equipos: regularse y cuidarse en el trabajo.</span>
+              <span className="md:hidden">
+                Charlas y talleres con la filosofía Swap That: hábitos y regulación que sí aplican en el trabajo.
+              </span>
               <span className="hidden md:inline">
-                Swap That for Teams lleva la filosofía de Swap That a contextos corporativos: ayudar a las personas a
-                regularse, enfocarse y cuidarse dentro de su día a día laboral.
+                Swap That for Teams son charlas y talleres que llevan la filosofía Swap That a tu empresa: movimiento,
+                regulación, estrés y hábitos concretos—para equipos que quieren algo real, no otro tick de RR.HH.
               </span>
             </p>
             <Link

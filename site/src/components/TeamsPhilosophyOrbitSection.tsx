@@ -108,8 +108,11 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
             </h2>
             <div className="relative">
               <p className="relative z-10 max-w-2xl pb-28 pl-0 pr-2 text-lg leading-relaxed text-gray sm:pb-32 sm:pr-4 md:text-xl">
-                Swap That for Teams lleva la filosofía de Swap That a contextos corporativos: ayudar a las personas a
-                regularse, enfocarse y cuidarse dentro de su día a día laboral.
+                Swap That for Teams es la misma filosofía en formato{" "}
+                <strong className="font-semibold text-foreground/90">charlas y talleres</strong> para empresas: hábitos y
+                herramientas prácticas—movimiento como regulación, manejo del estrés, foco y energía—para equipos con
+                jornadas exigentes que buscan <strong className="font-semibold text-foreground/90">algo real</strong>, no
+                otro beneficio más en la lista.
               </p>
               <div
                 className="pointer-events-none absolute bottom-0 left-0 w-[14.5rem] max-w-[calc(100%+2rem)] overflow-visible -translate-x-[80px] translate-y-[-10px] sm:w-[15rem] sm:translate-y-[-2px]"
