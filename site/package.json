@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "netlify-build": "next build && rm -rf ../.next && cp -R .next ../.next",
     "start": "next start",
     "lint": "eslint",
     "optimize:images": "node ./scripts/optimize-images.mjs",

@@ -2,3 +2,5 @@
 *.log
 .cursor/
 .claude/
+# netlify-build copies .next to repo root for deploy
+/.next/
