@@ -928,30 +928,30 @@ function HowItWorksSection() {
 
         {/* ── CTA Panel — full viewport width, dark background + run cartoon (right) ── */}
         <div
-          className="relative h-full flex-shrink-0 flex flex-col items-center justify-center gap-10 overflow-x-clip overflow-y-visible px-8 py-16 text-center md:px-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left"
+          className="relative h-full flex-shrink-0 flex flex-col items-center justify-start overflow-x-clip overflow-y-auto gap-6 px-8 pt-10 pb-8 text-center md:px-12 md:gap-10 md:pt-16 md:pb-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left lg:overflow-hidden"
           style={{ width: "100vw", backgroundColor: "#000000" }}
         >
           <BlobShape color="#ffffff" size={400} className="-top-20 -right-20" opacity={0.06} />
           <BlobShape color="#ffffff" size={300} className="bottom-0 -left-20" opacity={0.05} />
 
           <div className="relative z-10 w-full max-w-lg shrink-0 lg:mx-0">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-6 block">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-4 block md:mb-6">
               Ahora ya sabes cómo funciona
             </span>
 
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-6 text-white">
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-4 md:mb-6 text-white">
               Tu siguiente paso{" "}
               <br />
               <span className="italic font-light text-white">es el primero.</span>
             </h3>
 
-            <p className="text-lg text-white/55 leading-relaxed mb-10 max-w-sm mx-auto lg:mx-0">
+            <p className="text-base md:text-lg text-white/55 leading-relaxed mb-6 md:mb-10 max-w-sm mx-auto lg:mx-0">
               No hay momento perfecto para empezar. Solo hay el momento en que decides — o retomas.
             </p>
 
             <Link
               href="/contacto/sistema"
-              className="group inline-flex items-center justify-center gap-3 bg-white text-black px-10 py-5 rounded-full text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30"
+              className="group inline-flex items-center justify-center gap-3 bg-white text-black px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30"
             >
               Quiero empezar hoy
               <svg
@@ -964,13 +964,13 @@ function HowItWorksSection() {
               </svg>
             </Link>
 
-            <p className="text-white/30 text-sm mt-8 leading-relaxed">
+            <p className="text-white/30 text-sm mt-6 md:mt-8 leading-relaxed">
               Sin compromisos forzados. Sin horarios rígidos. Sin presión.
             </p>
           </div>
 
           <div
-            className="relative z-[5] h-[min(52vh,560px)] w-full min-h-[280px] max-w-xl shrink-0 lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
+            className="relative z-[5] h-[min(38vh,340px)] w-full min-h-[200px] max-w-xl shrink-0 md:h-[min(52vh,560px)] lg:h-[min(88vh,900px)] lg:min-h-0 lg:w-[min(54vw,760px)] lg:max-w-[min(54vw,760px)] pointer-events-none select-none"
             aria-hidden
           >
             <Image
@@ -1040,7 +1040,7 @@ function CTASection() {
 
       <AnimatedSection delay={0.15} light>
         <div
-          className="pointer-events-none relative z-[1] mt-10 w-full max-w-6xl overflow-x-auto overflow-y-hidden px-4 [scrollbar-width:thin] sm:mx-auto sm:mt-12 sm:max-w-7xl sm:px-6 md:mt-14 md:overflow-visible"
+          className="pointer-events-none relative z-[1] mt-10 w-full max-w-6xl overflow-x-auto px-4 pt-14 [scrollbar-width:thin] sm:mx-auto sm:mt-12 sm:max-w-7xl sm:px-6 sm:pt-16 md:mt-14 md:overflow-visible md:pt-0"
           aria-hidden
         >
           <div className="mx-auto flex w-max min-w-0 max-w-full flex-nowrap items-end justify-center gap-0 pb-1">

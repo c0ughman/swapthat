@@ -658,7 +658,7 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative z-40 flex w-full shrink-0 items-end justify-center overflow-hidden max-lg:h-[min(38vh,280px)] lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible"
+              className="relative z-40 flex w-full shrink-0 items-end justify-center overflow-visible max-lg:h-[min(46vh,340px)] lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible"
               aria-hidden
             >
               <div className="flex h-full w-full items-end justify-center lg:items-center lg:justify-end lg:max-w-[min(100%,780px)]">
@@ -667,7 +667,7 @@ export function TeamsHomeHero({
                   alt=""
                   width={1350}
                   height={1350}
-                  className="max-lg:h-full max-lg:w-auto max-lg:max-w-full max-lg:object-contain max-lg:object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform lg:scale-[1.05] lg:origin-bottom-right lg:object-contain lg:object-right lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
+                  className="max-lg:h-[min(72vh,520px)] max-lg:w-auto max-lg:max-w-none max-lg:object-contain max-lg:object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform lg:scale-[1.05] lg:origin-bottom-right lg:object-contain lg:object-right lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
                   quality={Q.hero}
                   priority
                   sizes="(min-width: 1024px) 60vw, 100vw"
@@ -681,18 +681,18 @@ export function TeamsHomeHero({
 
       {swapThatSystemHero ? (
         <div
-          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none lg:block hidden"
+          className="pointer-events-none absolute inset-0 z-[50] translate-y-[50px] overflow-visible select-none"
           aria-hidden
         >
           <div className="relative h-full w-full">
             {sistemaCornerStickerItems
-              .filter((_, idx) => viewportSize.w < 640 ? idx % 5 < 2 : true)
+              .filter((_, idx) => viewportSize.w < 640 ? idx % 5 === 0 : true)
               .map((item, i) => (
                 <StickerFloat
                   key={`sistema-corner-${i}-${item.src}`}
                   item={item}
                   i={i}
-                  scale={viewportSize.w < 640 ? 0.52 : 1}
+                  scale={viewportSize.w < 640 ? 0.5 : 1}
                 />
               ))}
           </div>

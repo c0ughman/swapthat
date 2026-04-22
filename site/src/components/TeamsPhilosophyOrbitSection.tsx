@@ -140,6 +140,28 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
             </div>
           </div>
 
+          {/* Mobile image grid — visible only below lg */}
+          <div className="lg:hidden grid grid-cols-3 gap-2 mb-4 -mx-2">
+            {PHIL_IMGS.map((img, i) => (
+              <div
+                key={i}
+                className={`overflow-hidden rounded-2xl shadow-md ${i === 0 ? "col-span-2" : ""} ${i === 3 ? "col-span-2" : ""}`}
+                style={{ aspectRatio: i === 0 || i === 3 ? "16/9" : "3/4" }}
+              >
+                <Image
+                  src={img.src}
+                  alt=""
+                  width={img.w}
+                  height={img.h}
+                  className="h-full w-full object-cover"
+                  sizes="(max-width: 1024px) 50vw, 0px"
+                  quality={Q.photo}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+
           <div className="relative hidden h-screen lg:block">
             <div
               className="pointer-events-none absolute left-1/2 z-0 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0 text-center"
