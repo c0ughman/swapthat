@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlobShape from "@/components/BlobShape";
 import Marquee from "@/components/Marquee";
@@ -659,13 +659,128 @@ function GrowthSection() {
   );
 }
 
-/** One cartoon per horizontal step (phone → front → climb → jump-front); `run` is on the final CTA panel. */
+/** One cartoon per horizontal step (app → front → climb → vacation); `run` is on the final CTA panel. */
 const HOW_IT_WORKS_CARTOONS = [
-  cartoon3dPath("phone.png"),
+  cartoon3dPath("app.png"),
   cartoon3dPath("front.png"),
   cartoon3dPath("climb.png"),
-  cartoon3dPath("jump-front.png"),
+  cartoon3dPath("vacation.png"),
 ] as const;
+
+/** Floating bubbles on the “Eliges cómo entrenar” slide: choice modes + modal, energy levels, grid. */
+const CHOICE_BUBBLE_ICONS: { key: string; className: string; node: ReactNode }[] = [
+  {
+    key: "modal",
+    className: "right-[3%] top-[2%] md:right-[5%] md:top-[4%] z-[2]",
+    node: (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <rect x="4" y="3" width="16" height="12" rx="1.2" className="opacity-25" fill="currentColor" />
+        <rect x="2" y="5" width="16" height="12" rx="1.2" className="fill-foreground" fillOpacity="0.08" />
+        <line x1="2" y1="7.5" x2="18" y2="7.5" />
+        <circle cx="4.2" cy="6.2" r="0.5" className="fill-foreground" />
+        <line x1="5" y1="10" x2="14" y2="10" className="opacity-30" />
+        <line x1="5" y1="12" x2="11" y2="12" className="opacity-25" />
+        <line x1="5" y1="14" x2="12" y2="14" className="opacity-20" />
+      </svg>
+    ),
+  },
+  {
+    key: "alta",
+    className: "left-[2%] top-[20%] md:left-[4%] md:top-[22%] z-[2]",
+    node: (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-5 w-5"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <path d="M13 2L3 14h5.5L8 22l9.5-11.5H12L13 2z" fillOpacity="0.18" />
+        <path d="M13 2L3 14h5.5L8 22l9.5-11.5H12L13 2z" fill="none" />
+      </svg>
+    ),
+  },
+  {
+    key: "media",
+    className: "right-[5%] top-[32%] md:right-[6%] z-[2]",
+    node: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
+        <rect x="4" y="12" width="3.5" height="8" rx="0.5" className="opacity-40" />
+        <rect x="10.25" y="7" width="3.5" height="13" rx="0.5" className="opacity-60" />
+        <rect x="16.5" y="10" width="3.5" height="10" rx="0.5" className="opacity-30" />
+      </svg>
+    ),
+  },
+  {
+    key: "baja",
+    className: "left-[1%] bottom-[32%] md:bottom-[30%] md:left-[3%] z-[2]",
+    node: (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-5 w-5"
+        fill="currentColor"
+        fillOpacity="0.18"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        aria-hidden
+      >
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+      </svg>
+    ),
+  },
+  {
+    key: "elegir",
+    className: "right-[0%] bottom-[16%] md:right-[1%] md:bottom-[18%] z-[2]",
+    node: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
+        <rect x="3" y="3" width="7" height="7" rx="1" className="opacity-80" />
+        <rect x="14" y="3" width="7" height="7" rx="1" className="opacity-50" />
+        <rect x="3" y="14" width="7" height="7" rx="1" className="opacity-30" />
+        <rect x="14" y="14" width="7" height="7" rx="1" className="opacity-20" />
+      </svg>
+    ),
+  },
+];
+
+function HowItWorksChoiceBubbles() {
+  return (
+    <ul
+      className="pointer-events-none absolute inset-0 z-[2] m-0 list-none p-0"
+      role="presentation"
+    >
+      {CHOICE_BUBBLE_ICONS.map((b, i) => (
+        <li key={b.key} className={`absolute ${b.className}`}>
+          <motion.div
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground/10 bg-white/90 text-foreground shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:h-12 sm:w-12"
+            initial={false}
+            animate={{ y: [0, -7, 0] }}
+            transition={{
+              duration: 3.2 + i * 0.15,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.25,
+            }}
+            aria-hidden
+          >
+            {b.node}
+          </motion.div>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 /** Top-right horizontal row above “Cuatro pasos…” in ¿Cómo funciona? */
 const HOW_HEADER_STICKER_PX = 80;
@@ -769,7 +884,7 @@ function HowItWorksSection() {
         {steps.map((step, i) => (
           <div
             key={i}
-            className="relative h-full flex-shrink-0 flex flex-col pt-16 px-12 md:px-16 lg:px-20 pb-12"
+            className={`relative h-full flex-shrink-0 flex flex-col pt-16 px-12 md:px-16 lg:px-20 pb-12 ${i === 1 ? "z-[1] overflow-visible" : ""}`}
             style={{
               width: "50vw",
               minWidth: "300px",
@@ -793,8 +908,12 @@ function HowItWorksSection() {
             </p>
 
             {/* 3D cartoon — lower panel (CTA slide uses its own layout) */}
-            <div className="mt-auto pt-10 flex-1 flex min-h-0 items-end justify-center lg:justify-end">
-              <div className="relative h-[min(57vh,630px)] w-full max-w-[min(100%,660px)] min-h-[300px]">
+            <div
+              className={`mt-auto flex min-h-0 flex-1 items-end justify-center pt-10 lg:justify-end ${i === 1 ? "overflow-visible" : ""}`}
+            >
+              <div
+                className={`relative h-[min(57vh,630px)] w-full min-h-[300px] max-w-[min(100%,660px)] ${i === 1 ? "overflow-visible" : ""}`}
+              >
                 <Image
                   src={HOW_IT_WORKS_CARTOONS[i]!}
                   alt=""
@@ -802,6 +921,7 @@ function HowItWorksSection() {
                   className="object-contain object-bottom"
                   sizes="(min-width: 768px) 55vw, 92vw"
                 />
+                {i === 1 ? <HowItWorksChoiceBubbles /> : null}
               </div>
             </div>
           </div>
