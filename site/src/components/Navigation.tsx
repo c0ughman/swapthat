@@ -154,16 +154,7 @@ export default function Navigation() {
       );
     }
     if (pathname === "/marketing") {
-      return (
-        <Image
-          src="/av-logo-black.webp"
-          alt="Andrea Vasquez"
-          width={240}
-          height={67}
-          className="h-[2.4rem] w-auto max-w-[min(100%,15rem)] object-contain object-left"
-          priority
-        />
-      );
+      return <LogoMaskSpan fill="var(--coral)" />;
     }
     if (pathname === "/" && scrolled) {
       return <LogoMaskSpan fill="var(--blue)" />;

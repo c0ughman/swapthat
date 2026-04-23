@@ -345,7 +345,7 @@ export function TeamsHomeHero({
     ? isDesktop ? "translateY(-22px)" : "translateY(0)"
     : "translateY(-35px)";
   /** Mobile sistema: move hero 3D (jump) down without shifting copy block. */
-  const sistemaHeroImageTranslateY = swapThatSystemHero && !isDesktop ? "translateY(80px)" : undefined;
+  const sistemaHeroImageTranslateY = swapThatSystemHero && !isDesktop ? "translateY(105px)" : undefined;
   const sistemaHeadlineTranslate = swapThatSystemHero
     ? isDesktop ? "translateY(-24px) scale(0.918)" : "scale(0.918)"
     : "translateY(-38px) scale(0.918)";
