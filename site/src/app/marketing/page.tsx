@@ -122,14 +122,14 @@ function HeroSection() {
             className="relative flex items-center justify-center order-first lg:order-1 lg:justify-start"
           >
             {/* Mobile: portrait crop. Desktop: full landscape frame with stable aspect ratio */}
-            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[560px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:16/9]">
+            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[560px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:unset]">
               <video
                 src="/360marketing.mp4"
                 autoPlay
                 muted
                 playsInline
                 suppressHydrationWarning
-                className="block h-full w-full object-cover object-top"
+                className="block h-full w-full object-cover object-top lg:h-auto lg:object-contain"
                 aria-label="Marketing video"
               />
             </div>

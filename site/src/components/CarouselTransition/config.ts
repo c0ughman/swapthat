@@ -9,14 +9,14 @@ export const PAGES = [
     path: "/",
     label: "Teams & Charlas",
     thumbnail: "/thumbnails/thumb-teams-1.png",
-    mobileThumbnail: "/thumbnails/team2.webp",
+    mobileThumbnail: "/thumbnails/thumb-teams-mobile-1.png",
     accent: "#6366f1",
   },
   {
     path: "/sistema",
     label: "Swap That System",
     thumbnail: "/thumbnails/thumb-sistema-1.png",
-    mobileThumbnail: "/thumbnails/coaching2.webp",
+    mobileThumbnail: "/thumbnails/thumb-sistema-mobile-1.png",
     accent: "#1a1a1a",
   },
   {
