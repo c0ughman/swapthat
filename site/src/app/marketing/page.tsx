@@ -834,6 +834,7 @@ function MarketingClientLogosSection() {
             className="mx-auto h-auto w-full max-w-full rounded-none object-contain object-center"
             sizes="(max-width: 1280px) 90vw, 960px"
             quality={95}
+            loading="eager"
           />
         </AnimatedSection>
       </div>

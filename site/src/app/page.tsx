@@ -570,7 +570,7 @@ function TrustedByLogoCloudSection() {
                 className="mx-auto h-auto w-full max-w-full object-contain object-center"
                 sizes="(max-width: 1280px) 75vw, 960px"
                 quality={Q.hero}
-                loading="lazy"
+                loading="eager"
               />
             </div>
           </div>

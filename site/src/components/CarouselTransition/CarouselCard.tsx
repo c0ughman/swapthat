@@ -31,7 +31,7 @@ export default function CarouselCard({
           className="object-cover"
           sizes="100vw"
           quality={Q.section}
-          loading="lazy"
+          priority
         />
       </div>
     );

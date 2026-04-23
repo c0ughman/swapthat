@@ -9,6 +9,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { preload } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -107,6 +108,12 @@ export default function CarouselTransitionProvider({
 }: {
   children: ReactNode;
 }) {
+  // Preload all thumbnails immediately so they're ready before any transition starts
+  PAGES.forEach((page) => {
+    preload(page.thumbnail, { as: "image" });
+    preload(page.mobileThumbnail, { as: "image" });
+  });
+
   const router = useRouter();
   const pathname = usePathname();
   const [phase, setPhase] = useState<Phase>("idle");
