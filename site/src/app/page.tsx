@@ -186,7 +186,7 @@ function StackingCardsSection() {
   return (
     <>
       {/* ── Mobile text header (above sticky animation) ── */}
-      <div className="md:hidden px-6 py-14 bg-white">
+      <div className="md:hidden px-6 py-14 bg-background">
         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-blue mb-4 block">Temas</span>
         <h2 className="text-3xl font-bold leading-tight text-foreground mb-3">Qué trabajo con los equipos</h2>
         <p className="text-foreground/60 text-[15px] leading-relaxed mb-6">
@@ -211,7 +211,7 @@ function StackingCardsSection() {
           className="relative pointer-events-none"
           aria-hidden
         />
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center bg-white relative z-[2]" style={{ marginTop: `calc(-1 * ${SCROLL_HEIGHT})` }}>
+        <div className="sticky top-0 h-screen overflow-hidden flex items-center bg-background relative z-[2]" style={{ marginTop: `calc(-1 * ${SCROLL_HEIGHT})` }}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex flex-col items-center gap-6 md:grid md:grid-cols-2 md:gap-16 md:items-center">
 
             {/* Left: copy — desktop only (mobile shows text above the sticky zone) */}
@@ -414,7 +414,7 @@ function ExperienceSection() {
               <motion.div
                 animate={{ y: [-4, 4, -4] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-2 -left-2 z-10 max-w-[9.5rem] rounded-lg border border-foreground/10 bg-white p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.1)] md:-bottom-4 md:-left-4 md:max-w-[180px] md:rounded-xl md:p-4"
+                className="absolute -bottom-2 -left-2 z-10 max-w-[9.5rem] rounded-lg border border-foreground/10 bg-background/95 p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.1)] md:-bottom-4 md:-left-4 md:max-w-[180px] md:rounded-xl md:p-4"
               >
                 <p className="text-[0.65rem] font-medium leading-snug text-foreground md:text-xs">
                   &ldquo;Real, humano y práctico.&rdquo;
@@ -508,7 +508,7 @@ function CharlaTestimonialsSection() {
           {CHARLA_TESTIMONIALS.map((t, i) => (
             <AnimatedSection key={t.name} delay={0.08 * i}>
               <article
-                className={`flex flex-col border border-foreground/10 bg-white/60 p-4 md:p-6 ${
+                className={`flex flex-col border border-foreground/10 bg-background/90 p-4 md:p-6 ${
                   TESTIMONIAL_CARD_SHAPES[i] ?? TESTIMONIAL_CARD_SHAPES[0]
                 }`}
               >
@@ -519,7 +519,7 @@ function CharlaTestimonialsSection() {
                     <span className="hidden md:inline">&ldquo;{t.quote}&rdquo;</span>
                   </p>
                 </blockquote>
-                <div className="mt-3 flex items-center gap-2 border-t border-white/10 pt-3 md:mt-5 md:gap-3 md:pt-5">
+                <div className="mt-3 flex items-center gap-2 border-t border-foreground/10 pt-3 md:mt-5 md:gap-3 md:pt-5">
                   <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-[1rem_0.6rem_0.8rem_0.7rem] ring-1 ring-blue/40 ring-offset-2 ring-offset-background md:h-11 md:w-11">
                     <Image
                       src={t.image}
@@ -548,7 +548,7 @@ function CharlaTestimonialsSection() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// LOGO CLOUD — client logos under testimonials (white band + margins)
+// LOGO CLOUD — client logos under testimonials (background band + margins)
 // ─────────────────────────────────────────────────────────────────────────────
 function TrustedByLogoCloudSection() {
   return (
@@ -561,7 +561,7 @@ function TrustedByLogoCloudSection() {
               <span className="font-bold text-foreground not-italic">Algunos de </span>
               <span className="font-light italic text-blue">nuestros clientes</span>
             </h2>
-            <div className="w-full origin-top scale-[0.92] rounded-[1.6rem] bg-white p-4 shadow-[0_6px_32px_rgba(0,0,0,0.05)] md:origin-left md:scale-100 md:rounded-[2.2rem] md:p-10 lg:max-w-none lg:-translate-x-2 lg:scale-[1.04] lg:p-9">
+            <div className="w-full origin-top scale-[0.92] rounded-[1.6rem] bg-background p-4 shadow-[0_6px_32px_rgba(0,0,0,0.05)] md:origin-left md:scale-100 md:rounded-[2.2rem] md:p-10 lg:max-w-none lg:-translate-x-2 lg:scale-[1.04] lg:p-9">
               <Image
                 src="/home/clientes.webp"
                 alt="Algunos de nuestros clientes"
@@ -662,7 +662,7 @@ function ForWhomSection({ sectionRef }: { sectionRef?: RefObject<HTMLElement | n
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1] tracking-tight mb-6">
                 Para qué tipo de equipos es
               </h2>
-              <p className="text-gray text-lg leading-relaxed max-w-md">
+              <p className="text-lg leading-relaxed text-white max-w-md">
                 Swap That for Teams es para equipos que buscan algo real, no un beneficio más en la lista.
               </p>
             </div>
@@ -678,7 +678,7 @@ function ForWhomSection({ sectionRef }: { sectionRef?: RefObject<HTMLElement | n
                   className={`relative overflow-visible py-1 ${i % 2 === 1 ? "lg:ml-12" : ""}`}
                 >
                   <div
-                    className={`relative z-[1] rounded-2xl border border-gray-light/50 bg-white/65 py-5 shadow-[0_2px_20px_rgba(0,0,0,0.04)] backdrop-blur-sm md:py-6 ${
+                    className={`relative z-[1] rounded-2xl border border-gray-light/50 bg-background/90 py-5 shadow-[0_2px_20px_rgba(0,0,0,0.04)] backdrop-blur-sm md:py-6 ${
                       iconRight
                         ? "px-5 pr-[8.5rem] pl-5 md:px-7 md:pr-[10.625rem] md:pl-7"
                         : "px-5 pl-[8.5rem] pr-5 md:px-7 md:pl-[10.625rem] md:pr-7"
@@ -747,19 +747,6 @@ const TEAMS_FAQ = [
   },
 ];
 
-/** ~0.5px outer stroke (8-way ring); increase `r` toward 1 for a slightly heavier line. */
-const FAQ_TITLE_OUTER_STROKE = (() => {
-  const r = 0.5;
-  const layers: string[] = [];
-  for (let dx = -1; dx <= 1; dx++) {
-    for (let dy = -1; dy <= 1; dy++) {
-      if (dx === 0 && dy === 0) continue;
-      layers.push(`${dx * r}px ${dy * r}px 0 rgb(255 255 255)`);
-    }
-  }
-  return layers.join(", ");
-})();
-
 function TeamsFaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -771,23 +758,19 @@ function TeamsFaqSection() {
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <AnimatedSection>
-          <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
-            <span
-              className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-blue"
-              style={{ textShadow: FAQ_TITLE_OUTER_STROKE }}
-            >
-              Dudas habituales
-            </span>
-            <h2
-              className="mb-5 text-3xl font-bold leading-[1.08] tracking-tight md:text-5xl lg:text-[2.75rem]"
-              style={{ textShadow: FAQ_TITLE_OUTER_STROKE }}
-            >
-              Preguntas{" "}
-              <span className="italic font-light text-blue">frecuentes</span>
-            </h2>
-            <p className="text-lg leading-relaxed text-gray md:text-xl">
-              Respuestas claras sobre formato, logística y qué podés esperar antes de reservar una charla para tu equipo.
-            </p>
+          <div className="mx-auto mb-12 max-w-3xl md:mb-16">
+            <div className="rounded-2xl border border-gray-light/50 bg-background/90 px-6 py-8 text-center shadow-[0_2px_20px_rgba(0,0,0,0.04)] backdrop-blur-sm md:px-10 md:py-10">
+              <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-blue">
+                Dudas habituales
+              </span>
+              <h2 className="mb-5 text-3xl font-bold leading-[1.08] tracking-tight md:text-5xl lg:text-[2.75rem]">
+                Preguntas{" "}
+                <span className="italic font-light text-blue">frecuentes</span>
+              </h2>
+              <p className="text-lg leading-relaxed text-gray md:text-xl">
+                Respuestas claras sobre formato, logística y qué podés esperar antes de reservar una charla para tu equipo.
+              </p>
+            </div>
           </div>
         </AnimatedSection>
 
@@ -804,14 +787,14 @@ function TeamsFaqSection() {
                       <button
                         type="button"
                         id={headerId}
-                        className="flex w-full items-center justify-between gap-4 bg-white/55 p-6 text-left text-foreground backdrop-blur-md transition-colors hover:bg-white/70 md:p-7"
+                        className="flex w-full items-center justify-between gap-4 bg-background/85 p-6 text-left text-foreground backdrop-blur-md transition-colors hover:bg-background/95 md:p-7"
                         onClick={() => setOpenIndex(isOpen ? null : i)}
                         aria-expanded={isOpen}
                         aria-controls={panelId}
                       >
                         <span className="pr-2 leading-snug">{item.q}</span>
                         <motion.span
-                          className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-blue/20 bg-white/50 text-blue backdrop-blur-sm"
+                          className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-blue/20 bg-background/80 text-blue backdrop-blur-sm"
                           animate={{ rotate: isOpen ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
                           aria-hidden
@@ -834,7 +817,7 @@ function TeamsFaqSection() {
                           transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
                           className="overflow-hidden"
                         >
-                          <div className="border-t border-foreground/10 bg-white px-6 pb-6 md:px-7 md:pb-7">
+                          <div className="border-t border-foreground/10 bg-background px-6 pb-6 md:px-7 md:pb-7">
                             <p className="pt-5 text-base leading-relaxed text-gray md:text-[17px]">{item.a}</p>
                           </div>
                         </motion.div>
@@ -848,9 +831,9 @@ function TeamsFaqSection() {
         </ul>
 
         <AnimatedSection delay={0.15}>
-          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-relaxed text-gray md:mt-14">
+          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-relaxed text-white md:mt-14">
             ¿No encontrás lo que buscás?{" "}
-            <Link href="/contacto/equipos" className="font-semibold text-blue underline-offset-4 hover:underline">
+            <Link href="/contacto/equipos" className="font-semibold text-white underline-offset-4 hover:underline">
               Escribinos
             </Link>{" "}
             y lo vemos en una conversación corta.
@@ -872,7 +855,7 @@ function CTASection({ sectionRef }: { sectionRef?: RefObject<HTMLElement | null>
       className="relative z-10 overflow-hidden bg-transparent py-28 md:py-40"
     >
       <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-[2]">
-        <div className="relative rounded-[2.5rem] border border-gray-light/60 bg-white/80 px-8 py-16 shadow-[0_4px_24px_rgba(0,0,0,0.03)] backdrop-blur-sm md:px-16 md:py-20 lg:px-20">
+        <div className="relative rounded-[2.5rem] border border-gray-light/60 bg-background/95 px-8 py-16 shadow-[0_4px_24px_rgba(0,0,0,0.03)] backdrop-blur-sm md:px-16 md:py-20 lg:px-20">
           {/* Decorative corner marks */}
           <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-blue/20 rounded-tl-lg" />
           <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-blue/20 rounded-tr-lg" />
@@ -939,8 +922,8 @@ function ServicesPreview() {
         <div className="grid md:grid-cols-5 gap-6 max-w-5xl mx-auto">
           {/* Marketing card — spans 3 cols, landscape */}
           <AnimatedSection delay={0.1} className="md:col-span-3">
-            <Link href="/marketing#contacto" className="group block h-full">
-              <div className="relative h-full bg-white/80 backdrop-blur-sm rounded-[2rem] p-10 md:p-12 border border-coral/15 hover:border-coral/30 transition-all duration-500 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+            <Link href="/contacto/marketing#formulario" className="group block h-full">
+              <div className="relative h-full bg-background/95 backdrop-blur-sm rounded-[2rem] p-10 md:p-12 border border-coral/15 hover:border-coral/30 transition-all duration-500 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
                 {/* Decorative accent */}
                 <div className="absolute top-0 left-0 w-1 h-24 bg-gradient-to-b from-coral to-coral/0 rounded-full" />
 
@@ -968,8 +951,8 @@ function ServicesPreview() {
 
           {/* Coaching card — spans 2 cols, portrait */}
           <AnimatedSection delay={0.2} className="md:col-span-2">
-            <Link href="/sistema#cta" className="group block h-full">
-              <div className="relative h-full bg-white/80 backdrop-blur-sm rounded-[2rem] p-10 md:p-12 border border-blue/15 hover:border-blue/30 transition-all duration-500 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+            <Link href="/contacto/sistema#formulario" className="group block h-full">
+              <div className="relative h-full bg-background/95 backdrop-blur-sm rounded-[2rem] p-10 md:p-12 border border-blue/15 hover:border-blue/30 transition-all duration-500 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
                 {/* Decorative accent */}
                 <div className="absolute top-0 left-0 w-1 h-24 bg-gradient-to-b from-blue to-blue/0 rounded-full" />
 
@@ -1022,7 +1005,7 @@ export default function HomePage() {
 
       {/* Drone line — SVG above white base, below section content (z-0 → z-5 → z-10) */}
       <div ref={droneSectionRef} className="relative z-[1]">
-        <div className="pointer-events-none absolute inset-0 z-0 bg-white" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 z-0 bg-background" aria-hidden />
         <ScrollDrawLine
           scrollTargetRef={droneSectionRef}
           scrollStartAnchorRef={forWhomSectionRef}

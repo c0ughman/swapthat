@@ -225,10 +225,10 @@ export default function ContactoMarketingPage() {
             <div className="relative h-full w-full max-h-[72vh]">
               <div className="absolute right-0 top-[5%] h-[55%] w-[68%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_rgba(232,93,117,0.12)]">
                 <Image
-                  src="/thumbnails/marketing.webp"
-                  alt="Marketing & Performance — Andrea Vásquez"
+                  src="/andreacoachsevilla-55.webp"
+                  alt="Andrea, consultora de marketing y performance"
                   fill
-                  className="object-cover"
+                  className="object-cover object-center"
                   sizes="360px"
                   quality={Q.photo}
                 />
@@ -257,7 +257,7 @@ export default function ContactoMarketingPage() {
         {/* Mobile photo strip */}
         <div className="absolute bottom-0 left-0 right-0 flex h-28 gap-2 overflow-hidden lg:hidden">
           <div className="relative flex-1 overflow-hidden">
-            <Image src="/thumbnails/marketing.webp" alt="" fill className="object-cover opacity-60" sizes="50vw" quality={Q.section} />
+            <Image src="/andreacoachsevilla-55.webp" alt="" fill className="object-cover object-center opacity-60" sizes="50vw" quality={Q.section} />
           </div>
           <div className="relative flex-1 flex items-end justify-center pb-2">
             <Image src="/icons/estrategia.webp" alt="" width={110} height={110} className="object-contain opacity-80" quality={Q.section} draggable={false} />
