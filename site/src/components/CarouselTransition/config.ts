@@ -5,19 +5,22 @@ export const PAGES = [
   {
     path: "/",
     label: "Teams & Charlas",
-    thumbnail: "/thumbnails/team2.webp",
+    thumbnail: "/thumbnails/teams.webp",
+    mobileThumbnail: "/thumbnails/teams.svg",
     accent: "#6366f1",
   },
   {
     path: "/sistema",
     label: "Swap That System",
-    thumbnail: "/thumbnails/coaching2.webp",
+    thumbnail: "/thumbnails/sistema.webp",
+    mobileThumbnail: "/thumbnails/sistema.svg",
     accent: "#1a1a1a",
   },
   {
     path: "/marketing",
     label: "Marketing & Performance",
-    thumbnail: "/thumbnails/marketing2.webp",
+    thumbnail: "/thumbnails/marketing.webp",
+    mobileThumbnail: "/thumbnails/marketing.svg",
     accent: "#e85d75",
   },
 ] as const;

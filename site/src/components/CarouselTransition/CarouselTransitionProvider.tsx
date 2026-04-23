@@ -115,21 +115,14 @@ export default function CarouselTransitionProvider({
 
   const isMobileViewport = useCarouselIsMobileViewport();
 
-  /** Landscape frame on desktop; on mobile use CARD_VW_MOBILE so frame hugs thumbnail size */
+  /** Landscape frame on both desktop and mobile — mobile thumbnails are already the right orientation */
   const wheelVw = isMobileViewport ? CARD_VW_MOBILE : CARD_VW;
   const wheelCardFrame = {
     position: "absolute" as const,
     width: `${wheelVw}vw`,
     left: `${-wheelVw / 2}vw`,
-    ...(isMobileViewport
-      ? {
-          aspectRatio: 1 / THUMBNAIL_ASPECT_RATIO,
-          top: `${(-wheelVw / 2) * THUMBNAIL_ASPECT_RATIO}vw`,
-        }
-      : {
-          aspectRatio: THUMBNAIL_ASPECT_RATIO,
-          top: `${(-wheelVw / 2) / THUMBNAIL_ASPECT_RATIO}vw`,
-        }),
+    aspectRatio: THUMBNAIL_ASPECT_RATIO,
+    top: `${(-wheelVw / 2) / THUMBNAIL_ASPECT_RATIO}vw`,
   };
 
   const panProgress = useMotionValue(0);
