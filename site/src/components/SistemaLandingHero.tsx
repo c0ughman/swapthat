@@ -231,8 +231,8 @@ export function SistemaLandingHero() {
                   height={h}
                   className="h-full w-full object-cover"
                   sizes="140px"
-                  quality={Q.photo}
-                  loading="lazy"
+                  quality={Q.section}
+                  loading="eager"
                 />
               </motion.div>
             );
@@ -272,7 +272,7 @@ export function SistemaLandingHero() {
               className="object-cover"
               sizes={`${img.w}px`}
               quality={Q.photo}
-              loading="lazy"
+              loading="eager"
             />
           </motion.div>
         ))}

@@ -290,7 +290,7 @@ function StickerFloat({
           style={{ opacity: 1 }}
           draggable={false}
           sizes={`${px}px`}
-          quality={Q.section}
+          quality={Q.icon}
           loading="eager"
         />
       </motion.div>

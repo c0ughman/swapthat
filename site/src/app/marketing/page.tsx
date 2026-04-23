@@ -52,7 +52,7 @@ function ProblemHeadlineChar({
 function ProblemHeadlineScroll({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
   const total = PROBLEM_HEADLINE_CHARS.length;
   return (
-    <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8 text-white">
+    <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8 text-white [contain:layout]">
       {PROBLEM_HEADLINE_CHARS.map((item, i) => (
         <ProblemHeadlineChar key={i} item={item} i={i} total={total} scrollYProgress={scrollYProgress} />
       ))}
