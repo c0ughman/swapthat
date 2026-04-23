@@ -104,13 +104,8 @@ const BASE_ANGLES = [-A_RAD, 0, A_RAD];
 
 export default function CarouselTransitionProvider({
   children,
-  header,
 }: {
   children: ReactNode;
-  /** Persistent slot — renders inside the context but outside the content that gets swapped
-   *  during transitions. Navigation lives here so it never unmounts (and never replays its
-   *  initial animation) when the carousel swaps page content. */
-  header?: ReactNode;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -199,10 +194,10 @@ export default function CarouselTransitionProvider({
       router.push(targetPath, { scroll: false });
     }
 
-    const controls = animate(panProgress, 1, {
+    const controls = animate(panProgress, isMobileViewport ? 0.8 : 1, {
       duration: TIMING.pan / 1000,
-      // Mobile: no overshoot — the 1.2 overshoot in PAN_EASE causes cards to visibly
-      // snap past target and bounce back, which reads as a glitch on small screens.
+      // Mobile: no overshoot + cut last 20% of arc (same ease, same duration, same path —
+      // just stops at 80% progress so the slow deceleration tail is never shown).
       ease: isMobileViewport ? EASE : PAN_EASE,
       onComplete: () => {
         setPhase("expanding");
@@ -289,9 +284,6 @@ export default function CarouselTransitionProvider({
 
   return (
     <CarouselTransitionContext.Provider value={{ triggerTransition, phase, arrivedViaTransition }}>
-      {/* ── 0. Persistent header slot — never unmounts during transitions ── */}
-      {header}
-
       {/* ── 1. Background with accent color fade ──────────────────── */}
       <AnimatePresence>
         {isTransitioning && (
