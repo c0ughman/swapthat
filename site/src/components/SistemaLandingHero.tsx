@@ -5,6 +5,7 @@ import { StarBurst } from "@/components/DecorativeSVGs";
 import Link from "next/link";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
+import { useTransitionArrival } from "./CarouselTransition/useTransitionArrival";
 
 // Pixel dimensions scaled ×0.8 to match font-size: 80% base (replacing zoom: 0.8)
 const SISTEMA_HERO_IMAGES = [
@@ -18,7 +19,8 @@ const SISTEMA_HERO_IMAGES = [
 /** Home (`/`) hero: equipos first; light squircle, collage, CTAs hacia contacto y Sistema. */
 export function SistemaLandingHero() {
   const primaryHref = "/contacto/equipos";
-  const secondaryHref = "/sistema#que-es";
+  const secondaryHref = "/sistema";
+  const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
 
   return (
     <section className="relative flex h-screen flex-col overflow-hidden bg-blue pt-[calc(5rem+10px)] pb-[clamp(5.5rem,24vw,8rem)] md:pb-8 lg:pb-10">
@@ -26,7 +28,7 @@ export function SistemaLandingHero() {
       <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-64 rounded-tr-[4rem] bg-blue-dark/35 md:h-56 md:w-80" />
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.97 }}
+        initial={skippedInitialAnimation ? false : { opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
         className="relative mx-5 flex-1 overflow-hidden rounded-[2.5rem] border border-white/25 bg-white shadow-[0_28px_90px_-20px_rgba(0,0,0,0.28)] md:mx-8 md:rounded-[3rem] lg:mx-10"
@@ -37,7 +39,7 @@ export function SistemaLandingHero() {
         <div className="relative z-10 flex h-full items-center px-6 py-8 sm:px-8 md:px-14 lg:px-16">
           <div className="w-full max-w-2xl text-foreground">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-5 flex items-center gap-3"
@@ -49,7 +51,7 @@ export function SistemaLandingHero() {
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 40 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
               className="mb-5 text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl xl:text-8xl"
@@ -60,14 +62,14 @@ export function SistemaLandingHero() {
             </motion.h1>
 
             <motion.div
-              initial={{ scaleX: 0 }}
+              initial={skippedInitialAnimation ? false : { scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] as const }}
               className="mb-6 h-0.5 w-48 origin-left bg-gradient-to-r from-blue/50 to-coral/40"
             />
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
               className="mb-2 text-base leading-relaxed text-foreground/88 md:text-lg"
@@ -75,7 +77,7 @@ export function SistemaLandingHero() {
               Hábitos saludables para equipos corporativos.
             </motion.p>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
               className="mb-8 text-sm leading-relaxed text-foreground/70 md:text-base"
@@ -84,14 +86,14 @@ export function SistemaLandingHero() {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.8 }}
-              className="flex flex-col gap-4 sm:flex-row"
+              className="flex w-full min-w-0 flex-col gap-3 md:gap-4 lg:flex-row lg:flex-nowrap lg:items-stretch"
             >
               <Link
                 href={primaryHref}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-blue px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+                className="group inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-left text-sm font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark sm:text-center md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
               >
                 Quiero una charla para mi equipo
                 <svg
@@ -101,21 +103,21 @@ export function SistemaLandingHero() {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2.5"
-                  className="transition-transform group-hover:translate-x-1"
+                  className="shrink-0 transition-transform group-hover:translate-x-1"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </Link>
               <Link
                 href={secondaryHref}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/18 px-7 py-3.5 text-sm font-bold text-foreground transition-all duration-300 hover:bg-foreground/[0.06]"
+                className="inline-flex w-full shrink-0 items-center justify-center rounded-full border border-foreground/18 px-6 py-3.5 text-center text-sm font-bold leading-tight text-foreground transition-all duration-300 hover:bg-foreground/[0.06] md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
               >
-                Coaching 1-on-1 con Swap That System
+                Coaching 1-on-1
               </Link>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 1.1 }}
               className="mt-8 flex flex-wrap gap-3"
@@ -135,12 +137,12 @@ export function SistemaLandingHero() {
       </motion.div>
 
       <Link
-        href="/marketing#contacto"
+        href="/contacto/marketing#formulario"
         className="group absolute top-[120px] right-[20px] z-[40] hidden origin-top-right lg:block"
         style={{ transform: "scale(0.88)" }}
       >
         <motion.div
-          initial={{ opacity: 0, y: -20, scale: 0.95 }}
+          initial={skippedInitialAnimation ? false : { opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, delay: 1.0 }}
           whileHover={{ scale: 1.03, y: -3 }}
@@ -215,8 +217,12 @@ export function SistemaLandingHero() {
                   zIndex: z,
                 }}
                 initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.85 + i * 0.07, ease: [0.22, 1, 0.36, 1] as const }}
+                animate={(!skippedInitialAnimation || arrivalAnimationReady) ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                transition={{
+                  duration: 0.5,
+                  delay: skippedInitialAnimation ? 0.2 + i * 0.08 : 0.85 + i * 0.07,
+                  ease: [0.22, 1, 0.36, 1] as const,
+                }}
               >
                 <Image
                   src={img.src}
@@ -252,10 +258,10 @@ export function SistemaLandingHero() {
               rotate: img.rotate,
             }}
             initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={(!skippedInitialAnimation || arrivalAnimationReady) ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{
               duration: 0.6,
-              delay: 0.9 + i * 0.1,
+              delay: skippedInitialAnimation ? 0.2 + i * 0.1 : 0.9 + i * 0.1,
               ease: [0.22, 1, 0.36, 1] as const,
             }}
           >

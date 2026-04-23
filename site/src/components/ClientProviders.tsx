@@ -12,9 +12,8 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
   const isContactPage = pathname?.startsWith("/contacto");
 
   return (
-    <CarouselTransitionProvider>
+    <CarouselTransitionProvider header={!isContactPage ? <Navigation /> : undefined}>
       <SmoothScroll />
-      {!isContactPage && <Navigation />}
       <main className="min-w-0 [overflow-x:clip]">{children}</main>
       {!isContactPage && <Footer />}
     </CarouselTransitionProvider>

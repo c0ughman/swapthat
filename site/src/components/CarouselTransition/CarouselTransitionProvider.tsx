@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   motion,
   AnimatePresence,
@@ -29,6 +30,7 @@ import {
   CARD_SHADOW,
   THUMBNAIL_ASPECT_RATIO,
   THUMBNAIL_ASPECT_RATIO_MOBILE,
+  type PageDef,
 } from "./config";
 import CarouselCard from "./CarouselCard";
 
@@ -52,6 +54,12 @@ type Phase = "idle" | "shrinking" | "panning" | "expanding";
 interface CarouselTransitionContextValue {
   triggerTransition: (targetPath: string) => void;
   phase: Phase;
+  /**
+   * True from when a transition is triggered until finishTransition fires.
+   * Newly-mounted pages see this as true — use it to skip load-in animations
+   * and instead play arrival-specific animations once phase → idle.
+   */
+  arrivedViaTransition: boolean;
 }
 
 export const CarouselTransitionContext =
@@ -93,13 +101,16 @@ function getCarouselLayout(currentIdx: number, targetIdx: number) {
 }
 
 const BASE_ANGLES = [-A_RAD, 0, A_RAD];
-const CONTENT_SCALE = CARD_VW / 100;
-const CONTENT_RADIUS = CARD_RADIUS / CONTENT_SCALE;
 
 export default function CarouselTransitionProvider({
   children,
+  header,
 }: {
   children: ReactNode;
+  /** Persistent slot — renders inside the context but outside the content that gets swapped
+   *  during transitions. Navigation lives here so it never unmounts (and never replays its
+   *  initial animation) when the carousel swaps page content. */
+  header?: ReactNode;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -114,11 +125,23 @@ export default function CarouselTransitionProvider({
   >([]);
   const [fromPageIdx, setFromPageIdx] = useState(-1);
 
+  const [arrivedViaTransition, setArrivedViaTransition] = useState(false);
+  const [fadeOutInfo, setFadeOutInfo] = useState<{ page: PageDef; key: number } | null>(null);
+  const fadeOutKeyRef = useRef(0);
   const isMobileViewport = useCarouselIsMobileViewport();
 
   /** Mobile uses portrait frame matching portrait PNGs; desktop uses landscape frame */
   const wheelVw = isMobileViewport ? CARD_VW_MOBILE : CARD_VW;
   const ar = isMobileViewport ? THUMBNAIL_ASPECT_RATIO_MOBILE : THUMBNAIL_ASPECT_RATIO;
+  /** Scale to shrink the current page to thumbnail card size (desktop-based, consistent) */
+  const contentScale = CARD_VW / 100;
+  const contentRadius = CARD_RADIUS / contentScale;
+  /**
+   * Mobile: card is 28vw × ~49.7vw portrait. Need scale ≥ 100/28 ≈ 3.57 for width coverage.
+   * Tall phones need ~4.4 for height. Use 4.5 for safety.
+   * Desktop: card is 50vw, 2.05 ≈ 100vw.
+   */
+  const expandScale = isMobileViewport ? 4.5 : 2.05;
   const wheelCardFrame = {
     position: "absolute" as const,
     width: `${wheelVw}vw`,
@@ -153,6 +176,7 @@ export default function CarouselTransitionProvider({
       scrollYRef.current = window.scrollY;
       hasNavigated.current = false;
       panProgress.set(0);
+      setArrivedViaTransition(true);
       setTargetPath(target);
       setFromPageIdx(curIdx);
       const newLayout = getCarouselLayout(curIdx, tarIdx);
@@ -177,23 +201,39 @@ export default function CarouselTransitionProvider({
 
     const controls = animate(panProgress, 1, {
       duration: TIMING.pan / 1000,
-      ease: PAN_EASE,
+      // Mobile: no overshoot — the 1.2 overshoot in PAN_EASE causes cards to visibly
+      // snap past target and bounce back, which reads as a glitch on small screens.
+      ease: isMobileViewport ? EASE : PAN_EASE,
       onComplete: () => {
         setPhase("expanding");
       },
     });
 
     return () => controls.stop();
-  }, [phase, layout, targetPath, router, panProgress]);
+  }, [phase, layout, targetPath, router, panProgress, isMobileViewport]);
 
   const finishTransition = useCallback(() => {
+    // Capture target page BEFORE clearing state — we'll render a fade-out overlay
+    // so the visual cut from expanding thumbnail → real page is hidden.
+    const targetPage = PAGES.find((p) => p.path === targetPath) ?? null;
+    if (targetPage) {
+      fadeOutKeyRef.current += 1;
+      setFadeOutInfo({ page: targetPage, key: fadeOutKeyRef.current });
+    }
+
     window.scrollTo(0, 0);
     setPhase("idle");
     setTargetPath(null);
     setLayout(null);
     setFromPageIdx(-1);
-    requestAnimationFrame(() => window.scrollTo(0, 0));
-  }, []);
+    // Clear arrivedViaTransition AFTER the new page has mounted and captured it.
+    // Using rAF ensures this runs after React has committed the render where
+    // showThumbnailInstead flips false and the new page's components mount.
+    requestAnimationFrame(() => {
+      setArrivedViaTransition(false);
+      window.scrollTo(0, 0);
+    });
+  }, [targetPath]);
 
   // Cut to real page at 50% of expand — don't wait for full animation
   useEffect(() => {
@@ -248,7 +288,10 @@ export default function CarouselTransitionProvider({
     : [];
 
   return (
-    <CarouselTransitionContext.Provider value={{ triggerTransition, phase }}>
+    <CarouselTransitionContext.Provider value={{ triggerTransition, phase, arrivedViaTransition }}>
+      {/* ── 0. Persistent header slot — never unmounts during transitions ── */}
+      {header}
+
       {/* ── 1. Background with accent color fade ──────────────────── */}
       <AnimatePresence>
         {isTransitioning && (
@@ -304,8 +347,8 @@ export default function CarouselTransitionProvider({
         animate={
           phase === "shrinking"
             ? {
-                scale: CONTENT_SCALE,
-                borderRadius: CONTENT_RADIUS,
+                scale: contentScale,
+                borderRadius: contentRadius,
                 boxShadow: CARD_SHADOW,
                 x: 0,
                 y: 0,
@@ -313,7 +356,7 @@ export default function CarouselTransitionProvider({
               }
             : phase === "expanding"
               ? {
-                  scale: CONTENT_SCALE,
+                  scale: contentScale,
                   opacity: 0,
                   boxShadow: CARD_SHADOW,
                   x: `${(endPositions.current[1]?.x ?? 0)}vw`,
@@ -322,8 +365,8 @@ export default function CarouselTransitionProvider({
                 }
               : phase === "panning"
                 ? {
-                    scale: CONTENT_SCALE,
-                    borderRadius: CONTENT_RADIUS,
+                    scale: contentScale,
+                    borderRadius: contentRadius,
                     boxShadow: CARD_SHADOW,
                   }
                 : {
@@ -424,25 +467,43 @@ export default function CarouselTransitionProvider({
                           boxShadow: CARD_SHADOW,
                         }
                       : phase === "expanding" && isTarget
-                        ? {
-                            x: "0vw",
-                            y: "0vw",
-                            rotate: 0,
-                            scale: 2.05,
-                            opacity: 1,
-                            borderRadius: 0,
-                            boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
-                          }
-                        : phase === "expanding"
+                        ? isMobileViewport
                           ? {
-                              x: `${endPos.x}vw`,
-                              y: `${endPos.y}vw`,
-                              rotate: endPos.rotate,
-                              scale: 1,
-                              opacity: 0,
-                              borderRadius: CARD_RADIUS,
-                              boxShadow: CARD_SHADOW,
+                              // Mobile: scale to fill viewport; skip borderRadius/shadow (corners off-screen, saves GPU)
+                              x: "0vw",
+                              y: "0vw",
+                              rotate: 0,
+                              scale: expandScale,
+                              opacity: 1,
                             }
+                          : {
+                              x: "0vw",
+                              y: "0vw",
+                              rotate: 0,
+                              scale: expandScale,
+                              opacity: 1,
+                              borderRadius: 0,
+                              boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+                            }
+                        : phase === "expanding"
+                          ? isMobileViewport
+                            ? {
+                                // Mobile: hold position (no positional animation), just fade out fast
+                                x: `${endPos.x}vw`,
+                                y: `${endPos.y}vw`,
+                                rotate: endPos.rotate,
+                                scale: 1,
+                                opacity: 0,
+                              }
+                            : {
+                                x: `${endPos.x}vw`,
+                                y: `${endPos.y}vw`,
+                                rotate: endPos.rotate,
+                                scale: 1,
+                                opacity: 0,
+                                borderRadius: CARD_RADIUS,
+                                boxShadow: CARD_SHADOW,
+                              }
                           : {
                               scale: 1,
                               opacity: 1,
@@ -454,9 +515,11 @@ export default function CarouselTransitionProvider({
                     duration:
                       phase === "shrinking"
                         ? TIMING.shrink / 1000
-                        : phase === "expanding"
-                          ? TIMING.expand / 1000
-                          : 0.3,
+                        : phase === "expanding" && !isTarget && isMobileViewport
+                          ? 0.15  // mobile non-target: quick fade
+                          : phase === "expanding"
+                            ? TIMING.expand / 1000
+                            : 0.3,
                     ease: EASE,
                   }}
                 >
@@ -506,21 +569,32 @@ export default function CarouselTransitionProvider({
                     phase === "panning"
                       ? { scale: 1, opacity: 1, boxShadow: CARD_SHADOW }
                       : phase === "expanding"
-                        ? {
-                            x: `${incomingEndPos.x}vw`,
-                            y: `${incomingEndPos.y}vw`,
-                            rotate: incomingEndPos.rotate,
-                            scale: 1,
-                            opacity: 0,
-                            boxShadow: CARD_SHADOW,
-                          }
+                        ? isMobileViewport
+                          ? {
+                              // Mobile: hold position, just fade out
+                              x: `${incomingEndPos.x}vw`,
+                              y: `${incomingEndPos.y}vw`,
+                              rotate: incomingEndPos.rotate,
+                              scale: 1,
+                              opacity: 0,
+                            }
+                          : {
+                              x: `${incomingEndPos.x}vw`,
+                              y: `${incomingEndPos.y}vw`,
+                              rotate: incomingEndPos.rotate,
+                              scale: 1,
+                              opacity: 0,
+                              boxShadow: CARD_SHADOW,
+                            }
                         : { scale: 1, opacity: 0, boxShadow: CARD_SHADOW }
                   }
                   transition={{
                     duration:
-                      phase === "expanding"
-                        ? TIMING.expand / 1000
-                        : TIMING.pan / 1000,
+                      phase === "expanding" && isMobileViewport
+                        ? 0.15
+                        : phase === "expanding"
+                          ? TIMING.expand / 1000
+                          : TIMING.pan / 1000,
                     ease: EASE,
                   }}
                 >
@@ -535,6 +609,29 @@ export default function CarouselTransitionProvider({
           </div>
         </div>
       )}
+      {/* ── 4. Fade-out overlay — hides the visual cut from expanding thumbnail → real page */}
+      <AnimatePresence>
+        {fadeOutInfo && (
+          <motion.div
+            key={fadeOutInfo.key}
+            className="pointer-events-none fixed inset-0 overflow-hidden"
+            style={{ zIndex: 9998, backgroundColor: fadeOutInfo.page.accent }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
+            onAnimationComplete={() => setFadeOutInfo(null)}
+          >
+            <Image
+              src={isMobileViewport ? fadeOutInfo.page.mobileThumbnail : fadeOutInfo.page.thumbnail}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </CarouselTransitionContext.Provider>
   );
 }

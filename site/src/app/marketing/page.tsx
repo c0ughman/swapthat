@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 import type { MotionValue } from "framer-motion";
 import { motion, useMotionValue, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useTransitionArrival } from "@/components/CarouselTransition/useTransitionArrival";
 import BlobShape from "@/components/BlobShape";
 import Marquee from "@/components/Marquee";
 import { DotGrid } from "@/components/DecorativeSVGs";
@@ -98,11 +99,9 @@ function useProblemSectionHeadlineProgress(sectionRef: RefObject<HTMLElement | n
 }
 
 function HeroSection() {
-  /** Avoid video hydration mismatches: browsers/extensions may inject attrs (e.g. accel-video) on <video>. */
-  const [mountVideo, setMountVideo] = useState(false);
-  useEffect(() => {
-    setMountVideo(true);
-  }, []);
+  const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
+  const bubblesVisible = !skippedInitialAnimation || arrivalAnimationReady;
+
 
   return (
     <section
@@ -117,25 +116,22 @@ function HeroSection() {
           {/* Video — compact above text on mobile, left column on desktop */}
           <motion.div
             layout={false}
-            initial={{ opacity: 0, x: -40 }}
+            initial={skippedInitialAnimation ? false : { opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.55, delay: 0.3 }}
             className="relative flex items-center justify-center order-first lg:order-1 lg:justify-start"
           >
-            {/* Mobile: show top 70% of video, div height matches. Desktop: full frame */}
-            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[560px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:unset]">
-              {mountVideo ? (
-                <video
-                  src="/360marketing.mp4"
-                  autoPlay
-                  muted
-                  playsInline
-                  className="block h-full w-full object-cover object-top lg:h-auto lg:object-contain"
-                  aria-label="Marketing video"
-                />
-              ) : (
-                <div className="h-full w-full bg-white lg:aspect-video lg:h-auto" aria-hidden />
-              )}
+            {/* Mobile: portrait crop. Desktop: full landscape frame with stable aspect ratio */}
+            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[560px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:16/9]">
+              <video
+                src="/360marketing.mp4"
+                autoPlay
+                muted
+                playsInline
+                suppressHydrationWarning
+                className="block h-full w-full object-cover object-top"
+                aria-label="Marketing video"
+              />
             </div>
           </motion.div>
 
@@ -143,7 +139,7 @@ function HeroSection() {
           <div className="order-last lg:order-2 translate-y-0 lg:-translate-y-[80px] px-1 sm:px-2 lg:pl-2 lg:pr-1">
             <motion.div
               layout={false}
-              initial={{ opacity: 0, y: 20 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
               className="flex items-center gap-3 mb-6"
@@ -156,9 +152,12 @@ function HeroSection() {
 
             <div className="relative mb-6 pt-2 md:pt-3">
               {/* Floating cards — 2 top / 1 bottom, above title */}
-              <div
+              <motion.div
                 className="pointer-events-none absolute -top-[160px] right-0 z-[1] hidden md:block pr-4 pt-3 md:pr-6 md:pt-4"
                 aria-hidden
+                initial={skippedInitialAnimation ? { opacity: 0 } : false}
+                animate={skippedInitialAnimation ? (bubblesVisible ? { opacity: 1 } : { opacity: 0 }) : {}}
+                transition={{ duration: 0.5, delay: 0.1 }}
               >
                 {/* Floating pills: white fill, coral type, faint coral glow */}
                 <div className="flex w-[min(100vw-2rem,19rem)] translate-x-[29px] translate-y-[29px] flex-col items-end gap-[1.855rem] p-4 sm:p-5 lg:w-[22rem] lg:gap-[2.17rem]">
@@ -243,11 +242,11 @@ function HeroSection() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               <motion.h1
                 layout={false}
-                initial={{ opacity: 0, y: 24 }}
+                initial={skippedInitialAnimation ? false : { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight pr-0 md:pr-[17rem] md:pl-1 lg:pr-[21rem] lg:pl-2 xl:pr-[22rem]"
@@ -261,7 +260,7 @@ function HeroSection() {
                       stroke="var(--coral)"
                       strokeWidth="3"
                       strokeLinecap="round"
-                      initial={{ pathLength: 0 }}
+                      initial={skippedInitialAnimation ? false : { pathLength: 0 }}
                       animate={{ pathLength: 1 }}
                       transition={{ duration: 0.78, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     />
@@ -272,7 +271,7 @@ function HeroSection() {
 
             <motion.p
               layout={false}
-              initial={{ opacity: 0, y: 16 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.35 }}
               className="text-lg md:text-xl text-gray max-w-xl leading-relaxed mb-4"
@@ -282,7 +281,7 @@ function HeroSection() {
 
             <motion.p
               layout={false}
-              initial={{ opacity: 0 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.45 }}
               className="text-base text-gray max-w-xl leading-relaxed mb-8"
@@ -292,13 +291,13 @@ function HeroSection() {
 
             <motion.div
               layout={false}
-              initial={{ opacity: 0 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.55 }}
               className="flex flex-col sm:flex-row gap-4 max-sm:items-stretch"
             >
               <Link
-                href="/contacto/marketing"
+                href="/contacto/marketing#formulario"
                 className="group inline-flex items-center justify-center gap-2 bg-coral text-white px-8 py-4 rounded-full text-base font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
               >
                 Hablemos de tu marca
@@ -307,7 +306,7 @@ function HeroSection() {
                 </svg>
               </Link>
               <Link
-                href="#contacto"
+                href="/contacto/marketing#formulario"
                 className="inline-flex items-center justify-center gap-2 border-2 border-foreground/10 px-8 py-4 rounded-full text-base font-medium hover:border-coral/30 transition-all duration-300 max-sm:mb-8 max-sm:self-end"
               >
                 Explorar servicios

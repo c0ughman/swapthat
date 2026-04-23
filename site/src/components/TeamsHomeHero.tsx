@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import { cartoon3dPath } from "@/lib/cartoonAssets";
+import { useTransitionArrival } from "./CarouselTransition/useTransitionArrival";
 
 const HERO_SLIDESHOW_IMGS = ["/philosophy/1.webp", "/philosophy/2.webp", "/philosophy/3.webp", "/philosophy/4.webp", "/philosophy/5.webp"];
 
@@ -241,7 +242,18 @@ function stickerOutwardOffset(leftPctStr: string, topPctStr: string): { ox: numb
   return { ox: 0, oy: STICKER_OUTWARD_NUDGE_PX };
 }
 
-function StickerFloat({ item, i, scale = 1 }: { item: ScatterItem; i: number; scale?: number }) {
+function StickerFloat({
+  item,
+  i,
+  scale = 1,
+  holdUntilReady = false,
+}: {
+  item: ScatterItem;
+  i: number;
+  scale?: number;
+  /** When true, hold stickers in their hidden state until ready to pop in. */
+  holdUntilReady?: boolean;
+}) {
   const basePx = item.src === HERO_CAT_STICKER_SRC ? HERO_CAT_STICKER_PX : HERO_STICKER_PX;
   const px = Math.round(basePx * scale);
   const { ox, oy } = item.wave ? { ox: 0, oy: 0 } : stickerOutwardOffset(item.left, item.top);
@@ -259,14 +271,14 @@ function StickerFloat({ item, i, scale = 1 }: { item: ScatterItem; i: number; sc
         className="flex shrink-0 items-center justify-center"
         style={{ width: px, height: px, opacity: 1, rotate: item.rotateDeg ?? 0 }}
         initial={{ opacity: 0, scale: 0.58, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        animate={holdUntilReady ? { opacity: 0, scale: 0.58, y: 20 } : { opacity: 1, scale: 1, y: 0 }}
         transition={{
           type: "spring",
           stiffness: 380,
           damping: 13,
           mass: 0.72,
           bounce: 0.38,
-          delay: i * 0.045,
+          delay: holdUntilReady ? 0 : i * 0.045,
         }}
       >
         <Image
@@ -305,6 +317,7 @@ export function TeamsHomeHero({
 }: TeamsHomeHeroProps) {
   const [slideIndex, setSlideIndex] = useState(0);
   const [viewportSize, setViewportSize] = useState({ w: 1200, h: 800 });
+  const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
 
   useEffect(() => {
     const sync = () =>
@@ -358,10 +371,10 @@ export function TeamsHomeHero({
     ? "h-0.5 w-[9rem] max-lg:mx-auto max-lg:origin-center lg:origin-left shrink-0 bg-gradient-to-r from-black/35 to-black/15"
     : "h-0.5 w-[9rem] shrink-0 bg-gradient-to-r from-blue/45 to-coral/35";
   const primaryCtaClass = swapThatSystemHero
-    ? `group inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-md shadow-black/18 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`
+    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-black px-7 py-2.5 text-sm font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-8 sm:py-2.5 sm:text-base md:gap-2.5 md:px-10 md:py-2.5 md:text-base`
     : `group inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-blue px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-md shadow-blue/22 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-blue-dark sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const secondaryCtaClass = swapThatSystemHero
-    ? `inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-black/25 bg-white/80 px-5 py-2.5 text-[0.75rem] font-bold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`
+    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-black/25 bg-white/85 px-7 py-2.5 text-sm font-semibold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-8 sm:py-2.5 sm:text-base md:px-10 md:py-2.5 md:text-base`
     : `inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-foreground/18 bg-white/75 px-5 py-2.5 text-[0.75rem] font-bold text-foreground ${HERO_BODY_GLOW} ${HERO_BTN_HALO} backdrop-blur-[2px] transition-all duration-300 hover:bg-foreground/[0.06] sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const pillClass = swapThatSystemHero
     ? `flex items-center gap-1 rounded-full border border-black/20 bg-white/75 px-2.5 py-1 text-[0.6875rem] leading-tight text-foreground/90 backdrop-blur-sm sm:text-[0.75rem] ${HERO_BODY_GLOW} shadow-[0_2px_10px_rgba(255,255,255,0.55)]`
@@ -378,7 +391,7 @@ export function TeamsHomeHero({
   const headlineInner = (
     <>
       <motion.h1
-        initial={{ opacity: 0, y: 32 }}
+        initial={skippedInitialAnimation ? false : { opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: swapThatSystemHero ? 20 : 40 }}
         transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative pb-0 font-bold tracking-tight text-foreground ${heroTextAlign} ${HERO_TEXT_GLOW} ${
@@ -425,7 +438,7 @@ export function TeamsHomeHero({
       </motion.div>
 
       <motion.h1
-        initial={{ opacity: 0, y: 32 }}
+        initial={skippedInitialAnimation ? false : { opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: swapThatSystemHero ? -8 : -16 }}
         transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative pt-0 font-bold tracking-tight text-foreground ${heroTextAlign} ${HERO_TEXT_GLOW} ${
@@ -468,7 +481,7 @@ export function TeamsHomeHero({
       />
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.97 }}
+        initial={skippedInitialAnimation ? false : { opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative z-[2] mx-5 mt-0 flex min-h-0 min-w-0 flex-1 flex-col rounded-[2.5rem] border border-beige-dark/55 bg-white shadow-[0_14px_44px_-12px_rgba(26,26,26,0.11)] md:mx-8 md:rounded-[3rem] lg:mx-10 ${
@@ -536,11 +549,11 @@ export function TeamsHomeHero({
         >
           <div
             className={`flex w-full max-w-4xl flex-col ${heroItemsMain} ${heroTextAlign} ${
-              swapThatSystemHero ? "lg:max-w-[min(100%,32rem)] xl:max-w-[36rem]" : ""
+              swapThatSystemHero ? "lg:max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]" : ""
             }`}
           >
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className={`mb-0.5 flex items-center gap-2 ${heroJustify} ${
@@ -568,7 +581,7 @@ export function TeamsHomeHero({
         >
           <div
             className={`flex w-full max-w-4xl flex-col ${heroItemsMain} ${heroTextAlign} ${
-              swapThatSystemHero ? "lg:max-w-[min(100%,32rem)] xl:max-w-[36rem]" : ""
+              swapThatSystemHero ? "lg:max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]" : ""
             }`}
           >
             {swapThatSystemHero ? (
@@ -605,12 +618,12 @@ export function TeamsHomeHero({
           <div
             className={
               swapThatSystemHero
-                ? "flex w-full max-w-4xl flex-col max-lg:items-center max-lg:text-center lg:items-start lg:text-left lg:max-w-[min(100%,32rem)] xl:max-w-[36rem]"
+                ? "flex w-full max-w-4xl flex-col max-lg:items-center max-lg:text-center lg:items-start lg:text-left lg:max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]"
                 : "flex w-full max-w-4xl flex-col items-center text-center"
             }
             >
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.55 }}
               className={
@@ -620,7 +633,7 @@ export function TeamsHomeHero({
               }
             >
               <motion.div
-                initial={{ scaleX: 0 }}
+                initial={skippedInitialAnimation ? false : { scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] as const }}
                 className={subDividerClass}
@@ -630,7 +643,7 @@ export function TeamsHomeHero({
                 className={`max-w-md space-y-1.5 ${swapThatSystemHero ? "max-lg:text-center lg:text-left" : "text-center"}`}
               >
                 <motion.p
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
                   className={`text-[0.8125rem] leading-snug text-foreground/88 md:text-[0.875rem] ${HERO_BODY_GLOW}`}
@@ -638,7 +651,7 @@ export function TeamsHomeHero({
                   Incluso cuando tu vida no está ordenada.
                 </motion.p>
                 <motion.p
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.7 }}
                   className={`text-[0.75rem] leading-snug text-foreground/72 md:text-[0.8125rem] ${HERO_BODY_GLOW}`}
@@ -657,38 +670,44 @@ export function TeamsHomeHero({
               }`}
             >
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
                 className={
                   swapThatSystemHero
-                    ? "flex w-full max-w-lg flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center lg:justify-start"
+                    ? "flex w-full min-w-0 max-w-none flex-col items-stretch gap-3 sm:flex-row sm:flex-nowrap sm:items-center sm:justify-center lg:justify-start"
                     : "flex w-full max-w-lg flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
                 }
               >
                 <Link href={contactHref} className={primaryCtaClass}>
-                  Quiero entrenar a mi ritmo
+                  {swapThatSystemHero ? "Quiero empezar hoy" : "Quiero entrenar a mi ritmo"}
                   <svg
-                    width="15"
-                    height="15"
+                    width={swapThatSystemHero ? 18 : 15}
+                    height={swapThatSystemHero ? 18 : 15}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2.5"
-                    className="transition-transform group-hover:translate-x-1"
+                    className="shrink-0 transition-transform group-hover:translate-x-1"
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Link>
                 {secondaryHref ? (
-                  <Link href={secondaryHref} className={secondaryCtaClass}>
-                    Quiero sentirme bien
+                  <Link
+                    href={secondaryHref}
+                    className={secondaryCtaClass}
+                    {...(swapThatSystemHero && /^https?:\/\//.test(secondaryHref)
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
+                    {swapThatSystemHero ? "Descarga la app" : "Quiero sentirme bien"}
                   </Link>
                 ) : null}
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0 }}
+                initial={skippedInitialAnimation ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
                 className={`mt-4 flex w-full flex-wrap gap-1.5 ${
@@ -748,6 +767,7 @@ export function TeamsHomeHero({
                   item={item}
                   i={i}
                   scale={viewportSize.w < 640 ? 0.86 : 1}
+                  holdUntilReady={skippedInitialAnimation && !arrivalAnimationReady}
                 />
               ))}
             {sistemaLowerStickerItems.map((item, i) => (
@@ -756,6 +776,7 @@ export function TeamsHomeHero({
                 item={item}
                 i={i + 24}
                 scale={viewportSize.w < 640 ? 0.38 : 0.46}
+                holdUntilReady={skippedInitialAnimation && !arrivalAnimationReady}
               />
             ))}
           </div>

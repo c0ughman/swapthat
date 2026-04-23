@@ -33,15 +33,15 @@ function LogoMaskSpan({ fill }: { fill: string }) {
   );
 }
 
-/** Contact / CTA anchor for the current route — used by the Explorar nav button. */
+/** Contact / CTA: dedicated funnel for each line — used by the Explorar nav button. */
 function explorarHrefForPathname(pathname: string): string {
-  if (pathname === "/marketing") return "/marketing#contacto";
-  if (pathname === "/sistema") return "/sistema#cta";
-  if (pathname === "/") return "/#contacto";
   if (pathname.startsWith("/contacto/marketing")) return "/contacto/marketing#formulario";
   if (pathname.startsWith("/contacto/sistema")) return "/contacto/sistema#formulario";
   if (pathname.startsWith("/contacto/equipos")) return "/contacto/equipos#formulario";
-  return "/#contacto";
+  if (pathname === "/marketing" || pathname.startsWith("/marketing/")) return "/contacto/marketing#formulario";
+  if (pathname === "/sistema" || pathname.startsWith("/sistema/")) return "/contacto/sistema#formulario";
+  if (pathname === "/") return "/contacto/equipos#formulario";
+  return "/contacto/equipos#formulario";
 }
 
 export default function Navigation() {
@@ -184,11 +184,11 @@ export default function Navigation() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
+        initial={false}
         animate={{ y: footerInView ? -100 : 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
-          scrolled ? "z-[100] bg-background/90 backdrop-blur-xl shadow-sm" : "z-50 bg-transparent"
+          scrolled ? "z-[10000] bg-background/90 backdrop-blur-xl shadow-sm" : "z-[10000] bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -259,7 +259,7 @@ export default function Navigation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-background pt-24 px-8"
+            className="fixed inset-0 z-[10001] bg-background pt-24 px-8"
           >
             <div className="flex flex-col gap-6">
               {navLinks.map((link, i) => {

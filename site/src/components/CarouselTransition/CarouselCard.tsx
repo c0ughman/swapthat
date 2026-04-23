@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { PageDef } from "./config";
-import { CARD_VW, THUMBNAIL_ASPECT_RATIO } from "./config";
+import { CARD_VW, CARD_VW_MOBILE } from "./config";
 import { Q } from "@/lib/imageQuality";
 
 export type CarouselCardVariant = "wheel" | "fullscreen";
@@ -28,7 +28,7 @@ export default function CarouselCard({
           src={src}
           alt={page.label}
           fill
-          className="object-contain"
+          className="object-cover"
           sizes="100vw"
           quality={Q.section}
           loading="lazy"
@@ -44,8 +44,8 @@ export default function CarouselCard({
         src={src}
         alt={page.label}
         fill
-        className="object-contain"
-        sizes={`${CARD_VW}vw`}
+        className="object-cover"
+        sizes={`(max-width: 767px) ${CARD_VW_MOBILE}vw, ${CARD_VW}vw`}
         quality={Q.section}
         loading="lazy"
       />

@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, ReactNode, useEffect, useState } from "react";
+import { useContext, useRef, ReactNode, useEffect, useState } from "react";
+import { CarouselTransitionContext } from "./CarouselTransition/CarouselTransitionProvider";
 
 interface AnimatedSectionProps {
   children: ReactNode;
@@ -23,6 +24,11 @@ export default function AnimatedSection({
   /** Positive bottom rootMargin so sections animate (and images load) before they’re fully on screen */
   const isInView = useInView(ref, { once: true, margin: "0px 0px 25% 0px", amount: 0.08 });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  // Capture at mount: if this component mounted during a carousel transition,
+  // skip the reveal animation — the page should appear already loaded.
+  const ctx = useContext(CarouselTransitionContext);
+  const [skipForTransition] = useState<boolean>(() => ctx?.arrivedViaTransition ?? false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -48,7 +54,8 @@ export default function AnimatedSection({
       : { opacity: 1, y: 0, x: 0 }
     : {};
 
-  if (prefersReducedMotion) {
+  // During/after a carousel transition: skip the reveal animation entirely
+  if (prefersReducedMotion || skipForTransition) {
     return <div ref={ref} className={className}>{children}</div>;
   }
 
