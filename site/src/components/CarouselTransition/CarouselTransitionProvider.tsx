@@ -194,7 +194,7 @@ export default function CarouselTransitionProvider({
       router.push(targetPath, { scroll: false });
     }
 
-    const controls = animate(panProgress, isMobileViewport ? 0.7 : 1, {
+    const controls = animate(panProgress, isMobileViewport ? 0.6 : 1, {
       duration: TIMING.pan / 1000,
       // Mobile: no overshoot + cut last 20% of arc (same ease, same duration, same path —
       // just stops at 80% progress so the slow deceleration tail is never shown).
