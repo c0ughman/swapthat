@@ -14,10 +14,18 @@ import { HERO_STICKER_SRCS, TeamsHomeHero } from "@/components/TeamsHomeHero";
 import { TeamsPhilosophyOrbitSection } from "@/components/TeamsPhilosophyOrbitSection";
 import HorizontalScroll from "@/components/HorizontalScroll";
 import { motion } from "framer-motion";
+import { getSwapThatAppHref } from "@/lib/swapThatAppUrl";
 
 /** Three-card block only — orange / lime / black (rest of page is monochrome). */
 const CARD_ORANGE = "#f5a623";
 const CARD_LIME = "#b8e986";
+
+/** Match horizontal-scroll + bottom-of-page CTA scale (Sistema). */
+const SISTEMA_CTA_ON_LIGHT = `group inline-flex items-center justify-center gap-3 bg-foreground text-background px-8 py-4 sm:px-10 sm:py-5 rounded-full text-base sm:text-lg font-medium transition-all duration-300 hover:bg-foreground/90 shadow-lg shadow-black/10`;
+const SISTEMA_CTA_ON_DARK = `group inline-flex items-center justify-center gap-3 bg-white text-black px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30`;
+
+/** "Descarga la app" + footer — default FitBudd pack; override with `NEXT_PUBLIC_APP_DOWNLOAD_URL`. */
+const SISTEMA_APP_DOWNLOAD_HREF = getSwapThatAppHref();
 
 /** White page above → black band; mirrors bottom curve depth (viewBox + bulge). */
 function SistemaPhilosophyTopCurve() {
@@ -94,10 +102,30 @@ function ProblemSection() {
                   Swap That existe para cambiar eso.
                 </p>
               </div>
+              <div className="mt-8 sm:mt-10">
+                <Link
+                  href="/contacto/sistema#formulario"
+                  className={SISTEMA_CTA_ON_LIGHT}
+                >
+                  Quiero empezar hoy
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="transition-transform group-hover:translate-x-1"
+                    aria-hidden
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              </div>
             </AnimatedSection>
           </div>
 
-          <div className="relative -mx-2 h-[min(38vh,280px)] w-full max-w-xl shrink-0 justify-self-end md:h-[min(52vh,480px)] lg:mx-0 lg:h-[min(62vh,560px)] lg:max-w-none pointer-events-none select-none" aria-hidden>
+          <div className="relative -mx-2 mt-6 md:mt-0 h-[min(38vh,280px)] w-full max-w-xl shrink-0 justify-self-end md:h-[min(52vh,480px)] lg:mx-0 lg:h-[min(62vh,560px)] lg:max-w-none pointer-events-none select-none" aria-hidden>
             <Image
               src={CARTOON_CLOCK_SRC}
               alt=""
@@ -229,6 +257,27 @@ function PhilosophySection() {
                 </ul>
                 <p className="text-xs text-white/50 mt-4">Porque entrenar no es cumplir. Es volver a ti.</p>
               </div>
+            </div>
+
+            <div className="mt-8 flex justify-center sm:mt-10 lg:justify-end">
+              <Link
+                href="/contacto/sistema#formulario"
+                className={SISTEMA_CTA_ON_DARK}
+              >
+                Quiero empezar hoy
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="transition-transform group-hover:translate-x-1"
+                  aria-hidden
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
             </div>
           </AnimatedSection>
         </div>
@@ -379,6 +428,29 @@ function WhatIsSection() {
             </motion.div>
           ))}
         </div>
+
+        <AnimatedSection light delay={0.2}>
+          <div className="mt-10 flex justify-center sm:mt-12 md:mt-14">
+            <Link
+              href="/contacto/sistema#formulario"
+              className={SISTEMA_CTA_ON_LIGHT}
+            >
+              Quiero empezar hoy
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="transition-transform group-hover:translate-x-1"
+                aria-hidden
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
@@ -1200,7 +1272,7 @@ function ServicesPreview() {
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Marketing card */}
           <AnimatedSection delay={0.05} light>
-            <Link href="/marketing#contacto" className="group block">
+            <Link href="/contacto/marketing#formulario" className="group block">
               <div className="relative bg-foreground/[0.03] rounded-3xl p-10 border border-foreground/10 hover:border-foreground/20 transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-foreground/[0.06] rounded-bl-[4rem] transition-all duration-500 group-hover:w-40 group-hover:h-40" />
                 <span className="relative text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-4 block">
@@ -1224,7 +1296,7 @@ function ServicesPreview() {
 
           {/* Teams card */}
           <AnimatedSection delay={0.1} light>
-            <Link href="/#contacto" className="group block">
+            <Link href="/contacto/equipos#formulario" className="group block">
               <div className="relative bg-foreground/[0.03] rounded-3xl p-10 border border-foreground/10 hover:border-foreground/20 transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-foreground/[0.06] rounded-bl-[4rem] transition-all duration-500 group-hover:w-40 group-hover:h-40" />
                 <span className="relative text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-4 block">
@@ -1254,7 +1326,11 @@ function ServicesPreview() {
 export default function SistemaPage() {
   return (
     <div className="bg-white min-h-screen">
-      <TeamsHomeHero swapThatSystemHero contactHref="#cta" secondaryHref="#que-es" />
+      <TeamsHomeHero
+        swapThatSystemHero
+        contactHref="/contacto/sistema#formulario"
+        secondaryHref={SISTEMA_APP_DOWNLOAD_HREF}
+      />
       <TeamsPhilosophyOrbitSection sistemaVariant />
       <MarqueeBanner />
       <ProblemSection />
