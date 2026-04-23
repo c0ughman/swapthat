@@ -184,7 +184,7 @@ export function SistemaLandingHero() {
 
       {/* Mobile: photos on a deep semicircle arc (curve obvious, not a flat line) */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[35] h-[clamp(8rem,36vw,12rem)] md:hidden">
-        <div className="relative mx-auto h-full w-full max-w-[min(100%,28rem)] -translate-x-[20px]">
+        <div className="relative mx-auto h-full w-full max-w-[min(100%,28rem)] -translate-x-[10px]">
           {SISTEMA_HERO_IMAGES.map((img, i) => {
             // Bottom semicircle: θ ∈ [π, 2π] — large radius + deep sag reads as an arc
             const t = SISTEMA_HERO_IMAGES.length === 1 ? 0.5 : i / (SISTEMA_HERO_IMAGES.length - 1);
