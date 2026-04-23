@@ -1,26 +1,29 @@
-/** Thumbnail images are ~2768×1452 → ~1.91:1 aspect ratio */
-export const THUMBNAIL_ASPECT_RATIO = 2768 / 1452;
+/** Desktop thumbnail aspect ratio (~2734×1464 → ~1.867:1) */
+export const THUMBNAIL_ASPECT_RATIO = 2734 / 1464;
+
+/** Mobile thumbnail aspect ratio (~718×1276 → ~0.563:1, portrait) */
+export const THUMBNAIL_ASPECT_RATIO_MOBILE = 718 / 1276;
 
 export const PAGES = [
   {
     path: "/",
     label: "Teams & Charlas",
-    thumbnail: "/thumbnails/teams.webp",
-    mobileThumbnail: "/thumbnails/teams.svg",
+    thumbnail: "/thumbnails/thumb-teams-1.png",
+    mobileThumbnail: "/thumbnails/thumb-teams-mobile-1.png",
     accent: "#6366f1",
   },
   {
     path: "/sistema",
     label: "Swap That System",
-    thumbnail: "/thumbnails/sistema.webp",
-    mobileThumbnail: "/thumbnails/sistema.svg",
+    thumbnail: "/thumbnails/thumb-sistema-1.png",
+    mobileThumbnail: "/thumbnails/thumb-sistema-mobile-1.png",
     accent: "#1a1a1a",
   },
   {
     path: "/marketing",
     label: "Marketing & Performance",
-    thumbnail: "/thumbnails/marketing.webp",
-    mobileThumbnail: "/thumbnails/marketing.svg",
+    thumbnail: "/thumbnails/thumb-marketing.png",
+    mobileThumbnail: "/thumbnails/thumb-marketing-mobile.png",
     accent: "#e85d75",
   },
 ] as const;

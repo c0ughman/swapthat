@@ -28,6 +28,7 @@ import {
   PAN_EASE,
   CARD_SHADOW,
   THUMBNAIL_ASPECT_RATIO,
+  THUMBNAIL_ASPECT_RATIO_MOBILE,
 } from "./config";
 import CarouselCard from "./CarouselCard";
 
@@ -115,14 +116,15 @@ export default function CarouselTransitionProvider({
 
   const isMobileViewport = useCarouselIsMobileViewport();
 
-  /** Landscape frame on both desktop and mobile — mobile thumbnails are already the right orientation */
+  /** Mobile uses portrait frame matching portrait PNGs; desktop uses landscape frame */
   const wheelVw = isMobileViewport ? CARD_VW_MOBILE : CARD_VW;
+  const ar = isMobileViewport ? THUMBNAIL_ASPECT_RATIO_MOBILE : THUMBNAIL_ASPECT_RATIO;
   const wheelCardFrame = {
     position: "absolute" as const,
     width: `${wheelVw}vw`,
     left: `${-wheelVw / 2}vw`,
-    aspectRatio: THUMBNAIL_ASPECT_RATIO,
-    top: `${(-wheelVw / 2) / THUMBNAIL_ASPECT_RATIO}vw`,
+    aspectRatio: ar,
+    top: `${(-wheelVw / 2) / ar}vw`,
   };
 
   const panProgress = useMotionValue(0);
