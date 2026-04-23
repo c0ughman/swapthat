@@ -197,8 +197,8 @@ export function SistemaLandingHero() {
             const bottomPx = basePx + depthPx * (1 + Math.sin(theta));
             const w = Math.round(img.w * 0.58);
             const h = Math.round(img.h * 0.58);
-            // Clear tilt on the arc: left → right (+), right → left (−)
-            const rotate = (0.5 - t) * 72 + (i % 2 === 0 ? 12 : -12);
+            // Left images lean right, right images lean left — symmetric, small but noticeable
+            const tilt = (0.5 - t) * 24;
             const z = 5 - Math.abs(i - 2);
             return (
               <motion.div
@@ -209,7 +209,8 @@ export function SistemaLandingHero() {
                   height: h,
                   left: `${leftPct}%`,
                   bottom: `${bottomPx}px`,
-                  transform: `translateX(-50%) rotate(${rotate}deg)`,
+                  x: "-50%",
+                  rotate: tilt,
                   transformOrigin: "center bottom",
                   zIndex: z,
                 }}

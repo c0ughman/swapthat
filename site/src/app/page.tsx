@@ -1028,7 +1028,7 @@ export default function HomePage() {
           scrollStartAnchorRef={forWhomSectionRef}
           scrollEndAnchorRef={ctaSectionRef}
           containerWidth="min(56rem, calc(100% - 2.5rem))"
-          geometryScale={2}
+          geometryScale={2.3}
           geometryScaleOrigin={{ x: 475, y: 850 }}
           endTip={{ cx: 500, cy: 1680, rx: 56, ry: 8 }}
           scrollAdvancePx={0}
@@ -1046,7 +1046,7 @@ export default function HomePage() {
             C 520 1880, 480 1720, 500 1680
           `}
           viewBox="-800 -1100 2900 4300"
-          thickness={180}
+          thickness={207}
         />
         <ForWhomSection sectionRef={forWhomSectionRef} />
         <TeamsFaqSection />
