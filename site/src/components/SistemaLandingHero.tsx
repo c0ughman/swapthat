@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { StarBurst } from "@/components/DecorativeSVGs";
 import Link from "next/link";
@@ -7,20 +8,33 @@ import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import { useTransitionArrival } from "./CarouselTransition/useTransitionArrival";
 
-// Pixel dimensions scaled ×0.8 to match font-size: 80% base (replacing zoom: 0.8)
-const SISTEMA_HERO_IMAGES = [
-  { src: "/philosophy/1.webp", w: 213, h: 160, rotate: -8, left: "76%", top: "86%" },
-  { src: "/philosophy/2.webp", w: 203, h: 153, rotate: 12, left: "65%", top: "68%" },
-  { src: "/philosophy/3.webp", w: 222, h: 167, rotate: -5, left: "54%", top: "50%" },
-  { src: "/philosophy/4.webp", w: 209, h: 156, rotate: 8, left: "43%", top: "32%" },
-  { src: "/philosophy/5.webp", w: 218, h: 164, rotate: -3, left: "32%", top: "12%" },
+type HeroSlide = { src: string; flip?: boolean };
+
+/** Shuffled: start on 2, original 3 last (mirrored). */
+const SISTEMA_HERO_SLIDES: HeroSlide[] = [
+  { src: "/philosophy/2.webp" },
+  { src: "/philosophy/1.webp" },
+  { src: "/philosophy/5.webp" },
+  { src: "/philosophy/4.webp" },
+  { src: "/philosophy/3.webp", flip: true },
 ];
 
-/** Home (`/`) hero: equipos first; light squircle, collage, CTAs hacia contacto y Sistema. */
+const HERO_SLIDE_INTERVAL_MS = 4500;
+
+/** Home (`/`) hero: equipos first; image carousel in the main panel, CTAs hacia contacto y Sistema. */
 export function SistemaLandingHero() {
   const primaryHref = "/contacto/equipos";
   const secondaryHref = "/sistema";
-  const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
+  const { skippedInitialAnimation } = useTransitionArrival();
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setSlideIndex((i) => (i + 1) % SISTEMA_HERO_SLIDES.length),
+      HERO_SLIDE_INTERVAL_MS,
+    );
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <section className="relative flex h-screen flex-col overflow-hidden bg-blue pt-[calc(5rem+10px)] pb-[clamp(5.5rem,24vw,8rem)] md:pb-8 lg:pb-10">
@@ -31,12 +45,46 @@ export function SistemaLandingHero() {
         initial={skippedInitialAnimation ? false : { opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
-        className="relative mx-5 flex-1 overflow-hidden rounded-[2.5rem] border border-white/25 bg-white shadow-[0_28px_90px_-20px_rgba(0,0,0,0.28)] md:mx-8 md:rounded-[3rem] lg:mx-10"
+        className="relative mx-5 flex-1 overflow-hidden rounded-[2.5rem] border border-white/25 shadow-[0_28px_90px_-20px_rgba(0,0,0,0.28)] md:mx-8 md:rounded-[3rem] lg:mx-10"
       >
-        <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-blue/[0.14] blur-2xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-coral/[0.12] blur-2xl" />
+        {/* Cycling background — same photos as before, full-bleed in the panel */}
+        <div className="absolute inset-0 bg-neutral-800" aria-hidden>
+          {SISTEMA_HERO_SLIDES.map((slide, i) => (
+            <motion.div
+              key={slide.src}
+              className="absolute inset-0"
+              animate={{ opacity: i === slideIndex ? 1 : 0 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              aria-hidden={i !== slideIndex}
+            >
+              <Image
+                src={slide.src}
+                alt=""
+                fill
+                className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
+                sizes="(max-width: 768px) 100vw, 1280px"
+                quality={Q.hero}
+                priority={i === 0}
+              />
+            </motion.div>
+          ))}
+          {/* 20px strip — fills the gap left of the shifted gradient only */}
+          <div className="absolute inset-y-0 left-0 w-[25px] bg-white" aria-hidden />
+          {/* Two plateaus, tilted 25° up, shifted 20px right via background-position */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(65deg, #ffffff 0%, #ffffff 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
+              backgroundSize: "120% 120%",
+              backgroundPosition: "20px center",
+            }}
+            aria-hidden
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent" />
+        </div>
 
-        <div className="relative z-10 flex h-full items-center px-6 py-8 sm:px-8 md:px-14 lg:px-16">
+        <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-center px-6 py-8 sm:px-8 md:min-h-0 md:px-14 lg:px-16">
           <div className="w-full max-w-2xl text-foreground">
             <motion.div
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
@@ -110,7 +158,7 @@ export function SistemaLandingHero() {
               </Link>
               <Link
                 href={secondaryHref}
-                className="inline-flex w-full shrink-0 items-center justify-center rounded-full border border-foreground/18 px-6 py-3.5 text-center text-sm font-bold leading-tight text-foreground transition-all duration-300 hover:bg-foreground/[0.06] md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
+                className="inline-flex w-full shrink-0 items-center justify-center rounded-full border border-foreground/18 bg-white/80 px-6 py-3.5 text-center text-sm font-bold leading-tight text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white/95 md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
               >
                 Coaching 1-on-1
               </Link>
@@ -183,100 +231,6 @@ export function SistemaLandingHero() {
           </svg>
         </motion.div>
       </Link>
-
-      {/* Mobile: photos on a deep semicircle arc (curve obvious, not a flat line) */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[35] h-[clamp(8rem,36vw,12rem)] md:hidden">
-        <div className="relative mx-auto h-full w-full max-w-[min(100%,28rem)] -translate-x-[10px]">
-          {SISTEMA_HERO_IMAGES.map((img, i) => {
-            // Bottom semicircle: θ ∈ [π, 2π] — large radius + deep sag reads as an arc
-            const t = SISTEMA_HERO_IMAGES.length === 1 ? 0.5 : i / (SISTEMA_HERO_IMAGES.length - 1);
-            const theta = Math.PI + t * Math.PI;
-            const radiusPct = 48;
-            const leftPct = 50 + radiusPct * Math.cos(theta);
-            const depthPx = 52;
-            const basePx = 10;
-            // Edges at base+depth, center at base (lowest point of arc)
-            const bottomPx = basePx + depthPx * (1 + Math.sin(theta));
-            const w = Math.round(img.w * 0.58);
-            const h = Math.round(img.h * 0.58);
-            // Left images lean right, right images lean left — symmetric, small but noticeable
-            const tilt = (0.5 - t) * 24;
-            const z = 5 - Math.abs(i - 2);
-            return (
-              <motion.div
-                key={img.src}
-                className="absolute overflow-hidden rounded-xl shadow-xl shadow-black/35"
-                style={{
-                  width: w,
-                  height: h,
-                  left: `${leftPct}%`,
-                  bottom: `${bottomPx}px`,
-                  x: "-50%",
-                  rotate: tilt,
-                  transformOrigin: "center bottom",
-                  zIndex: z,
-                }}
-                initial={{ opacity: 0, y: 16 }}
-                animate={(!skippedInitialAnimation || arrivalAnimationReady) ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                transition={{
-                  duration: 0.5,
-                  delay: skippedInitialAnimation ? 0.2 + i * 0.08 : 0.85 + i * 0.07,
-                  ease: [0.22, 1, 0.36, 1] as const,
-                }}
-              >
-                <Image
-                  src={img.src}
-                  alt=""
-                  width={w}
-                  height={h}
-                  className="h-full w-full object-cover"
-                  sizes="140px"
-                  quality={Q.section}
-                  loading="eager"
-                />
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Desktop collage photos */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[30] hidden md:block"
-        style={{ transform: "translate(40px, -40px)" }}
-      >
-        {SISTEMA_HERO_IMAGES.map((img, i) => (
-          <motion.div
-            key={i}
-            layout={false}
-            className="absolute overflow-hidden rounded-xl shadow-2xl shadow-black/25"
-            style={{
-              width: img.w,
-              height: img.h,
-              left: img.left,
-              top: img.top,
-              rotate: img.rotate,
-            }}
-            initial={{ opacity: 0, y: 24 }}
-            animate={(!skippedInitialAnimation || arrivalAnimationReady) ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{
-              duration: 0.6,
-              delay: skippedInitialAnimation ? 0.2 + i * 0.1 : 0.9 + i * 0.1,
-              ease: [0.22, 1, 0.36, 1] as const,
-            }}
-          >
-            <Image
-              src={img.src}
-              alt=""
-              fill
-              className="object-cover"
-              sizes={`${img.w}px`}
-              quality={Q.photo}
-              loading="eager"
-            />
-          </motion.div>
-        ))}
-      </div>
     </section>
   );
 }

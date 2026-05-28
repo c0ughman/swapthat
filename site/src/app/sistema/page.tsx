@@ -43,7 +43,7 @@ function SistemaPhilosophyTopCurve() {
   );
 }
 
-/** Black above → white at curve, then tapers to page off-white (matches `--background`) at the lower edge. */
+/** Second Filosofía band (dark) → beige below convex arc. */
 function SistemaPhilosophyBottomCurve() {
   return (
     <div className="w-full shrink-0 leading-none" aria-hidden>
@@ -53,25 +53,42 @@ function SistemaPhilosophyBottomCurve() {
         preserveAspectRatio="none"
         className="block h-[5.5rem] w-full md:h-[7.5rem] lg:h-[8.5rem]"
       >
-        <defs>
-          <linearGradient
-            id="sistema-philosophy-bottom-arc"
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1"
-            gradientUnits="objectBoundingBox"
-          >
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="60%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#f8f7f4" />
-          </linearGradient>
-        </defs>
-        <path fill="url(#sistema-philosophy-bottom-arc)" d="M0 72 Q720 -56 1440 72 L1440 140 L0 140 Z" />
+        <path fill="var(--frame-outer)" d="M0 72 Q720 -56 1440 72 L1440 140 L0 140 Z" />
       </svg>
     </div>
   );
 }
+
+/** First Filosofía orbit → El problema: soft gradient only (no convex shape). */
+function SistemaFilosofiaToProblemFade() {
+  return (
+    <div
+      className="h-40 w-full shrink-0 md:h-56 lg:h-80"
+      aria-hidden
+      style={{
+        background:
+          "linear-gradient(to bottom, var(--foreground) 0%, var(--foreground) 14%, #2a2a2a 32%, #525252 50%, #8a8a8a 68%, #c4c4c4 84%, #ebebeb 94%, #ffffff 100%)",
+      }}
+    />
+  );
+}
+
+/** White squircle panel inside beige frame (matches Teams / Charlas home sections). */
+const FRAMED_PANEL_RADIUS =
+  "rounded-[2.75rem] sm:rounded-[3.25rem] md:rounded-[3.75rem] lg:rounded-[4.5rem]";
+
+function FramedSectionPanel({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={`relative bg-white ${FRAMED_PANEL_RADIUS} ${className}`}>{children}</div>;
+}
+
+/** Shared beige band — matches convex Filosofía divider (`--frame-outer`). */
+const SISTEMA_BEIGE_SECTION = "bg-frame-outer";
 
 /** 3D cartoon — clock in “El problema” (marketing + sistema share `cartoon3dPath`). */
 const CARTOON_CLOCK_SRC = cartoon3dPath("clock.png");
@@ -471,8 +488,7 @@ const FOR_WHOM_TR_STICKERS: { src: string; className: string }[] = [
 
 function ForWhomSection() {
   return (
-    <section className="relative overflow-x-clip overflow-y-visible py-14 md:py-32">
-      <div className="absolute inset-0 bg-gradient-to-b from-cream/50 to-transparent" />
+    <section className={`relative overflow-x-clip overflow-y-visible py-14 md:py-32 ${SISTEMA_BEIGE_SECTION}`}>
       <BlobShape color="var(--foreground)" size={250} className="top-20 left-0" opacity={0.04} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -628,97 +644,99 @@ const GROWTH_TOPRIGHT_STICKERS: { src: string; className: string }[] = [
 
 function GrowthSection() {
   return (
-    <section className="py-14 md:py-32 relative">
+    <section className={`relative py-14 md:py-32 ${SISTEMA_BEIGE_SECTION}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
-          {/* Image */}
-          <AnimatedSection direction="right" light>
-            <div className="relative">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-gray-light/50 shadow-sm">
-                <Image
-                  src="/movement.webp"
-                  alt="Movimiento y entrenamiento al aire libre"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 42vw"
-                  quality={Q.photo}
-                  loading="eager"
-                  fetchPriority="high"
-                />
-              </div>
-              <DotGrid className="absolute -bottom-6 -right-6 hidden lg:block" cols={5} rows={5} />
-            </div>
-          </AnimatedSection>
-
-          <div>
-            <AnimatedSection light>
-              <div className="relative min-h-0 sm:min-h-[8.5rem]">
-                <div className="relative z-10 pr-0 sm:pr-[5.5rem] md:pr-[6.5rem]">
-                  <span className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-2 block">
-                    Más que fitness
-                  </span>
-                  <FiveStars variant="section" />
-                  <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8">
-                    Por qué entrenar te hace <span className="italic font-light">crecer</span>
-                  </h2>
+        <FramedSectionPanel className="px-6 py-10 sm:px-8 sm:py-12 md:px-12 md:py-14 lg:px-16 lg:py-16">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+            {/* Image */}
+            <AnimatedSection direction="right" light>
+              <div className="relative">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-gray-light/50 shadow-sm">
+                  <Image
+                    src="/movement.webp"
+                    alt="Movimiento y entrenamiento al aire libre"
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    quality={Q.photo}
+                    loading="eager"
+                    fetchPriority="high"
+                  />
                 </div>
-                <div
-                  className="pointer-events-none absolute -right-2 top-0 z-0 h-[12rem] w-[14rem] max-w-[min(100%,18rem)] overflow-visible sm:right-0 sm:h-[13rem] sm:w-[16rem] translate-x-6 -translate-y-4 hidden sm:block"
-                  aria-hidden
-                >
-                  {GROWTH_TOPRIGHT_STICKERS.map((s) => (
-                    <div
-                      key={s.src}
-                      className={`absolute drop-shadow-[0_3px_10px_rgba(0,0,0,0.1)] ${s.className}`}
-                      style={{ width: GROWTH_TOPRIGHT_STICKER_PX, height: GROWTH_TOPRIGHT_STICKER_PX }}
-                    >
-                      <Image
-                        src={s.src}
-                        alt=""
-                        width={GROWTH_TOPRIGHT_STICKER_PX}
-                        height={GROWTH_TOPRIGHT_STICKER_PX}
-                        className="h-full w-full object-contain"
-                        quality={Q.section}
-                        loading="lazy"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <DotGrid className="absolute -bottom-6 -right-6 hidden lg:block" cols={5} rows={5} />
               </div>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.05} light>
-              <p className="text-lg text-gray mb-8 leading-relaxed">
-                El fitness bien diseñado no solo cambia tu cuerpo. Te enseña a:
-              </p>
-            </AnimatedSection>
-
-            <div className="space-y-4">
-              {[
-                "Regularte en lugar de exigirte",
-                "Confiar en ti y en tu proceso",
-                "Estar presente",
-                "Avanzar incluso con altibajos",
-              ].map((item, i) => (
-                <AnimatedSection key={i} delay={0.1 + i * 0.05} light>
-                  <div className="flex items-center gap-4 p-4 rounded-2xl hover:bg-black/[0.04] transition-colors duration-300 group">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 text-background bg-foreground transition-colors duration-300 group-hover:bg-foreground/85">
-                      {i + 1}
-                    </div>
-                    <p className="text-lg">{item}</p>
+            <div>
+              <AnimatedSection light>
+                <div className="relative min-h-0 sm:min-h-[8.5rem]">
+                  <div className="relative z-10 pr-0 sm:pr-[5.5rem] md:pr-[6.5rem]">
+                    <span className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-2 block">
+                      Más que fitness
+                    </span>
+                    <FiveStars variant="section" />
+                    <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8">
+                      Por qué entrenar te hace <span className="italic font-light">crecer</span>
+                    </h2>
                   </div>
-                </AnimatedSection>
-              ))}
-            </div>
+                  <div
+                    className="pointer-events-none absolute -right-2 top-0 z-0 h-[12rem] w-[14rem] max-w-[min(100%,18rem)] overflow-visible sm:right-0 sm:h-[13rem] sm:w-[16rem] translate-x-6 -translate-y-4 hidden sm:block"
+                    aria-hidden
+                  >
+                    {GROWTH_TOPRIGHT_STICKERS.map((s) => (
+                      <div
+                        key={s.src}
+                        className={`absolute drop-shadow-[0_3px_10px_rgba(0,0,0,0.1)] ${s.className}`}
+                        style={{ width: GROWTH_TOPRIGHT_STICKER_PX, height: GROWTH_TOPRIGHT_STICKER_PX }}
+                      >
+                        <Image
+                          src={s.src}
+                          alt=""
+                          width={GROWTH_TOPRIGHT_STICKER_PX}
+                          height={GROWTH_TOPRIGHT_STICKER_PX}
+                          className="h-full w-full object-contain"
+                          quality={Q.section}
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
 
-            <AnimatedSection delay={0.35} light>
-              <p className="text-gray mt-8 leading-relaxed">
-                Eso se traduce en cómo trabajas, cómo decides y cómo te relacionas contigo.{" "}
-                <span className="text-foreground font-semibold">Entrenar también es crecer.</span>
-              </p>
-            </AnimatedSection>
+              <AnimatedSection delay={0.05} light>
+                <p className="text-lg text-gray mb-8 leading-relaxed">
+                  El fitness bien diseñado no solo cambia tu cuerpo. Te enseña a:
+                </p>
+              </AnimatedSection>
+
+              <div className="space-y-4">
+                {[
+                  "Regularte en lugar de exigirte",
+                  "Confiar en ti y en tu proceso",
+                  "Estar presente",
+                  "Avanzar incluso con altibajos",
+                ].map((item, i) => (
+                  <AnimatedSection key={i} delay={0.1 + i * 0.05} light>
+                    <div className="flex items-center gap-4 p-4 rounded-2xl hover:bg-black/[0.04] transition-colors duration-300 group">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 text-background bg-foreground transition-colors duration-300 group-hover:bg-foreground/85">
+                        {i + 1}
+                      </div>
+                      <p className="text-lg">{item}</p>
+                    </div>
+                  </AnimatedSection>
+                ))}
+              </div>
+
+              <AnimatedSection delay={0.35} light>
+                <p className="text-gray mt-8 leading-relaxed">
+                  Eso se traduce en cómo trabajas, cómo decides y cómo te relacionas contigo.{" "}
+                  <span className="text-foreground font-semibold">Entrenar también es crecer.</span>
+                </p>
+              </AnimatedSection>
+            </div>
           </div>
-        </div>
+        </FramedSectionPanel>
 
         <AnimatedSection delay={0.2} light>
           <div className="mt-14 grid grid-cols-1 gap-4 md:mt-16 md:grid-cols-3 md:gap-5 lg:mt-20">
@@ -888,7 +906,7 @@ function HowItWorksSection() {
       num: "02",
       title: "Eliges cómo entrenar",
       desc: "Según cómo estás hoy — alta, media o baja energía.",
-      bg: "#f5f5f5",
+      bg: "var(--frame-outer)",
     },
     {
       num: "03",
@@ -900,7 +918,7 @@ function HowItWorksSection() {
       num: "04",
       title: "Retomas cuando quieras",
       desc: "No hay horarios obligatorios. No hay castigo por pausar.",
-      bg: "#f5f5f5",
+      bg: "var(--frame-outer)",
     },
   ];
 
@@ -965,7 +983,7 @@ function HowItWorksSection() {
       </div>
 
       {/* ── Horizontal scroll — 4 step panels (~50vw each) + 1 full-width CTA ── */}
-      <HorizontalScroll className="bg-white">
+      <HorizontalScroll className="bg-white" showBottomWaves={false}>
         {steps.map((step, i) => (
           <div
             key={i}
@@ -1331,8 +1349,9 @@ export default function SistemaPage() {
         contactHref="/contacto/sistema#formulario"
         secondaryHref={SISTEMA_APP_DOWNLOAD_HREF}
       />
-      <TeamsPhilosophyOrbitSection sistemaVariant />
       <MarqueeBanner />
+      <TeamsPhilosophyOrbitSection sistemaVariant />
+      <SistemaFilosofiaToProblemFade />
       <ProblemSection />
       <HowItWorksSection />
       <WhatIsSection />

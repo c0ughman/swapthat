@@ -22,12 +22,96 @@ const HERO_TITLE_Z = 10;
 const HERO_STICKER_Z = 20;
 /** Sticker wave strip below the squircle (≈ bottom 20% of viewport height). */
 const HERO_STICKER_BAND_VH = 20;
+/** Inner headline scale inside the 1.25× content wrapper (+10% on current headline size). */
+const SISTEMA_HEADLINE_INNER_SCALE = 0.84 * 1.2 * 1.3 * 1.3 * 1.1;
+/** Visual scale for `/sistema` copy + image only — stickers stay unscaled. */
+const SISTEMA_CONTENT_SCALE = 1.25;
+/** `/sistema` scatter stickers render 20% larger than the equipos hero base. */
+const SISTEMA_STICKER_SCALE = 1.2;
+const SISTEMA_STICKER_PX = Math.round(HERO_STICKER_PX * SISTEMA_STICKER_SCALE);
+/** Visual-only shrink — scatter placement still uses `SISTEMA_STICKER_PX`. */
+const SISTEMA_STICKER_RENDER_SCALE = 0.9;
+/** Sticker centers may sit outside the sides — stay under the header, never past the bottom. */
+const SISTEMA_SCATTER_BOUNDS = { l: -10, r: 110, t: 2, b: 96 } as const;
+const SISTEMA_SCATTER_GRID = { cols: 6, rows: 7 } as const;
 /** Eyebrow, subcopy, CTAs, pills — above sticker layer. */
 const HERO_RAISED_COPY_Z = 30;
-
+/** `/sistema` flanking photo sets — above stickers (`HERO_STICKER_Z`), with jump hero art. */
+const SISTEMA_HERO_FLANK_Z = 45;
 /** Light halo so text reads on top of busy sticker art. */
 const HERO_TEXT_GLOW =
   "[text-shadow:0_1px_2px_rgba(255,255,255,0.97),0_2px_12px_rgba(255,255,255,0.82),0_0_26px_rgba(255,255,255,0.58)]";
+
+type SistemaHeroSidePlaceholder = {
+  width: number;
+  height: number;
+  rotateDeg: number;
+  bgClass: string;
+};
+
+/** Placeholder cards flanking the jump render — swap for final antes/después assets. */
+const SISTEMA_HERO_LEFT_PLACEHOLDERS: SistemaHeroSidePlaceholder[] = [
+  { width: 108, height: 136, rotateDeg: -2.5, bgClass: "bg-neutral-100" },
+  { width: 108, height: 136, rotateDeg: 2.5, bgClass: "bg-neutral-200" },
+];
+
+const SISTEMA_HERO_RIGHT_PLACEHOLDERS: SistemaHeroSidePlaceholder[] = [
+  { width: 108, height: 136, rotateDeg: 2.5, bgClass: "bg-neutral-200" },
+  { width: 108, height: 136, rotateDeg: -2.5, bgClass: "bg-neutral-100" },
+];
+
+function SistemaHeroSideImageSet({
+  title,
+  placeholders,
+  align,
+  skippedInitialAnimation,
+}: {
+  title: string;
+  placeholders: SistemaHeroSidePlaceholder[];
+  align: "left" | "right";
+  skippedInitialAnimation: boolean;
+}) {
+  return (
+    <div
+      className={`hidden min-w-0 shrink-0 flex-col md:flex ${
+        align === "left"
+          ? "items-end translate-x-5 lg:translate-x-9 xl:translate-x-12"
+          : "items-start -translate-x-5 lg:-translate-x-9 xl:-translate-x-12"
+      } w-[min(15vw,142px)] -translate-y-[100px] self-end mb-6 lg:mb-10 lg:w-[min(13vw,164px)] xl:w-[min(11.5vw,178px)]`}
+    >
+      <div className="flex w-full flex-col gap-4 lg:gap-[1.125rem]">
+        {placeholders.map((slot, i) => (
+          <motion.div
+            key={`${align}-${i}`}
+            initial={skippedInitialAnimation ? false : { opacity: 0, y: 20, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              duration: 0.6,
+              delay: 0.82 + i * 0.1,
+              ease: [0.22, 1, 0.36, 1] as const,
+            }}
+            className={`relative w-full overflow-hidden rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/[0.06] ${slot.bgClass}`}
+            style={{
+              aspectRatio: `${slot.width} / ${slot.height}`,
+              rotate: `${slot.rotateDeg}deg`,
+            }}
+          >
+            {i === 0 ? (
+              <span
+                className={`absolute inset-x-0 top-0 z-[2] px-3 py-2.5 text-[0.9375rem] font-bold uppercase tracking-[0.14em] text-blue md:text-[1rem] lg:text-[1.0625rem] ${
+                  align === "left" ? "text-right" : "text-left"
+                }`}
+              >
+                {title}
+              </span>
+            ) : null}
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** Extra lift for small copy (slightly softer). */
 const HERO_BODY_GLOW =
   "[text-shadow:0_1px_2px_rgba(255,255,255,0.95),0_2px_10px_rgba(255,255,255,0.75),0_0_20px_rgba(255,255,255,0.48)]";
@@ -101,127 +185,319 @@ function buildWaveStickerItems(): ScatterItem[] {
   return items;
 }
 
-type CornerQuadrant = "tl" | "tr" | "bl" | "br";
-
-/**
- * Stickers sit on the two perpendicular rays from the corner (L-shape): one along the horizontal edge,
- * one along the vertical — not filled toward a center.
- */
-/** `stepH` / `stepV` are % of viewport width / height so gaps match ~uniformly in px when derived from one pixel step. */
-function cornerLShapePoints(
-  count: number,
-  quadrant: CornerQuadrant,
-  corner: { l: number; t: number },
-  stepH: number,
-  stepV: number
-): { left: number; top: number }[] {
-  if (count <= 0) return [];
-  const nh = Math.ceil(count / 2);
-  const nv = count - nh;
-  const pts: { left: number; top: number }[] = [];
-
-  for (let i = 0; i < nh; i++) {
-    const d = i * stepH;
-    if (quadrant === "tl") pts.push({ left: corner.l + d, top: corner.t });
-    else if (quadrant === "tr") pts.push({ left: corner.l - d, top: corner.t });
-    else if (quadrant === "bl") pts.push({ left: corner.l + d, top: corner.t });
-    else pts.push({ left: corner.l - d, top: corner.t });
-  }
-  for (let j = 1; j <= nv; j++) {
-    const d = j * stepV;
-    if (quadrant === "tl") pts.push({ left: corner.l, top: corner.t + d });
-    else if (quadrant === "tr") pts.push({ left: corner.l, top: corner.t + d });
-    else if (quadrant === "bl") pts.push({ left: corner.l, top: corner.t - d });
-    else pts.push({ left: corner.l, top: corner.t - d });
-  }
-  return pts;
-}
-
-/** `/sistema` hero: each sticker once; four L-shapes along corner edges (no sine line, no triangle fill). */
-function buildSistemaCornerStickerItems(viewportW: number, viewportH: number): ScatterItem[] {
-  const list = [...HERO_STICKER_SRCS];
-  const n = list.length;
-  if (n === 0) return [];
-
-  const w = Math.max(320, viewportW);
-  const h = Math.max(480, viewportH);
-  const isNarrow = w < 1024;
-  /** Same nominal gap in px on both arms; % steps differ so spacing stays visually even (~≤10% variance vs ideal). */
-  const gapPx = 46;
-  const stepH = (gapPx / w) * 100;
-  const stepV = (gapPx / h) * 100;
-
-  /** Mobile: nudge L-corner clusters upward so stickers read clearly on the white squircle. */
-  const nudgeY = isNarrow ? -4.2 : 0;
-  const corners = {
-    tl: { l: 5.4, t: 6.2 + nudgeY },
-    tr: { l: 94.6, t: 6.2 + nudgeY },
-    bl: { l: 5.4, t: 85.8 + nudgeY },
-    br: { l: 94.6, t: 85.8 + nudgeY },
-  } as const;
-
-  const base = Math.floor(n / 4);
-  const rem = n % 4;
-  const planned: { quadrant: CornerQuadrant; count: number }[] = [
-    { quadrant: "tl", count: base + (rem > 0 ? 1 : 0) },
-    { quadrant: "tr", count: base + (rem > 1 ? 1 : 0) },
-    { quadrant: "bl", count: base + (rem > 2 ? 1 : 0) },
-    { quadrant: "br", count: base + (rem > 3 ? 1 : 0) },
-  ];
-
-  const positions: { left: string; top: string }[] = [];
-  for (const { quadrant, count } of planned) {
-    if (count <= 0) continue;
-    const c = corners[quadrant];
-    const pts = cornerLShapePoints(count, quadrant, c, stepH, stepV);
-    for (const p of pts) {
-      positions.push({
-        left: `${Math.min(99, Math.max(1, p.left)).toFixed(1)}%`,
-        top: `${Math.min(97, Math.max(3, p.top)).toFixed(1)}%`,
-      });
-    }
-  }
-
-  return list.map((src, i) => ({
-    src,
-    left: positions[i]?.left ?? "50%",
-    top: positions[i]?.top ?? "50%",
-    wave: false,
-  }));
-}
-
-/** Deterministic 0..1 for lower hero scatter (SSR-safe). */
-function sistemaLowerRnd01(i: number, channel: number) {
-  const v = Math.sin((i + 1) * 19.11 + channel * 62.4 + 11.7 * (channel + i)) * 40123.7;
+/** Deterministic 0..1 — SSR-safe placement RNG. */
+function sistemaScatterRnd(seed: number, channel: number) {
+  const v = Math.sin((seed + 1) * 17.73 + channel * 53.91 + 23.7 * (channel + seed)) * 31237.11;
   return v - Math.floor(v);
 }
 
-/** Five smaller stickers, loosely scattered in the lower band (avoids reusing the corner L-arms). */
-const SISTEMA_LOWER_STICKER_INDICES = [1, 4, 7, 12, 16] as const;
-
-function buildSistemaLowerScatterItems(_viewportW: number, _viewportH: number): ScatterItem[] {
-  const items: ScatterItem[] = [];
-  for (let i = 0; i < SISTEMA_LOWER_STICKER_INDICES.length; i++) {
-    const srcIdx = SISTEMA_LOWER_STICKER_INDICES[i]!;
-    const r0 = sistemaLowerRnd01(i, 0);
-    const r1 = sistemaLowerRnd01(i, 1);
-    const r2 = sistemaLowerRnd01(i, 2);
-    const r3 = sistemaLowerRnd01(i, 3);
-    /** Wide spread across the lower two-fifths of the hero; not grid-aligned. */
-    const left = 7 + r0 * 86 + (r2 - 0.5) * 4;
-    const top = 56 + r1 * 28 + (r3 - 0.5) * 3;
-    const rot = (sistemaLowerRnd01(i, 4) - 0.5) * 24;
-    items.push({
-      src: HERO_STICKER_SRCS[srcIdx]!,
-      left: `${Math.min(95, Math.max(5, left)).toFixed(1)}%`,
-      top: `${Math.min(92, Math.max(52, top)).toFixed(1)}%`,
-      /** Skip corner outward nudge so positions stay as authored. */
-      wave: true,
-      rotateDeg: Math.round(rot * 10) / 10,
-      offsetYpx: 50,
-    });
+function deterministicShuffle<T>(arr: T[], salt: number): T[] {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(sistemaScatterRnd(i + salt, 7) * (i + 1));
+    [out[i], out[j]] = [out[j]!, out[i]!];
   }
-  return items;
+  return out;
+}
+
+function buildInterleavedSrcQueue(salt: number): string[] {
+  const roundA = deterministicShuffle([...HERO_STICKER_SRCS], salt + 11);
+  const roundB = deterministicShuffle([...HERO_STICKER_SRCS], salt + 29);
+  const roundC = deterministicShuffle([...HERO_STICKER_SRCS], salt + 47);
+  const roundD = deterministicShuffle([...HERO_STICKER_SRCS], salt + 61);
+  const roundE = deterministicShuffle([...HERO_STICKER_SRCS], salt + 73);
+  const queue: string[] = [];
+  for (let i = 0; i < roundA.length; i++) {
+    queue.push(roundA[i]!, roundB[i]!, roundC[i]!, roundD[i]!, roundE[i]!);
+  }
+  return queue;
+}
+
+/** Favor top edge — user wants density higher in the frame. */
+function pickSistemaEdgeSide(seed: number): 0 | 1 | 2 | 3 {
+  const r = sistemaScatterRnd(seed, 3);
+  if (r < 0.22) return 0;
+  if (r < 0.44) return 1;
+  if (r < 0.74) return 2;
+  return 3;
+}
+
+function getSistemaStickerContentCore(viewportW: number) {
+  /** Tight bounds around centered copy + jump image (not the full squircle). */
+  return viewportW >= 1024
+    ? { l: 33, t: 7, r: 67, b: 91 }
+    : { l: 17, t: 6, r: 83, b: 92 };
+}
+
+type PlacedSistemaSticker = { left: number; top: number; src: string; rot: number };
+
+/**
+ * `/sistema` hero: random scatter hugging open margins around copy + image.
+ * Each source may appear up to 5×; duplicates stay on opposite sides and at least ~2.25× apart.
+ */
+function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): ScatterItem[] {
+  const w = Math.max(320, viewportW);
+  const h = Math.max(520, viewportH * 1.28);
+
+  const core = getSistemaStickerContentCore(viewportW);
+  /** Only exclude sticker centers that would overlap content — edges can graze the column. */
+  const halfW = (SISTEMA_STICKER_PX * 0.46 / w) * 100;
+  const halfH = (SISTEMA_STICKER_PX * 0.46 / h) * 100;
+  const ex = {
+    l: core.l - halfW,
+    t: core.t - halfH,
+    r: core.r + halfW,
+    b: core.b + halfH,
+  };
+
+  const minDistPx = SISTEMA_STICKER_PX * 0.84;
+  const dupMinDistPx = SISTEMA_STICKER_PX * 2.25;
+  /** Target gap between unrelated neighbors — pick the valid spot closest to this. */
+  const idealNeighborPx = SISTEMA_STICKER_PX * 1.08;
+  const maxCopiesPerSrc = 5;
+  const midX = (ex.l + ex.r) / 2;
+  const midY = (ex.t + ex.b) / 2;
+  const gridSpanL = SISTEMA_SCATTER_BOUNDS.r - SISTEMA_SCATTER_BOUNDS.l;
+  const gridSpanT = SISTEMA_SCATTER_BOUNDS.b - SISTEMA_SCATTER_BOUNDS.t;
+
+  function scatterGridKey(l: number, t: number): string {
+    const gx = Math.min(
+      SISTEMA_SCATTER_GRID.cols - 1,
+      Math.max(
+        0,
+        Math.floor(((l - SISTEMA_SCATTER_BOUNDS.l) / gridSpanL) * SISTEMA_SCATTER_GRID.cols)
+      )
+    );
+    const gy = Math.min(
+      SISTEMA_SCATTER_GRID.rows - 1,
+      Math.max(
+        0,
+        Math.floor(((t - SISTEMA_SCATTER_BOUNDS.t) / gridSpanT) * SISTEMA_SCATTER_GRID.rows)
+      )
+    );
+    return `${gx}-${gy}`;
+  }
+
+  function gridCellBlocked(gx: number, gy: number): boolean {
+    const l =
+      SISTEMA_SCATTER_BOUNDS.l +
+      ((gx + 0.5) / SISTEMA_SCATTER_GRID.cols) * gridSpanL;
+    const t =
+      SISTEMA_SCATTER_BOUNDS.t +
+      ((gy + 0.5) / SISTEMA_SCATTER_GRID.rows) * gridSpanT;
+    return inBlocked(l, t);
+  }
+
+  function inBlocked(l: number, t: number): boolean {
+    return l > ex.l && l < ex.r && t > ex.t && t < ex.b;
+  }
+
+  /** No stickers in a row above the copy column — upper margin belongs on the sides. */
+  function inTopCenterBand(l: number, t: number): boolean {
+    return t < ex.t + halfH * 0.55 && l > ex.l && l < ex.r;
+  }
+
+  function distPx(l1: number, t1: number, l2: number, t2: number): number {
+    const dx = ((l1 - l2) / 100) * w;
+    const dy = ((t1 - t2) / 100) * h;
+    return Math.hypot(dx, dy);
+  }
+
+  function zoneImbalance(): { h: number; v: number } {
+    let left = 0;
+    let right = 0;
+    let top = 0;
+    let bottom = 0;
+    for (const p of placed) {
+      if (p.left < midX) left++;
+      else right++;
+      if (p.top < midY) top++;
+      else bottom++;
+    }
+    return { h: right - left, v: bottom - top };
+  }
+
+  function isValid(l: number, t: number, src: string, placed: PlacedSistemaSticker[]): boolean {
+    if (
+      inBlocked(l, t) ||
+      inTopCenterBand(l, t) ||
+      l < SISTEMA_SCATTER_BOUNDS.l ||
+      l > SISTEMA_SCATTER_BOUNDS.r ||
+      t < SISTEMA_SCATTER_BOUNDS.t ||
+      t > SISTEMA_SCATTER_BOUNDS.b ||
+      t + halfH > 99.5
+    ) {
+      return false;
+    }
+
+    const sameSrc = placed.filter((p) => p.src === src);
+    const onLeft = l < midX;
+    const onTop = t < midY;
+
+    for (const p of placed) {
+      const need = p.src === src ? dupMinDistPx : minDistPx;
+      if (distPx(l, t, p.left, p.top) < need) return false;
+    }
+
+    if (sameSrc.length === 1) {
+      const first = sameSrc[0]!;
+      if ((first.left < midX) === onLeft) return false;
+    } else if (sameSrc.length === 2) {
+      const first = sameSrc[0]!;
+      if ((first.top < midY) === onTop) return false;
+    } else if (sameSrc.length === 3) {
+      const second = sameSrc[1]!;
+      if ((second.top < midY) === onTop) return false;
+    } else if (sameSrc.length === 4) {
+      const third = sameSrc[2]!;
+      if ((third.left < midX) === onLeft) return false;
+    }
+
+    return true;
+  }
+
+  function nearestNeighborPx(l: number, t: number, others: PlacedSistemaSticker[]): number {
+    if (others.length === 0) return idealNeighborPx;
+    let min = Infinity;
+    for (const p of others) {
+      min = Math.min(min, distPx(l, t, p.left, p.top));
+    }
+    return min;
+  }
+
+  /** Higher = better fit in the target spacing band (~1.08× sticker size). */
+  function spacingScore(l: number, t: number, others: PlacedSistemaSticker[]): number {
+    const nearest = nearestNeighborPx(l, t, others);
+    const bandLow = idealNeighborPx * 0.92;
+    const bandHigh = idealNeighborPx * 1.28;
+    const deviation = Math.abs(nearest - idealNeighborPx);
+    let score = -deviation;
+    if (nearest < bandLow) score -= (bandLow - nearest) * 2.2;
+    if (nearest > bandHigh) score -= (nearest - bandHigh) * 1.35;
+
+    const key = scatterGridKey(l, t);
+    const [gxStr, gyStr] = key.split("-");
+    const gx = Number(gxStr);
+    const gy = Number(gyStr);
+    if (gridCellBlocked(gx, gy)) return score - 500;
+
+    const cellCount = gridCounts.get(key) ?? 0;
+    score -= cellCount * 14;
+    if (others.length > 0) {
+      const avgPerCell = others.length / Math.max(1, gridCounts.size);
+      score += Math.max(0, avgPerCell - cellCount) * 10;
+    }
+
+    return score;
+  }
+
+  /** Bias attempts toward the edges of the content column so scatter wraps it, not two far gutters. */
+  function sampleNearContentEdge(seed: number): { l: number; t: number } {
+    const side = pickSistemaEdgeSide(seed);
+    const jitter = sistemaScatterRnd(seed, 4);
+    const along = sistemaScatterRnd(seed, 5);
+    const hugSide = 0.42 + jitter * 1.35;
+    const alongPad = halfW * 0.35;
+    /** Skew vertical runs toward the upper margin (lower % = higher on screen). */
+    const alongTopBias = Math.pow(along, 0.68);
+
+    if (side === 0) {
+      return {
+        l: ex.l - halfW * hugSide,
+        t: core.t + alongTopBias * (core.b - core.t),
+      };
+    }
+    if (side === 1) {
+      return {
+        l: ex.r + halfW * hugSide,
+        t: core.t + alongTopBias * (core.b - core.t),
+      };
+    }
+    if (side === 2) {
+      const upperLeft = sistemaScatterRnd(seed, 6) < 0.5;
+      const upperSpan = Math.max(5, ex.t - SISTEMA_SCATTER_BOUNDS.t);
+      const upperT = SISTEMA_SCATTER_BOUNDS.t + alongTopBias * upperSpan;
+      if (upperLeft) {
+        return {
+          l: ex.l - halfW * hugSide,
+          t: upperT,
+        };
+      }
+      return {
+        l: ex.r + halfW * hugSide,
+        t: upperT,
+      };
+    }
+    return {
+      l: core.l - alongPad + along * (core.r - core.l + alongPad * 2),
+      t: Math.min(SISTEMA_SCATTER_BOUNDS.b, ex.b + halfH * Math.min(hugSide, 0.88)),
+    };
+  }
+
+  const queue = buildInterleavedSrcQueue(Math.round(w + h));
+
+  const placed: PlacedSistemaSticker[] = [];
+  const gridCounts = new Map<string, number>();
+  const srcCount = new Map<string, number>();
+  const maxAttempts = 144;
+
+  for (let qi = 0; qi < queue.length; qi++) {
+    const src = queue[qi]!;
+    if ((srcCount.get(src) ?? 0) >= maxCopiesPerSrc) continue;
+
+    let best: PlacedSistemaSticker | null = null;
+    let bestScore = -Infinity;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const seed = qi * 131 + attempt * 17;
+      const nearEdge = attempt % 6 !== 0;
+      const spanL = SISTEMA_SCATTER_BOUNDS.r - SISTEMA_SCATTER_BOUNDS.l;
+      const spanT = SISTEMA_SCATTER_BOUNDS.b - SISTEMA_SCATTER_BOUNDS.t;
+      const { l: rawL, t: rawT } = nearEdge
+        ? sampleNearContentEdge(seed)
+        : {
+            l: SISTEMA_SCATTER_BOUNDS.l + sistemaScatterRnd(seed, 0) * spanL,
+            t:
+              SISTEMA_SCATTER_BOUNDS.t +
+              Math.pow(sistemaScatterRnd(seed, 1), 1.25) * spanT,
+          };
+      const l = Math.min(
+        SISTEMA_SCATTER_BOUNDS.r,
+        Math.max(SISTEMA_SCATTER_BOUNDS.l, rawL)
+      );
+      const t = Math.min(
+        SISTEMA_SCATTER_BOUNDS.b,
+        Math.max(SISTEMA_SCATTER_BOUNDS.t, rawT)
+      );
+      const { h: hImb, v: vImb } = zoneImbalance();
+      if (hImb > 2 && l > midX + 3) continue;
+      if (hImb < -2 && l < midX - 3) continue;
+      if (vImb > 2 && t > midY + 3) continue;
+      if (vImb < -2 && t < midY - 3) continue;
+      const rot = (sistemaScatterRnd(seed, 2) - 0.5) * 30;
+      if (!isValid(l, t, src, placed)) continue;
+      const score = spacingScore(l, t, placed);
+      if (score > bestScore) {
+        bestScore = score;
+        best = { left: l, top: t, src, rot };
+      }
+    }
+
+    if (best) {
+      placed.push(best);
+      srcCount.set(src, (srcCount.get(src) ?? 0) + 1);
+      const key = scatterGridKey(best.left, best.top);
+      gridCounts.set(key, (gridCounts.get(key) ?? 0) + 1);
+    }
+  }
+
+  return placed.map((p) => ({
+    src: p.src,
+    left: `${p.left.toFixed(1)}%`,
+    top: `${p.top.toFixed(1)}%`,
+    wave: true,
+    rotateDeg: Math.round(p.rot * 10) / 10,
+  }));
 }
 
 const STICKER_OUTWARD_NUDGE_PX = 16; // was 20, scaled ×0.8
@@ -242,19 +518,44 @@ function stickerOutwardOffset(leftPctStr: string, topPctStr: string): { ox: numb
   return { ox: 0, oy: STICKER_OUTWARD_NUDGE_PX };
 }
 
+/** Stagger sistema sticker pop-in — center rows first, perimeter last (reversed + slower). */
+function sistemaStickerEnterDelay(
+  leftPct: string,
+  topPct: string,
+  order: number,
+  total: number
+): number {
+  const L = parseFloat(leftPct);
+  const T = parseFloat(topPct);
+  const inCenterColumn = L > 28 && L < 72;
+  const isCenterRow = inCenterColumn && (T < 24 || T > 78);
+  const reversed = Math.max(0, total - 1 - order);
+
+  if (isCenterRow) {
+    return 0.18 + (order % 12) * 0.022;
+  }
+
+  return Math.min(1.55, 0.52 + reversed * 0.014);
+}
+
 function StickerFloat({
   item,
   i,
   scale = 1,
-  holdUntilReady = false,
+  basePxOverride,
+  enterDelay,
 }: {
   item: ScatterItem;
   i: number;
   scale?: number;
-  /** When true, hold stickers in their hidden state until ready to pop in. */
-  holdUntilReady?: boolean;
+  /** Optional render size (e.g. sistema scatter uses a larger base). */
+  basePxOverride?: number;
+  /** Override pop-in delay (seconds). */
+  enterDelay?: number;
 }) {
-  const basePx = item.src === HERO_CAT_STICKER_SRC ? HERO_CAT_STICKER_PX : HERO_STICKER_PX;
+  const basePx =
+    basePxOverride ??
+    (item.src === HERO_CAT_STICKER_SRC ? HERO_CAT_STICKER_PX : HERO_STICKER_PX);
   const px = Math.round(basePx * scale);
   const { ox, oy } = item.wave ? { ox: 0, oy: 0 } : stickerOutwardOffset(item.left, item.top);
   const offY = item.offsetYpx ?? 0;
@@ -271,14 +572,14 @@ function StickerFloat({
         className="flex shrink-0 items-center justify-center"
         style={{ width: px, height: px, opacity: 1, rotate: item.rotateDeg ?? 0 }}
         initial={{ opacity: 0, scale: 0.58, y: 20 }}
-        animate={holdUntilReady ? { opacity: 0, scale: 0.58, y: 20 } : { opacity: 1, scale: 1, y: 0 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{
           type: "spring",
-          stiffness: 380,
-          damping: 13,
-          mass: 0.72,
-          bounce: 0.38,
-          delay: holdUntilReady ? 0 : i * 0.045,
+          stiffness: enterDelay !== undefined ? 300 : 380,
+          damping: enterDelay !== undefined ? 15 : 13,
+          mass: enterDelay !== undefined ? 0.9 : 0.72,
+          bounce: enterDelay !== undefined ? 0.3 : 0.38,
+          delay: enterDelay ?? i * 0.045,
         }}
       >
         <Image
@@ -291,7 +592,7 @@ function StickerFloat({
           draggable={false}
           sizes={`${px}px`}
           quality={Q.icon}
-          loading="eager"
+          loading="lazy"
         />
       </motion.div>
     </div>
@@ -317,7 +618,7 @@ export function TeamsHomeHero({
 }: TeamsHomeHeroProps) {
   const [slideIndex, setSlideIndex] = useState(0);
   const [viewportSize, setViewportSize] = useState({ w: 1200, h: 800 });
-  const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
+  const { skippedInitialAnimation } = useTransitionArrival();
 
   useEffect(() => {
     const sync = () =>
@@ -331,50 +632,39 @@ export function TeamsHomeHero({
   }, []);
 
   const scatterItems = useMemo(() => buildWaveStickerItems(), []);
-  const sistemaCornerStickerItems = useMemo(
-    () => buildSistemaCornerStickerItems(viewportSize.w, viewportSize.h),
-    [viewportSize.w, viewportSize.h]
-  );
-  const sistemaLowerStickerItems = useMemo(
-    () => buildSistemaLowerScatterItems(viewportSize.w, viewportSize.h),
+  const sistemaScatterItems = useMemo(
+    () => buildSistemaRandomScatterItems(viewportSize.w, viewportSize.h),
     [viewportSize.w, viewportSize.h]
   );
 
-  const isDesktop = viewportSize.w >= 1024;
-  const sistemaInnerTranslateY = swapThatSystemHero
-    ? isDesktop ? "translateY(-22px)" : "translateY(0)"
-    : "translateY(-35px)";
-  /** Mobile sistema: move hero 3D (jump) down without shifting copy block. */
-  const sistemaHeroImageTranslateY = swapThatSystemHero && !isDesktop ? "translateY(105px)" : undefined;
+  const sistemaInnerTranslateY = swapThatSystemHero ? undefined : "translateY(-35px)";
   const sistemaHeadlineTranslate = swapThatSystemHero
-    ? isDesktop ? "translateY(-24px) scale(0.918)" : "scale(0.918)"
+    ? `scale(${SISTEMA_HEADLINE_INNER_SCALE})`
     : "translateY(-38px) scale(0.918)";
 
-  const heroTextAlign = swapThatSystemHero ? "max-lg:text-center lg:text-left" : "text-center";
-  const heroItemsMain = swapThatSystemHero ? "max-lg:items-center lg:items-start" : "items-center";
-  const heroJustify = swapThatSystemHero ? "max-lg:justify-center lg:justify-start" : "justify-center";
-  /** One shared inset so eyebrow, headline, and body share the same left edge. */
-  const sistemaCopyGutterClass =
-    "px-5 sm:px-8 lg:pl-[100px] lg:pr-6";
+  const heroTextAlign = swapThatSystemHero ? "text-center" : "text-center";
+  const heroItemsMain = swapThatSystemHero ? "items-center" : "items-center";
+  const heroJustify = swapThatSystemHero ? "justify-center" : "justify-center";
+  const sistemaCopyGutterClass = "px-5 sm:px-8";
 
   const headlineFontSize = swapThatSystemHero
     ? "clamp(3.4rem, 8.8vw, 6.9rem)"
     : "clamp(2.8rem, 7.1vw, 5.65rem)";
-  /** Sistema: larger type on small screens; desktop keeps `headlineFontSize` via md: */
+  /** Sistema: tighter headline scale on all breakpoints. */
   const sistemaHeadlineSizeClass =
-    "text-[clamp(2.2rem,9vw,3.2rem)] sm:text-[clamp(2.8rem,9.5vw,3.9rem)] md:text-[clamp(3.4rem,8.8vw,6.9rem)]";
+    "text-[clamp(1.85rem,6.8vw,2.75rem)] sm:text-[clamp(2.15rem,7.2vw,3.15rem)] md:text-[clamp(2.55rem,5.8vw,4.65rem)]";
 
   const eyebrowLineClass = swapThatSystemHero ? "bg-black" : "bg-blue";
   const eyebrowLabelClass = swapThatSystemHero ? "text-black" : "text-blue";
   const paraAccentClass = swapThatSystemHero ? "italic font-light text-black" : "italic font-light text-blue";
   const subDividerClass = swapThatSystemHero
-    ? "h-0.5 w-[9rem] max-lg:mx-auto max-lg:origin-center lg:origin-left shrink-0 bg-gradient-to-r from-black/35 to-black/15"
+    ? "h-0.5 w-[9rem] mx-auto origin-center shrink-0 bg-gradient-to-r from-black/35 to-black/15"
     : "h-0.5 w-[9rem] shrink-0 bg-gradient-to-r from-blue/45 to-coral/35";
   const primaryCtaClass = swapThatSystemHero
-    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-black px-7 py-2.5 text-sm font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-8 sm:py-2.5 sm:text-base md:gap-2.5 md:px-10 md:py-2.5 md:text-base`
+    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-black px-[1.65rem] py-[0.55rem] text-[0.9625rem] font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:gap-2 md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
     : `group inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-blue px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-md shadow-blue/22 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-blue-dark sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const secondaryCtaClass = swapThatSystemHero
-    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-black/25 bg-white/85 px-7 py-2.5 text-sm font-semibold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-8 sm:py-2.5 sm:text-base md:px-10 md:py-2.5 md:text-base`
+    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-black/25 bg-white/85 px-[1.65rem] py-[0.55rem] text-[0.9625rem] font-semibold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
     : `inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-foreground/18 bg-white/75 px-5 py-2.5 text-[0.75rem] font-bold text-foreground ${HERO_BODY_GLOW} ${HERO_BTN_HALO} backdrop-blur-[2px] transition-all duration-300 hover:bg-foreground/[0.06] sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const pillClass = swapThatSystemHero
     ? `flex items-center gap-1 rounded-full border border-black/20 bg-white/75 px-2.5 py-1 text-[0.6875rem] leading-tight text-foreground/90 backdrop-blur-sm sm:text-[0.75rem] ${HERO_BODY_GLOW} shadow-[0_2px_10px_rgba(255,255,255,0.55)]`
@@ -392,7 +682,7 @@ export function TeamsHomeHero({
     <>
       <motion.h1
         initial={skippedInitialAnimation ? false : { opacity: 0, y: 32 }}
-        animate={{ opacity: 1, y: swapThatSystemHero ? 20 : 40 }}
+        animate={{ opacity: 1, y: swapThatSystemHero ? 0 : 40 }}
         transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative pb-0 font-bold tracking-tight text-foreground ${heroTextAlign} ${HERO_TEXT_GLOW} ${
           swapThatSystemHero ? `leading-[0.88] ${sistemaHeadlineSizeClass}` : ""
@@ -402,66 +692,80 @@ export function TeamsHomeHero({
         Entrena
       </motion.h1>
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, rotate: -10, y: -12 }}
-        animate={{ opacity: 0, scale: 1, rotate: -10, y: 28 }}
-        transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] as const }}
-        className={
-          swapThatSystemHero
-            ? "relative z-20 shrink-0 overflow-hidden shadow-none ring-0 pointer-events-none self-start"
-            : "relative z-20 shrink-0 overflow-hidden shadow-none ring-0 pointer-events-none self-center"
-        }
-        style={{
-          width: 121,
-          height: 85,
-          marginTop: swapThatSystemHero ? "-2.15rem" : "-1.7rem",
-          marginBottom: swapThatSystemHero ? "-2.15rem" : "-1.7rem",
-        }}
-        aria-hidden
-      >
-        <AnimatePresence mode="sync">
-          <motion.img
-            key={slideIndex}
-            src={HERO_SLIDESHOW_IMGS[slideIndex]}
-            alt=""
-            width={151}
-            height={106}
-            className="absolute inset-0 block h-full w-full object-cover opacity-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            loading="lazy"
-            decoding="async"
-          />
-        </AnimatePresence>
-      </motion.div>
+      {!swapThatSystemHero ? (
+        <>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, rotate: -10, y: -12 }}
+            animate={{ opacity: 0, scale: 1, rotate: -10, y: 28 }}
+            transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] as const }}
+            className="relative z-20 shrink-0 overflow-hidden shadow-none ring-0 pointer-events-none self-center"
+            style={{
+              width: 121,
+              height: 85,
+              marginTop: "-1.7rem",
+              marginBottom: "-1.7rem",
+            }}
+            aria-hidden
+          >
+            <AnimatePresence mode="sync">
+              <motion.img
+                key={slideIndex}
+                src={HERO_SLIDESHOW_IMGS[slideIndex]}
+                alt=""
+                width={151}
+                height={106}
+                className="absolute inset-0 block h-full w-full object-cover opacity-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                loading="lazy"
+                decoding="async"
+              />
+            </AnimatePresence>
+          </motion.div>
 
-      <motion.h1
-        initial={skippedInitialAnimation ? false : { opacity: 0, y: 32 }}
-        animate={{ opacity: 1, y: swapThatSystemHero ? -8 : -16 }}
-        transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
-        className={`relative pt-0 font-bold tracking-tight text-foreground ${heroTextAlign} ${HERO_TEXT_GLOW} ${
-          swapThatSystemHero
-            ? `${sistemaHeadlineSizeClass} max-md:-mb-2 leading-[0.78]`
-            : "leading-[0.95]"
-        }`}
-        style={swapThatSystemHero ? undefined : { fontSize: headlineFontSize }}
-      >
-        <span className={paraAccentClass} style={{ fontSize: "1.08em" }}>
-          para volver
-        </span>
-        <br />
-        a ti.
-      </motion.h1>
+          <motion.h1
+            initial={skippedInitialAnimation ? false : { opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: -16 }}
+            transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
+            className={`relative pt-0 font-bold tracking-tight text-foreground ${heroTextAlign} ${HERO_TEXT_GLOW} leading-[0.95]`}
+            style={{ fontSize: headlineFontSize }}
+          >
+            <span className={paraAccentClass} style={{ fontSize: "1.08em" }}>
+              para volver
+            </span>
+            <br />
+            a ti.
+          </motion.h1>
+        </>
+      ) : null}
     </>
+  );
+
+  const sistemaHeadlineInner = (
+    <motion.h1
+      initial={skippedInitialAnimation ? false : { opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
+      className={`relative font-normal tracking-tight text-foreground text-center ${HERO_TEXT_GLOW} ${sistemaHeadlineSizeClass} leading-[0.98]`}
+      style={{ transform: sistemaHeadlineTranslate }}
+    >
+      <span className="block">
+        <span className="font-bold">Entrena</span> para
+      </span>
+      <span className="block" style={{ fontSize: "1.05em" }}>
+        <span className={`font-normal ${paraAccentClass}`}>volver a </span>
+        <span className="font-bold not-italic">ti.</span>
+      </span>
+    </motion.h1>
   );
 
   return (
     <section
       className={
         swapThatSystemHero
-          ? "relative flex h-screen min-w-0 flex-col overflow-x-clip overflow-y-visible bg-foreground pt-[calc(3.5rem+20px)] pb-4 sm:pb-5 md:pb-8 lg:pb-10"
+          ? "relative flex min-h-screen min-w-0 flex-col overflow-x-visible overflow-y-visible bg-foreground pt-[calc(3.5rem+20px)] pb-4 sm:pb-5 md:pb-8 lg:pb-10"
           : "relative flex h-screen min-w-0 flex-col overflow-hidden bg-foreground pt-[calc(3.5rem+10px)] pb-5 md:pb-8 lg:pb-10"
       }
     >
@@ -484,10 +788,10 @@ export function TeamsHomeHero({
         initial={skippedInitialAnimation ? false : { opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
-        className={`relative z-[2] mx-5 mt-0 flex min-h-0 min-w-0 flex-1 flex-col rounded-[2.5rem] border border-beige-dark/55 bg-white shadow-[0_14px_44px_-12px_rgba(26,26,26,0.11)] md:mx-8 md:rounded-[3rem] lg:mx-10 ${
+        className={`relative z-[2] mx-5 mt-0 flex min-w-0 flex-col rounded-[2.5rem] border border-beige-dark/55 bg-white shadow-[0_14px_44px_-12px_rgba(26,26,26,0.11)] md:mx-8 md:rounded-[3rem] lg:mx-10 ${
           swapThatSystemHero
-            ? "max-lg:overflow-hidden max-lg:pt-8 lg:overflow-visible lg:pt-11"
-            : "overflow-hidden pt-8"
+            ? "min-h-[min(165vh,1475px)] overflow-visible pt-6 pb-[min(20vh,180px)] md:pt-8 md:pb-[min(22vh,200px)] lg:pt-9"
+            : "min-h-0 min-w-0 flex-1 overflow-hidden pt-8"
         }`}
       >
         <div
@@ -527,20 +831,21 @@ export function TeamsHomeHero({
         <div
           className={
             swapThatSystemHero
-              ? "flex min-h-0 min-w-0 flex-1 lg:translate-y-[50px] flex-col gap-0 lg:min-h-0 lg:flex-row lg:items-center"
+              ? "relative z-[30] flex min-h-0 min-w-0 flex-1 flex-col items-center gap-0 origin-top w-full"
               : "translate-y-[50px]"
           }
+          style={swapThatSystemHero ? { transform: `scale(${SISTEMA_CONTENT_SCALE})` } : undefined}
         >
           <div
             className={
             swapThatSystemHero
-              ? `relative z-[1] flex min-h-0 min-w-0 max-lg:flex-none lg:flex-1 lg:justify-center flex-col max-lg:text-center lg:text-left lg:-translate-y-[50px] lg:translate-x-[50px] ${sistemaCopyGutterClass}`
+              ? `relative z-[1] flex w-full flex-col items-center justify-start gap-0 text-center pt-0 md:pt-1 -translate-y-2 md:-translate-y-4 ${sistemaCopyGutterClass}`
               : "contents"
             }
           >
         <div
           className={`relative flex shrink-0 overflow-visible ${
-            swapThatSystemHero ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0" : "justify-center px-6 md:px-10"
+            swapThatSystemHero ? "items-center justify-center px-0" : "justify-center px-6 md:px-10"
           } ${swapThatSystemHero ? "" : "pt-8"}`}
           style={{
             transform: sistemaInnerTranslateY,
@@ -549,20 +854,22 @@ export function TeamsHomeHero({
         >
           <div
             className={`flex w-full max-w-4xl flex-col ${heroItemsMain} ${heroTextAlign} ${
-              swapThatSystemHero ? "lg:max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]" : ""
+              swapThatSystemHero ? "max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]" : ""
             }`}
           >
             <motion.div
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className={`mb-0.5 flex items-center gap-2 ${heroJustify} ${
-                swapThatSystemHero ? "lg:-translate-x-[10px]" : ""
-              }`}
+              className={`${swapThatSystemHero ? "mb-[3px] md:mb-[7px]" : "mb-0.5"} flex items-center gap-2 ${heroJustify}`}
             >
               <span className={`h-0.5 w-7 shrink-0 ${eyebrowLineClass}`} />
               <span
-                className={`text-[0.8125rem] font-semibold uppercase tracking-[0.2em] ${eyebrowLabelClass} ${HERO_TEXT_GLOW}`}
+                className={`${
+                  swapThatSystemHero
+                    ? "text-[0.894rem] md:text-[0.9rem]"
+                    : "text-[0.8125rem]"
+                } font-semibold uppercase tracking-[0.2em] ${eyebrowLabelClass} ${HERO_TEXT_GLOW}`}
               >
                 Swap That System
               </span>
@@ -572,7 +879,7 @@ export function TeamsHomeHero({
 
         <div
           className={`relative flex shrink-0 overflow-visible ${
-            swapThatSystemHero ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0" : "justify-center px-4 sm:px-6 md:px-10"
+            swapThatSystemHero ? "items-center justify-center px-0 mb-[13px] md:mb-[17px]" : "justify-center px-4 sm:px-6 md:px-10"
           }`}
           style={{
             transform: sistemaInnerTranslateY,
@@ -581,18 +888,11 @@ export function TeamsHomeHero({
         >
           <div
             className={`flex w-full max-w-4xl flex-col ${heroItemsMain} ${heroTextAlign} ${
-              swapThatSystemHero ? "lg:max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]" : ""
+              swapThatSystemHero ? "max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]" : ""
             }`}
           >
             {swapThatSystemHero ? (
-              <div className="relative z-10 w-full">
-                <div
-                  className={`flex w-full flex-col ${heroItemsMain} ${heroJustify} leading-[0.85]`}
-                  style={{ transform: sistemaHeadlineTranslate }}
-                >
-                  {headlineInner}
-                </div>
-              </div>
+              <div className="relative z-10 w-full">{sistemaHeadlineInner}</div>
             ) : (
               <div
                 className="relative flex w-full origin-center flex-col items-center leading-[0.85]"
@@ -607,7 +907,7 @@ export function TeamsHomeHero({
         <div
           className={`relative flex shrink-0 flex-col overflow-visible ${
             swapThatSystemHero
-              ? "max-lg:items-center max-lg:justify-center lg:items-start lg:justify-start px-0 pt-3 pb-4 md:pb-5"
+              ? "items-center justify-center px-0 pt-2 pb-2 md:pt-3 md:pb-3 -translate-y-[20px]"
               : "items-center px-6 py-3 pb-4 md:px-10 md:pb-5"
           }`}
           style={{
@@ -618,7 +918,7 @@ export function TeamsHomeHero({
           <div
             className={
               swapThatSystemHero
-                ? "flex w-full max-w-4xl flex-col max-lg:items-center max-lg:text-center lg:items-start lg:text-left lg:max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]"
+                ? "flex w-full max-w-4xl flex-col items-center text-center max-w-[min(100%,44rem)] xl:max-w-[min(100%,48rem)]"
                 : "flex w-full max-w-4xl flex-col items-center text-center"
             }
             >
@@ -628,7 +928,7 @@ export function TeamsHomeHero({
               transition={{ duration: 0.6, delay: 0.55 }}
               className={
                 swapThatSystemHero
-                  ? "relative max-lg:mt-3 lg:mt-[clamp(-2.75rem,-7.5vw,-1.35rem)] flex w-full flex-col max-lg:items-center lg:items-start gap-1.5"
+                  ? "relative mt-2 flex w-full flex-col items-center gap-[15px] md:gap-[17px]"
                   : "relative mt-[clamp(-2rem,-5.5vw,-0.75rem)] flex w-full flex-col items-center gap-2.5"
               }
             >
@@ -640,13 +940,17 @@ export function TeamsHomeHero({
               />
 
               <div
-                className={`max-w-md space-y-1.5 ${swapThatSystemHero ? "max-lg:text-center lg:text-left" : "text-center"}`}
+                className={`max-w-md ${swapThatSystemHero ? "space-y-[13px] md:space-y-[15px]" : "space-y-2 md:space-y-2.5"} ${swapThatSystemHero ? "text-center" : "text-center"}`}
               >
                 <motion.p
                   initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
-                  className={`text-[0.8125rem] leading-snug text-foreground/88 md:text-[0.875rem] ${HERO_BODY_GLOW}`}
+                  className={`${
+                    swapThatSystemHero
+                      ? "text-[0.894rem] leading-snug text-foreground/88 md:text-[0.963rem]"
+                      : "text-[0.8125rem] leading-snug text-foreground/88 md:text-[0.875rem]"
+                  } ${HERO_BODY_GLOW}`}
                 >
                   Incluso cuando tu vida no está ordenada.
                 </motion.p>
@@ -654,7 +958,11 @@ export function TeamsHomeHero({
                   initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.7 }}
-                  className={`text-[0.75rem] leading-snug text-foreground/72 md:text-[0.8125rem] ${HERO_BODY_GLOW}`}
+                  className={`${
+                    swapThatSystemHero
+                      ? "text-[0.894rem] leading-snug text-foreground/72 md:text-[0.963rem]"
+                      : "text-[0.75rem] leading-snug text-foreground/72 md:text-[0.8125rem]"
+                  } ${HERO_BODY_GLOW}`}
                 >
                   Un sistema de entrenamiento, hábitos y mindset para mujeres activas que quieren entrenar a su
                   ritmo.
@@ -665,7 +973,7 @@ export function TeamsHomeHero({
             <div
               className={`relative flex w-full flex-col pb-0 ${
                 swapThatSystemHero
-                  ? "mt-4 items-stretch self-stretch"
+                  ? "mt-[21px] md:mt-[25px] items-stretch self-stretch"
                   : "mt-5 items-center self-center"
               }`}
             >
@@ -675,15 +983,15 @@ export function TeamsHomeHero({
                 transition={{ duration: 0.5, delay: 0.8 }}
                 className={
                   swapThatSystemHero
-                    ? "flex w-full min-w-0 max-w-none flex-col items-stretch gap-3 sm:flex-row sm:flex-nowrap sm:items-center sm:justify-center lg:justify-start"
+                    ? "flex w-full min-w-0 max-w-none flex-col items-stretch gap-3.5 sm:flex-row sm:flex-nowrap sm:items-center sm:justify-center md:gap-4"
                     : "flex w-full max-w-lg flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
                 }
               >
                 <Link href={contactHref} className={primaryCtaClass}>
                   {swapThatSystemHero ? "Quiero empezar hoy" : "Quiero entrenar a mi ritmo"}
                   <svg
-                    width={swapThatSystemHero ? 18 : 15}
-                    height={swapThatSystemHero ? 18 : 15}
+                    width={swapThatSystemHero ? 20 : 15}
+                    height={swapThatSystemHero ? 20 : 15}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -710,8 +1018,8 @@ export function TeamsHomeHero({
                 initial={skippedInitialAnimation ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
-                className={`mt-4 flex w-full flex-wrap gap-1.5 ${
-                  swapThatSystemHero ? "max-lg:justify-center lg:justify-start" : "justify-center"
+                className={`${swapThatSystemHero ? "mt-[21px] md:mt-[25px]" : "mt-4 md:mt-5"} flex w-full flex-wrap gap-2 ${
+                  swapThatSystemHero ? "justify-center" : "justify-center"
                 }`}
               >
                 {["Sin presión", "A tu ritmo", "Retomas, no empiezas de cero"].map((pill, i) => (
@@ -729,59 +1037,73 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative z-40 flex w-full shrink-0 items-end justify-center overflow-visible max-lg:h-[min(46vh,340px)] lg:mx-0 lg:min-h-0 lg:min-w-0 lg:w-[min(58%,min(100vw,720px))] lg:max-w-[min(58vw,780px)] lg:flex-1 lg:justify-end lg:overflow-visible"
-              aria-hidden
+              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[86px] md:-translate-y-[90px]"
+              style={{ zIndex: SISTEMA_HERO_FLANK_Z }}
             >
-              <div
-                className="flex h-full w-full items-end justify-center lg:items-center lg:justify-end lg:max-w-[min(100%,780px)]"
-                style={sistemaHeroImageTranslateY ? { transform: sistemaHeroImageTranslateY } : undefined}
-              >
-                <Image
-                  src={cartoon3dPath("jump.png")}
-                  alt=""
-                  width={1350}
-                  height={1350}
-                  className="max-lg:h-[min(72vh,520px)] max-lg:w-auto max-lg:max-w-none max-lg:object-contain max-lg:object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform lg:scale-[1.05] lg:origin-bottom-right lg:object-contain lg:object-right lg:-translate-x-[80px] lg:-translate-y-[50px] lg:h-[min(100vh,1290px)] lg:max-w-[min(100%,min(98vw,1100px))] xl:max-w-[min(100%,min(98vw,1150px))]"
-                  quality={Q.hero}
-                  priority
-                  sizes="(min-width: 1024px) 60vw, 100vw"
-                  draggable={false}
+              <div className="flex w-full max-w-[min(100%,1180px)] items-end justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
+                <SistemaHeroSideImageSet
+                  title="Antes"
+                  placeholders={SISTEMA_HERO_LEFT_PLACEHOLDERS}
+                  align="left"
+                  skippedInitialAnimation={skippedInitialAnimation}
+                />
+                <motion.div
+                  className="flex shrink-0 items-end justify-center"
+                  initial={{ y: 260, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{
+                    y: { delay: 0.7, type: "spring", stiffness: 90, damping: 16, mass: 1 },
+                    opacity: { delay: 0.7, duration: 0.55, ease: "easeOut" },
+                  }}
+                >
+                  <Image
+                    src={cartoon3dPath("jump.png")}
+                    alt=""
+                    width={1350}
+                    height={1350}
+                    className="mx-auto h-[min(82vh,640px)] w-auto max-w-none object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform sm:h-[min(88vh,720px)] md:h-[min(94vh,840px)] lg:h-[min(108vh,1180px)]"
+                    quality={Q.hero}
+                    priority
+                    sizes="(min-width: 1024px) 68vw, 98vw"
+                    draggable={false}
+                  />
+                </motion.div>
+                <SistemaHeroSideImageSet
+                  title="Después"
+                  placeholders={SISTEMA_HERO_RIGHT_PLACEHOLDERS}
+                  align="right"
+                  skippedInitialAnimation={skippedInitialAnimation}
                 />
               </div>
             </div>
           ) : null}
         </div>
+
+        {swapThatSystemHero ? (
+          <div
+            className="pointer-events-none absolute inset-0 z-[20] overflow-visible select-none"
+            aria-hidden
+          >
+            <div className="relative h-full w-full">
+              {sistemaScatterItems.map((item, i) => (
+                  <StickerFloat
+                    key={`sistema-scatter-${i}-${item.src}-${item.left}`}
+                    item={item}
+                    i={i}
+                    enterDelay={sistemaStickerEnterDelay(item.left, item.top, i, sistemaScatterItems.length)}
+                    basePxOverride={
+                      item.src === HERO_CAT_STICKER_SRC
+                        ? Math.round(HERO_CAT_STICKER_PX * SISTEMA_STICKER_SCALE * SISTEMA_STICKER_RENDER_SCALE)
+                        : Math.round(SISTEMA_STICKER_PX * SISTEMA_STICKER_RENDER_SCALE)
+                    }
+                    scale={viewportSize.w < 640 ? 0.86 : 1}
+                  />
+                ))}
+            </div>
+          </div>
+        ) : null}
       </motion.div>
 
-      {swapThatSystemHero ? (
-        <div
-          className="pointer-events-none absolute inset-0 z-[100] max-lg:translate-y-0 translate-y-[50px] overflow-visible select-none"
-          aria-hidden
-        >
-          <div className="relative h-full w-full">
-            {sistemaCornerStickerItems
-              .filter((_, idx) => (viewportSize.w < 640 ? idx % 2 === 0 : true))
-              .map((item, i) => (
-                <StickerFloat
-                  key={`sistema-corner-${i}-${item.src}`}
-                  item={item}
-                  i={i}
-                  scale={viewportSize.w < 640 ? 0.86 : 1}
-                  holdUntilReady={skippedInitialAnimation && !arrivalAnimationReady}
-                />
-              ))}
-            {sistemaLowerStickerItems.map((item, i) => (
-              <StickerFloat
-                key={`sistema-lower-${i}-${item.src}`}
-                item={item}
-                i={i + 24}
-                scale={viewportSize.w < 640 ? 0.38 : 0.46}
-                holdUntilReady={skippedInitialAnimation && !arrivalAnimationReady}
-              />
-            ))}
-          </div>
-        </div>
-      ) : null}
     </section>
   );
 }

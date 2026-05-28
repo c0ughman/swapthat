@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, useSpring, useInView, useMotionValue } from "framer-motion";
 import { useRef, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import { FiveStars } from "@/components/FiveStars";
@@ -33,6 +34,55 @@ function philY(p: number, i: number, timeRotDeg = 0): number {
 }
 
 const PHIL_ROTATION_SPEED = -15;
+
+const TEAMS_CHARLA_CTA_HREF = "/contacto/equipos";
+
+function PhilosophyOrbitHub({ sistemaVariant }: { sistemaVariant: boolean }) {
+  return (
+    <div
+      className={`flex translate-x-[30px] flex-col items-center text-center ${
+        sistemaVariant ? "translate-y-[50px]" : "-translate-y-[3.3px]"
+      }`}
+    >
+      <div className="h-auto w-[176px] shrink-0 leading-none md:w-[218px]">
+        <Image
+          src="/logo-stacked-blue.webp"
+          alt="Swap That"
+          width={272}
+          height={272}
+          className="h-auto w-full object-contain"
+          quality={Q.brand}
+          loading="lazy"
+        />
+      </div>
+      {!sistemaVariant && (
+        <div className="-mt-[50px] flex flex-col items-center gap-4">
+          <p className="text-2xl font-bold italic font-light tracking-tight text-blue md:text-3xl">
+            for Teams
+          </p>
+          <Link
+            href={TEAMS_CHARLA_CTA_HREF}
+            className="group relative z-20 inline-flex max-w-[min(100%,18rem)] items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-center text-sm font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+          >
+            Quiero una charla para mi equipo
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              className="shrink-0 transition-transform group-hover:translate-x-1"
+              aria-hidden
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
 
 /** Filosofía subtitle corner — compact row (was 96; −20px). */
 const PHIL_SUBTITLE_STICKER_PX = 76;
@@ -90,29 +140,40 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
   const pyValues = [py0, py1, py2, py3, py4];
 
   return (
-    <div ref={containerRef} className="relative min-h-screen">
+    <div
+      ref={containerRef}
+      className={`relative min-h-screen ${sistemaVariant ? "bg-foreground text-white" : ""}`}
+    >
       <div className="flex min-h-screen items-center overflow-hidden">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
           <div className="relative z-20 p-8">
             <span
               className={`mb-2 block text-sm font-semibold uppercase tracking-[0.2em] ${
-                sistemaVariant ? "text-foreground" : "text-blue"
+                sistemaVariant ? "text-white/50" : "text-blue"
               }`}
             >
               Filosofía
             </span>
             <FiveStars variant="section" className="-translate-x-[3px]" />
-            <h2 className="mb-8 text-4xl font-bold leading-[1] tracking-tight md:text-5xl lg:text-6xl">
-              Menos exigencia. <span className="italic font-light">Más estructura</span>{" "}
-              <span className={sistemaVariant ? "italic font-light" : "gradient-text-blue"}>consciente.</span>
+            <h2
+              className={`mb-8 text-4xl font-bold leading-[1] tracking-tight md:text-5xl lg:text-6xl ${
+                sistemaVariant ? "text-white" : "text-foreground"
+              }`}
+            >
+              Menos exigencia.{" "}
+              <span
+                className={`italic font-light ${sistemaVariant ? "text-white" : "text-blue"}`}
+              >
+                Más estructura consciente.
+              </span>
             </h2>
             <div className="relative">
               {sistemaVariant ? (
-                <p className="relative z-10 max-w-2xl pb-6 pl-0 pr-2 text-lg leading-relaxed text-gray sm:pb-32 sm:pr-4 md:text-xl">
+                <p className="relative z-10 max-w-2xl pb-6 pl-0 pr-2 text-lg leading-relaxed text-white/60 sm:pb-32 sm:pr-4 md:text-xl">
                   Entrenar no es hacerlo perfecto. Es aprender a{" "}
-                  <strong className="font-semibold text-foreground/90">regularte, escucharte</strong> y volver a tu centro.
+                  <strong className="font-semibold text-white/90">regularte, escucharte</strong> y volver a tu centro.
                   En Swap That no trabajamos con rigidez ni con castigo.{" "}
-                  Trabajamos con <strong className="font-semibold text-foreground/90">estructura flexible</strong> —porque
+                  Trabajamos con <strong className="font-semibold text-white/90">estructura flexible</strong> —porque
                   la vida no funciona en modo ideal, y entrenar tampoco debería.
                 </p>
               ) : (
@@ -172,24 +233,36 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
             ))}
           </div>
 
+          {!sistemaVariant && (
+            <div className="flex flex-col items-center gap-4 px-2 pb-2 lg:hidden">
+              <p className="text-2xl font-bold italic font-light tracking-tight text-blue">for Teams</p>
+              <Link
+                href={TEAMS_CHARLA_CTA_HREF}
+                className="group inline-flex w-full max-w-sm items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+              >
+                Quiero una charla para mi equipo
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  className="shrink-0 transition-transform group-hover:translate-x-1"
+                  aria-hidden
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </div>
+          )}
+
           <div className="relative hidden h-screen lg:block">
             <div
-              className="pointer-events-none absolute left-1/2 z-0 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0 text-center"
-              style={{ top: "calc(50% - 70px)" }}
+              className="absolute left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+              style={{ top: sistemaVariant ? "calc(50% - 70px)" : "50%" }}
             >
-              <div className="translate-x-[30px] translate-y-[50px]">
-                <div className="h-auto w-[176px] shrink-0 leading-none md:w-[218px]">
-                  <Image
-                    src="/logo-stacked-blue.webp"
-                    alt="Swap That"
-                    width={272}
-                    height={272}
-                    className="h-auto w-full object-contain"
-                    quality={Q.brand}
-                    loading="lazy"
-                  />
-                </div>
-              </div>
+              <PhilosophyOrbitHub sistemaVariant={sistemaVariant} />
             </div>
             {PHIL_IMGS.map((img, i) => (
               <motion.div

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type RefObject } from "react";
 import type { MotionValue } from "framer-motion";
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useTransitionArrival } from "@/components/CarouselTransition/useTransitionArrival";
 import BlobShape from "@/components/BlobShape";
@@ -16,70 +16,11 @@ const PROBLEM_HEADLINE_CHARS: { char: string; italic: boolean }[] = [
   ..."Es hacerlo sin sistema.".split("").map((char) => ({ char, italic: true })),
 ];
 
-type SolutionHeadlineChar = { char: string; bold?: boolean; italic?: boolean };
-
-const SOLUTION_HEADLINE_CHARS: SolutionHeadlineChar[] = [
-  ..."La solución".split("").map((char) => ({ char, bold: true })),
-  ..." es un ".split("").map((char) => ({ char })),
-  ..."márketing medible,".split("").map((char) => ({ char, italic: true })),
-  ..." con estructura".split("").map((char) => ({ char, bold: true })),
-];
-
 /** Custom X PNG — 70% of ServiceCardCornerOverlays base (≈30% smaller than 7.92/10.08rem) */
 const MKT_X_STICKER_BASE =
   "pointer-events-none absolute z-[5] h-[5.544rem] w-[5.544rem] md:h-[7.056rem] md:w-[7.056rem]";
 const MKT_X_STICKER_IMG =
   "h-full w-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.028)]";
-
-const MARKETING_BAND = "var(--marketing-band)";
-const MARKETING_BAND_LIGHT = "var(--marketing-band-light)";
-
-/** Screenshot placeholders — overlaid outside card corners (like service icons), larger. */
-function ServiceCardScreenshotOverlay({ serviceIndex }: { serviceIndex: number }) {
-  const baseWrap =
-    "pointer-events-none absolute z-[7] aspect-[16/10] w-[12.5rem] sm:w-[14.5rem] md:w-[18rem] lg:w-[20rem]";
-
-  const overlays: { className: string; rotate: string }[] = [
-    {
-      className: `${baseWrap} bottom-0 right-0 translate-x-[38%] translate-y-[34%]`,
-      rotate: "rotate-[3deg]",
-    },
-    {
-      className: `${baseWrap} bottom-0 left-0 -translate-x-[42%] translate-y-[36%]`,
-      rotate: "-rotate-[4deg]",
-    },
-    {
-      className: `${baseWrap} bottom-0 right-0 translate-x-[40%] translate-y-[38%]`,
-      rotate: "rotate-[2deg]",
-    },
-  ];
-
-  const o = overlays[serviceIndex];
-  if (!o) return null;
-
-  return (
-    <div className={`${o.className} ${o.rotate}`} aria-hidden>
-      <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-coral/30 bg-white/95 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.18)] backdrop-blur-sm">
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.25"
-          className="text-coral/40 md:h-8 md:w-8"
-        >
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <circle cx="8.5" cy="8.5" r="1.5" />
-          <path d="M21 15l-5-5L5 21" />
-        </svg>
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-foreground/40 md:text-xs">
-          Screenshot
-        </span>
-      </div>
-    </div>
-  );
-}
 
 function ProblemHeadlineChar({
   item,
@@ -108,19 +49,10 @@ function ProblemHeadlineChar({
   );
 }
 
-function ProblemHeadlineScroll() {
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const { scrollYProgress: rawProgress } = useScroll({
-    target: headlineRef,
-    offset: ["start 0.92", "start 0.38"],
-  });
-  const scrollYProgress = useSpring(rawProgress, { stiffness: 90, damping: 28, restDelta: 0.001 });
+function ProblemHeadlineScroll({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
   const total = PROBLEM_HEADLINE_CHARS.length;
   return (
-    <h2
-      ref={headlineRef}
-      className="mb-8 text-4xl font-bold leading-[1] tracking-tight text-white md:text-5xl"
-    >
+    <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8 text-white [contain:layout]">
       {PROBLEM_HEADLINE_CHARS.map((item, i) => (
         <ProblemHeadlineChar key={i} item={item} i={i} total={total} scrollYProgress={scrollYProgress} />
       ))}
@@ -128,121 +60,129 @@ function ProblemHeadlineScroll() {
   );
 }
 
-function SolutionHeadlineChar({
-  item,
-  i,
-  total,
-  scrollYProgress,
-}: {
-  item: SolutionHeadlineChar;
-  i: number;
-  total: number;
-  scrollYProgress: MotionValue<number>;
-}) {
-  const start = i / total;
-  const end = (i + 1) / total;
-  const opacity = useTransform(scrollYProgress, [start, end], [0, 1]);
-  const blurPx = useTransform(scrollYProgress, [start, end], [12, 0]);
-  const filter = useTransform(blurPx, (b) => `blur(${b}px)`);
-
-  return (
-    <motion.span
-      className={`${item.bold ? "font-bold" : ""} ${item.italic ? "italic font-light" : ""}`.trim() || undefined}
-      style={{ display: "inline", opacity, filter, willChange: "filter, opacity" }}
-    >
-      {item.char}
-    </motion.span>
-  );
+function useProblemSectionHeadlineProgress(sectionRef: RefObject<HTMLElement | null>) {
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const update = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const scrollY = window.scrollY;
+      const sectionTop = rect.top + scrollY;
+      const H = el.offsetHeight;
+      const vh = window.innerHeight;
+      const startScroll = sectionTop - vh;
+      const endScroll = sectionTop + H - vh;
+      const span = endScroll - startScroll;
+      if (span <= 0) {
+        progress.set(0);
+        return;
+      }
+      const raw = (scrollY - startScroll) / span;
+      const p = Math.min(1, Math.max(0, raw * 2));
+      progress.set(p);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [sectionRef]);
+  return progress;
 }
 
-function ProblemSolutionHeadlineScroll() {
-  const solutionRef = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress: rawProgress } = useScroll({
-    target: solutionRef,
-    offset: ["start 0.98", "start 0.52"],
-  });
-  const scrollYProgress = useSpring(rawProgress, { stiffness: 90, damping: 28, restDelta: 0.001 });
-  const total = SOLUTION_HEADLINE_CHARS.length;
-  return (
-    <p
-      ref={solutionRef}
-      className="pointer-events-none absolute bottom-0 right-3 z-10 max-w-[min(78vw,16rem)] text-right text-3xl font-normal leading-[1.08] tracking-tight text-black sm:max-w-[min(82vw,20rem)] sm:text-4xl sm:leading-[1.05] sm:pr-1 md:max-w-[min(86vw,28rem)] md:right-6 md:text-5xl md:pr-2 md:leading-[1] lg:max-w-[min(88vw,34rem)] lg:pr-3 xl:max-w-[min(90vw,40rem)] xl:pr-4 2xl:max-w-[44rem] 2xl:pr-5 2xl:right-12 pb-4 pl-3 sm:pb-5 sm:pl-4 md:pb-6 md:pl-5 lg:pb-7 lg:pl-6 xl:pb-8 xl:pl-7 2xl:pb-10 2xl:pl-8"
-    >
-      {SOLUTION_HEADLINE_CHARS.map((item, i) => (
-        <SolutionHeadlineChar key={i} item={item} i={i} total={total} scrollYProgress={scrollYProgress} />
-      ))}
-    </p>
-  );
-}
-
+/**
+ * marketing-alt hero — two horizontal rungs that together fill the viewport:
+ *   • Top 70vh on cream/beige: portrait video • H1 + subtitle + buttons • 3 floating bubbles (<¼ vw)
+ *   • Bottom 30vh on white: three columns with coral titles and short copy
+ */
 function HeroSection() {
   const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
   const bubblesVisible = !skippedInitialAnimation || arrivalAnimationReady;
 
+  const bottomColumns = [
+    {
+      title: "Estrategia",
+      body: "Sistema, mensaje y narrativa con foco en resultados de negocio.",
+    },
+    {
+      title: "Contenido",
+      body: "Creativos y narrativas pensadas para performance, no solo para el feed.",
+    },
+    {
+      title: "Meta Ads",
+      body: "Campañas con estructura, pruebas y escalamiento consciente.",
+    },
+  ];
 
   return (
-    <section
-      className="relative min-h-screen flex items-center overflow-hidden pt-[calc(5rem+10px)]"
-      style={{
-        background:
-          "radial-gradient(ellipse 45% 35% at calc(85% - 600px) 15%, rgba(232, 93, 117, 0.14), transparent 60%), white",
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Video — compact above text on mobile, left column on desktop */}
+    <section className="relative h-screen w-full flex flex-col overflow-hidden">
+      {/* ── Top rung — 70vh, pinkish beige ───────────────────────────── */}
+      <div
+        className="relative flex items-center"
+        style={{
+          height: "70vh",
+          background:
+            "radial-gradient(ellipse 50% 40% at 78% 12%, rgba(232, 93, 117, 0.14), transparent 62%), #f5ebe8",
+        }}
+      >
+        <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-8 pt-[calc(5rem+10px)] pb-4 flex items-center gap-5 lg:gap-10">
+          {/* Video + copy — shifted right on desktop; bubbles stay at the rim */}
+          <div className="flex min-w-0 flex-1 items-center gap-5 md:pl-[200px] lg:gap-10">
+          {/* Col 1 — portrait video */}
           <motion.div
             layout={false}
             initial={skippedInitialAnimation ? false : { opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.55, delay: 0.3 }}
-            className="relative flex items-center justify-center order-first lg:order-1 lg:justify-start"
+            className="shrink-0"
           >
-            {/* Mobile: portrait crop. Desktop: full landscape frame with stable aspect ratio */}
-            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[560px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:unset]">
+            <div className="relative w-[34vw] sm:w-[26vw] md:w-[22vw] lg:w-[20vw] xl:w-[18vw] h-[min(48vh,420px)] md:h-[min(52vh,460px)] lg:h-[min(56vh,500px)] overflow-hidden rounded-[1.5rem] bg-white shadow-[0_18px_40px_-12px_rgba(0,0,0,0.18)] lg:rounded-[2rem]">
               <video
                 src="/360marketing.mp4"
                 autoPlay
                 muted
                 playsInline
+                loop
                 suppressHydrationWarning
-                className="block h-full w-full object-cover object-top lg:h-auto lg:object-contain"
+                className="block h-full w-full object-cover object-top"
                 aria-label="Marketing video"
               />
             </div>
           </motion.div>
 
-          {/* Text — below video on mobile, right column on desktop */}
-          <div className="order-last lg:order-2 translate-y-0 lg:-translate-y-[80px] px-1 sm:px-2 lg:pl-2 lg:pr-1">
+          {/* Col 2 — H1, subtitle, two buttons */}
+          <div className="flex-1 min-w-0 flex flex-col">
             <motion.div
               layout={false}
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-3 mb-5"
             >
-              <span className="w-12 h-0.5 bg-coral" />
-              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
+              <span className="w-14 h-0.5 bg-coral" />
+              <span className="text-base font-semibold uppercase tracking-[0.2em] text-coral">
                 Para marcas
               </span>
             </motion.div>
 
-            <div className="relative mb-6 pt-2 md:pt-3">
-              {/* Floating cards — 2 top / 1 bottom, above title */}
+            <div className="relative mb-6 w-fit max-w-full">
+              {/* Floating bubbles — hug top-right corner of the headline */}
               <motion.div
-                className="pointer-events-none absolute -top-[160px] right-0 z-[1] hidden md:block pr-4 pt-3 md:pr-6 md:pt-4"
+                className="pointer-events-none absolute z-10 hidden md:block top-0 right-0 translate-x-[0.35rem] -translate-y-[1.75rem] lg:translate-x-2 lg:-translate-y-8"
                 aria-hidden
                 initial={skippedInitialAnimation ? { opacity: 0 } : false}
                 animate={skippedInitialAnimation ? (bubblesVisible ? { opacity: 1 } : { opacity: 0 }) : {}}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                {/* Floating pills: white fill, coral type, faint coral glow */}
-                <div className="flex w-[min(100vw-2rem,19rem)] translate-x-[29px] translate-y-[29px] flex-col items-end gap-[1.855rem] p-4 sm:p-5 lg:w-[22rem] lg:gap-[2.17rem]">
-                  <div className="flex w-full items-end justify-between gap-[1.575rem] lg:gap-[1.925rem]">
-                    <div className="translate-x-[22px] -translate-y-[14px]">
-                      <div className="inline-block origin-center scale-[0.855]">
+                <div className="relative flex w-[10.5rem] flex-col items-end justify-center gap-2.5 lg:w-[11.25rem] lg:gap-3">
+                  <div className="flex w-full items-end justify-between gap-2">
+                    <div className="-translate-y-1">
+                      <div className="inline-block origin-center scale-[0.82] lg:scale-[0.88]">
                         <motion.div
-                          className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5"
+                          className="inline-flex w-fit flex-col items-center gap-1.5 rounded-full bg-white px-4 py-3 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2 lg:px-5 lg:py-4"
                           animate={{ y: [0, -6, 0] }}
                           transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
                         >
@@ -253,7 +193,7 @@ function HeroSection() {
                             strokeWidth="1.65"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="mx-auto block h-10 w-10 shrink-0 lg:h-10 lg:w-10"
+                            className="mx-auto block h-9 w-9 shrink-0 lg:h-10 lg:w-10"
                             aria-hidden
                           >
                             <path d="M3 3v18h18" />
@@ -261,15 +201,15 @@ function HeroSection() {
                             <path d="M13 17V5" />
                             <path d="M8 17v-3" />
                           </svg>
-                          <span className="whitespace-nowrap text-center text-[10px] font-semibold leading-tight tracking-wide lg:text-[11px]">
+                          <span className="whitespace-nowrap text-center text-[9px] font-semibold leading-tight tracking-wide lg:text-[10px]">
                             Estrategia
                           </span>
                         </motion.div>
                       </div>
                     </div>
-                    <div className="inline-block origin-center scale-[0.855]">
+                    <div className="inline-block origin-center scale-[0.82] lg:scale-[0.88]">
                       <motion.div
-                        className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5"
+                        className="inline-flex w-fit flex-col items-center gap-1.5 rounded-full bg-white px-4 py-3 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2 lg:px-5 lg:py-4"
                         animate={{ y: [0, -5, 0] }}
                         transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", delay: 0.35 }}
                       >
@@ -280,43 +220,41 @@ function HeroSection() {
                           strokeWidth="1.65"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="mx-auto block h-10 w-10 shrink-0 lg:h-10 lg:w-10"
+                          className="mx-auto block h-9 w-9 shrink-0 lg:h-10 lg:w-10"
                           aria-hidden
                         >
                           <circle cx="12" cy="12" r="10" />
                           <circle cx="12" cy="12" r="6" />
                           <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
                         </svg>
-                        <span className="whitespace-nowrap text-center text-[10px] font-semibold leading-tight tracking-wide lg:text-[11px]">
+                        <span className="whitespace-nowrap text-center text-[9px] font-semibold leading-tight tracking-wide lg:text-[10px]">
                           Contenido
                         </span>
                       </motion.div>
                     </div>
                   </div>
-                  <div className="flex w-full justify-end pr-1 pt-0.5 lg:pr-2">
-                    <div className="inline-block origin-center scale-[0.855]">
-                      <motion.div
-                        className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5"
-                        animate={{ y: [0, -5.5, 0] }}
-                        transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 0.65 }}
+                  <div className="inline-block origin-center scale-[0.82] lg:scale-[0.88]">
+                    <motion.div
+                      className="inline-flex w-fit flex-col items-center gap-1.5 rounded-full bg-white px-4 py-3 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2 lg:px-5 lg:py-4"
+                      animate={{ y: [0, -5.5, 0] }}
+                      transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 0.65 }}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.65"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="mx-auto block h-9 w-9 shrink-0 lg:h-10 lg:w-10"
+                        aria-hidden
                       >
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.65"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="mx-auto block h-10 w-10 shrink-0 lg:h-10 lg:w-10"
-                          aria-hidden
-                        >
-                          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
-                        <span className="whitespace-nowrap text-center text-[10px] font-semibold leading-tight tracking-wide lg:text-[11px]">
-                          Meta Ads
-                        </span>
-                      </motion.div>
-                    </div>
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                      </svg>
+                      <span className="whitespace-nowrap text-center text-[9px] font-semibold leading-tight tracking-wide lg:text-[10px]">
+                        Meta Ads
+                      </span>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -326,7 +264,7 @@ function HeroSection() {
                 initial={skippedInitialAnimation ? false : { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight pr-0 md:pr-[17rem] md:pl-1 lg:pr-[21rem] lg:pl-2 xl:pr-[22rem]"
+                className="text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-bold leading-[0.95] tracking-tight"
               >
                 Marketing &{" "}
                 <span className="relative inline-block">
@@ -351,19 +289,9 @@ function HeroSection() {
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.35 }}
-              className="text-lg md:text-xl text-gray max-w-xl leading-relaxed mb-4"
+              className="text-lg md:text-xl lg:text-2xl text-gray leading-relaxed mb-8 max-w-2xl"
             >
               Estrategia, contenido y Meta Ads para crecer con orden y resultados reales.
-            </motion.p>
-
-            <motion.p
-              layout={false}
-              initial={skippedInitialAnimation ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.45 }}
-              className="text-base text-gray max-w-xl leading-relaxed mb-8"
-            >
-              Trabajo con marcas que quieren escalar sin improvisar, sin quemar presupuesto y sin desgastar a sus equipos.
             </motion.p>
 
             <motion.div
@@ -371,34 +299,59 @@ function HeroSection() {
               initial={skippedInitialAnimation ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.55 }}
-              className="flex flex-col sm:flex-row gap-4 max-sm:items-stretch"
+              className="flex flex-col sm:flex-row gap-4"
             >
               <Link
                 href="/contacto/marketing#formulario"
-                className="group inline-flex items-center justify-center gap-2 bg-coral text-white px-8 py-4 rounded-full text-base font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
+                className="group inline-flex items-center justify-center gap-2.5 bg-coral text-white px-8 py-4 rounded-full text-base md:text-lg font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
               >
                 Hablemos de tu marca
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:translate-x-1 transition-transform">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:translate-x-1 transition-transform">
                   <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </Link>
               <Link
                 href="/contacto/marketing#formulario"
-                className="inline-flex items-center justify-center gap-2 border-2 border-foreground/10 px-8 py-4 rounded-full text-base font-medium hover:border-coral/30 transition-all duration-300 max-sm:mb-8 max-sm:self-end"
+                className="inline-flex items-center justify-center gap-2.5 border-2 border-foreground/10 px-8 py-4 rounded-full text-base md:text-lg font-medium hover:border-coral/30 transition-all duration-300"
               >
                 Explorar servicios
               </Link>
             </motion.div>
           </div>
+          </div>
         </div>
       </div>
 
+      {/* ── Bottom rung — 30vh, white, 3 columns ─────────────────────── */}
+      <div className="relative bg-white flex items-center" style={{ height: "30vh" }}>
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {bottomColumns.map((col, i) => (
+              <motion.div
+                key={col.title}
+                initial={skippedInitialAnimation ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="flex flex-col"
+              >
+                <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-coral mb-3">
+                  {col.title}
+                </h3>
+                <p className="text-sm md:text-base text-gray leading-relaxed">
+                  {col.body}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
 
 function ProblemSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const headlineScrollProgress = useProblemSectionHeadlineProgress(sectionRef);
   const prefersReducedMotion = useReducedMotion();
 
   const problems = [
@@ -421,13 +374,12 @@ function ProblemSection() {
         ref={sectionRef}
         className="relative overflow-hidden bg-coral py-28 sm:py-32 md:py-36 lg:py-40 xl:py-44 2xl:py-48"
         style={{
-          /* Bottom-right quadrant: single corner arc (not full-height right semicircle) */
           borderRadius: "0 0 9999px 0",
         }}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-7 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
-          <div className="-translate-y-[100px]">
+          <div>
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70 mb-4 block">
               El problema
             </span>
@@ -437,19 +389,15 @@ function ProblemSection() {
                 <span className="italic font-light">Es hacerlo sin sistema.</span>
               </h2>
             ) : (
-              <ProblemHeadlineScroll />
+              <ProblemHeadlineScroll scrollYProgress={headlineScrollProgress} />
             )}
             <AnimatedSection light>
-              <p className="mb-6 text-[1.4625rem] leading-relaxed text-white/80 md:text-[1.6rem]">
-                Muchas marcas:
-              </p>
-              <ul className="mb-8 space-y-4">
+              <p className="text-lg text-white/80 mb-6">Muchas marcas:</p>
+              <ul className="space-y-4 mb-8">
                 {problems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3.5">
-                    <span className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-white" />
-                    <span className="text-[1.3rem] leading-snug text-white/80 md:text-[1.4rem]">
-                      {item}
-                    </span>
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="mt-1.5 w-2 h-2 rounded-full bg-white shrink-0" />
+                    <span className="text-white/80">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -457,9 +405,9 @@ function ProblemSection() {
           </div>
 
           <AnimatedSection delay={0.1} direction="left" light>
-            <div className="relative -translate-x-[120px] translate-y-[100px] overflow-visible px-2 py-6 text-white md:px-4 md:py-8">
+            <div className="relative overflow-visible rounded-3xl border border-white/20 bg-white/10 p-8 text-white md:p-10">
               <div
-                className={`${MKT_X_STICKER_BASE} right-0 top-0 translate-x-[calc(40%-70px)] translate-y-[calc(-36%_-_40px)] rotate-[5deg] opacity-100`}
+                className={`${MKT_X_STICKER_BASE} right-0 top-0 translate-x-[calc(40%-120px)] translate-y-[calc(-36%_-_15px)] rotate-[5deg]`}
                 aria-hidden
               >
                 <Image
@@ -467,46 +415,38 @@ function ProblemSection() {
                   alt=""
                   width={114}
                   height={114}
-                  className={`${MKT_X_STICKER_IMG} opacity-100`}
+                  className={MKT_X_STICKER_IMG}
                 />
               </div>
-              <div className="relative z-10 flex flex-col items-end text-right">
-                <ul className="mb-10 max-w-md list-none space-y-4">
+              <div className="relative z-10">
+                <h3 className="mb-6 text-sm font-semibold uppercase tracking-wider text-white/70">El resultado</h3>
+                <div className="grid grid-cols-2 gap-4">
                   {results.map((item, i) => (
-                    <li
-                      key={i}
-                      className="text-base leading-snug text-white/50 line-through decoration-white/25 md:text-lg"
-                    >
-                      {item}
-                    </li>
+                    <div key={i} className="rounded-2xl border border-white/20 bg-white/10 p-5">
+                      <p className="text-sm text-white/80">{item}</p>
+                    </div>
                   ))}
-                </ul>
-                <div className="max-w-md space-y-2 text-white">
-                  <p className="text-base leading-relaxed md:text-lg">
-                    El marketing sin sistema no escala.
-                  </p>
-                  <p className="text-xl font-semibold leading-tight md:text-2xl">Se agota.</p>
                 </div>
+                <p className="mt-6 border-t border-white/20 pt-6 text-sm text-white/60">
+                  El marketing sin sistema no escala. <span className="font-semibold text-white">Se agota.</span>
+                </p>
               </div>
             </div>
           </AnimatedSection>
         </div>
       </div>
       </section>
-      {prefersReducedMotion ? (
-        <p className="pointer-events-none absolute bottom-0 right-3 z-10 max-w-[min(78vw,16rem)] text-right text-3xl font-normal leading-[1.08] tracking-tight text-black sm:max-w-[min(82vw,20rem)] sm:text-4xl sm:leading-[1.05] sm:pr-1 md:max-w-[min(86vw,28rem)] md:right-6 md:text-5xl md:pr-2 md:leading-[1] lg:max-w-[min(88vw,34rem)] lg:pr-3 xl:max-w-[min(90vw,40rem)] xl:pr-4 2xl:max-w-[44rem] 2xl:pr-5 2xl:right-12 pb-4 pl-3 sm:right-4 sm:pb-5 sm:pl-4 md:pb-6 md:pl-5 lg:pb-7 lg:pl-6 xl:pb-8 xl:pl-7 2xl:pb-10 2xl:pl-8">
-          <span className="font-bold">La solución</span> es un{" "}
-          <span className="italic font-light text-black">márketing medible,</span>{" "}
-          <span className="font-bold">con estructura</span>
-        </p>
-      ) : (
-        <ProblemSolutionHeadlineScroll />
-      )}
+      <p
+        className="pointer-events-none absolute bottom-0 z-10 max-w-[min(78vw,16rem)] text-right text-3xl font-normal leading-[1.08] tracking-tight text-black sm:max-w-[min(82vw,20rem)] sm:text-4xl sm:leading-[1.05] sm:pr-1 md:max-w-[min(86vw,28rem)] md:text-5xl md:pr-2 md:leading-[1] lg:max-w-[min(88vw,34rem)] lg:pr-3 xl:max-w-[min(90vw,40rem)] xl:pr-4 2xl:max-w-[44rem] 2xl:pr-5 right-3 pb-4 pl-3 sm:right-4 sm:pb-5 sm:pl-4 md:right-6 md:pb-6 md:pl-5 lg:right-8 lg:pb-7 lg:pl-6 xl:right-10 xl:pb-8 xl:pl-7 2xl:right-12 2xl:pb-10 2xl:pl-8"
+      >
+        <span className="font-bold">La solución</span> es un{" "}
+        <span className="italic font-light text-black">márketing medible,</span>{" "}
+        <span className="font-bold">con estructura</span>
+      </p>
     </div>
   );
 }
 
-// ─── Stacking cards — bg ramp: light → … → coral (#e85d75); last card = coral, steps interpolated before it ───
 const MKT_STACK_BG = ["#f1c6cf", "#efacb9", "#ec91a2", "#ea778c", "#e85d75"];
 const MKT_STACK_GLOW = [
   "rgba(205, 110, 120, 0.2)",
@@ -516,7 +456,6 @@ const MKT_STACK_GLOW = [
   "rgba(232, 93, 117, 0.42)",
 ];
 const MKT_STACK_TEXT = "#ffffff";
-/** Very light shadows — backgrounds carry contrast now */
 const MKT_STACK_TEXT_SHADOW = [
   "0 1px 2px rgba(0,0,0,0.06)",
   "0 1px 1px rgba(0,0,0,0.05)",
@@ -576,16 +515,15 @@ function PerformanceWithStructureStackingSection() {
   });
   const smoothProgress = scrollYProgress;
 
-  // PX: pixel scale factor — compensates for switching from zoom:0.8 to font-size:80%.
   const PX = 0.8;
   const N = 5;
-  const OFF = Math.round(56 * PX);   // 45
+  const OFF = Math.round(56 * PX);
   const FINAL_YS = [0, 1 * OFF, 2 * OFF, 3 * OFF, (N - 1) * OFF];
   const ANIMATION_COMPLETE_AT = 0.88;
-  const START_X = Math.round(-90 * PX);   // -72
-  const START_Y = Math.round(880 * PX);   // 704
+  const START_X = Math.round(-90 * PX);
+  const START_Y = Math.round(880 * PX);
   const CTRL_X = 0;
-  const CTRL_Y = Math.round(280 * PX);    // 224
+  const CTRL_Y = Math.round(280 * PX);
 
   const cardTransform = (i: number) => (p: number) => {
     const pScaled = Math.min(1, p / ANIMATION_COMPLETE_AT);
@@ -631,15 +569,13 @@ function PerformanceWithStructureStackingSection() {
   const syValues = [sy0, sy1, sy2, sy3, sy4];
   const srValues = [sr0, sr1, sr2, sr3, sr4];
 
-  const CARD_W = Math.round(288 * PX);  // 230
-  const CARD_H = Math.round(288 * PX);  // 230
-  /** Taller track than index hero-cards so sticky + animation aren’t over in a flick (parent must not use overflow:hidden). */
+  const CARD_W = Math.round(288 * PX);
+  const CARD_H = Math.round(288 * PX);
   const SCROLL_HEIGHT = "400vh";
   const STICKY_HEIGHT = "500vh";
 
   return (
     <>
-      {/* ── Mobile text header (above sticky animation) ── */}
       <div className="md:hidden px-6 py-14 bg-coral/5">
         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-coral mb-4 block">Enfoque</span>
         <h2 className="text-3xl font-bold leading-tight text-foreground mb-3">
@@ -659,7 +595,6 @@ function PerformanceWithStructureStackingSection() {
         </Link>
       </div>
 
-      {/* ── Stacking animation — all screen sizes ── */}
       <div style={{ height: STICKY_HEIGHT }} className="relative -mt-[240px] md:-mt-[240px]">
         <div
           ref={containerRef}
@@ -672,7 +607,6 @@ function PerformanceWithStructureStackingSection() {
           style={{ marginTop: `calc(-1 * ${SCROLL_HEIGHT})` }}
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex flex-col items-center gap-6 md:grid md:grid-cols-2 md:gap-16 md:items-center">
-            {/* Left text — desktop only */}
             <div className="hidden md:block relative z-10">
               <span className="text-xs font-semibold uppercase tracking-[0.25em] text-coral mb-5 block">
                 Enfoque
@@ -695,7 +629,6 @@ function PerformanceWithStructureStackingSection() {
               </Link>
             </div>
 
-            {/* Cards — centered on mobile, right column on desktop */}
             <div className="relative flex items-center justify-center">
               <div className="relative" style={{ width: CARD_W, height: CARD_H + (N - 1) * OFF }}>
                 {MKT_STACK_CARDS.map((topic, i) => (
@@ -778,7 +711,6 @@ function ResultsSection() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
-        {/* Header */}
         <AnimatedSection light>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16 md:mb-20">
             <div className="max-w-xl">
@@ -793,7 +725,6 @@ function ResultsSection() {
                 creatividad aplicada. Esto es lo que pasa cuando los tres se alinean.
               </p>
             </div>
-            {/* Aggregate stars */}
             <div className="shrink-0 flex flex-col items-start md:items-end gap-2">
               <div className="flex gap-1.5">
                 {[...Array(5)].map((_, i) => (
@@ -807,10 +738,8 @@ function ResultsSection() {
           </div>
         </AnimatedSection>
 
-        {/* Image grid */}
         <AnimatedSection delay={0.05} light>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-16 md:mb-20">
-            {/* Large image — left, spans 2 cols on md */}
             <div className="col-span-2 aspect-[16/9] rounded-[1.75rem] bg-gray-light/30 border border-gray-light flex items-center justify-center overflow-hidden">
               <div className="flex flex-col items-center gap-3 text-foreground/20">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
@@ -821,7 +750,6 @@ function ResultsSection() {
                 <span className="text-xs tracking-wide uppercase">Imagen principal</span>
               </div>
             </div>
-            {/* Two stacked smaller images */}
             <div className="flex flex-col gap-3 md:gap-4">
               <div className="flex-1 rounded-[1.75rem] bg-gray-light/30 border border-gray-light flex items-center justify-center min-h-[140px]">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-foreground/20">
@@ -841,7 +769,6 @@ function ResultsSection() {
           </div>
         </AnimatedSection>
 
-        {/* Result cards */}
         <div className="grid md:grid-cols-3 gap-5">
           {results.map((r, i) => (
             <AnimatedSection key={i} delay={0.1 + i * 0.07} light>
@@ -871,8 +798,7 @@ function ResultsSection() {
   );
 }
 
-/** Full-width curve between white above and the marketing band below. */
-function MarketingBandTopCurve() {
+function MarketingDarkBandTopCurve() {
   return (
     <div className="w-full shrink-0 leading-none" aria-hidden>
       <svg
@@ -881,14 +807,13 @@ function MarketingBandTopCurve() {
         preserveAspectRatio="none"
         className="block h-14 w-full md:h-[4.25rem]"
       >
-        <path fill={MARKETING_BAND} d="M0 0h1440v28Q720 72 0 28z" />
+        <path fill="white" d="M0 0h1440v28Q720 72 0 28z" />
       </svg>
     </div>
   );
 }
 
-/** Curve from marketing band above into white section below. */
-function MarketingBandBottomCurve() {
+function MarketingDarkBandBottomCurve() {
   return (
     <div className="w-full shrink-0 leading-none" aria-hidden>
       <svg
@@ -898,21 +823,6 @@ function MarketingBandBottomCurve() {
         className="block h-14 w-full md:h-[4.25rem]"
       >
         <path fill="white" d="M0 28Q720 0 1440 28L1440 72L0 72z" />
-      </svg>
-    </div>
-  );
-}
-
-/** Convex curve into the CTA band (white above → frame-outer below). */
-function MarketingCtaSemicircleDivider() {
-  return (
-    <div
-      className="relative z-30 -mt-px w-full leading-[0] text-[0]"
-      style={{ height: "clamp(4.5rem, 12vw, 7.5rem)" }}
-      aria-hidden
-    >
-      <svg className="block h-full w-full" viewBox="0 0 1440 100" preserveAspectRatio="none">
-        <path d="M0,28 Q720,100 1440,28 L1440,100 L0,100 Z" fill={MARKETING_BAND} />
       </svg>
     </div>
   );
@@ -943,34 +853,35 @@ function MarketingClientLogosSection() {
   );
 }
 
-/** Illustration overlays for “Qué hago” cards — outside corners, not in document flow */
 function ServiceCardCornerOverlays({ serviceIndex }: { serviceIndex: number }) {
   const baseWrap =
     "pointer-events-none absolute z-[5] h-[7.92rem] w-[7.92rem] md:h-[10.08rem] md:w-[10.08rem]";
   const imgClass = "object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.028)]";
 
-  const baseWrapLg =
-    "pointer-events-none absolute z-[5] h-[9.25rem] w-[9.25rem] md:h-[11.75rem] md:w-[11.75rem]";
-
   const overlays: { src: string; className: string; rotate: string }[][] = [
     [
       {
-        src: "/icons/media.webp",
-        className: `${baseWrapLg} bottom-0 left-0 -translate-x-[42%] translate-y-[38%]`,
+        src: "/icons/contenido.webp",
+        className: `${baseWrap} bottom-0 left-0 -translate-x-[42%] translate-y-[38%]`,
         rotate: "-rotate-[6deg]",
       },
     ],
     [
       {
         src: "/icons/estrategia.webp",
-        className: `${baseWrap} bottom-0 right-0 translate-x-[40%] translate-y-[36%]`,
+        className: `${baseWrap} right-0 top-0 translate-x-[40%] -translate-y-[36%]`,
         rotate: "rotate-[5deg]",
       },
     ],
     [
       {
+        src: "/icons/media.webp",
+        className: `${baseWrap} left-0 top-0 -translate-x-[40%] -translate-y-[36%]`,
+        rotate: "-rotate-[5deg]",
+      },
+      {
         src: "/icons/medible.webp",
-        className: `${baseWrap} bottom-0 left-0 -translate-x-[40%] translate-y-[36%]`,
+        className: `${baseWrap} bottom-0 right-0 translate-x-[40%] translate-y-[36%]`,
         rotate: "rotate-[7deg]",
       },
     ],
@@ -1042,19 +953,18 @@ function ServicesSection() {
   return (
     <section
       id="servicios"
-      className="relative overflow-hidden pb-12 pt-0 md:pb-16"
-      style={{ backgroundColor: MARKETING_BAND }}
+      className="relative overflow-hidden bg-foreground pb-[3.6rem] pt-0 text-background md:pb-[4.8rem]"
     >
-      <MarketingBandTopCurve />
-      <BlobShape color="var(--coral)" size={400} className="-top-40 right-0" opacity={0.06} />
+      <MarketingDarkBandTopCurve />
+      <BlobShape color="var(--coral)" size={400} className="-top-40 right-0" opacity={0.1} />
 
       <div className="relative z-[1] mx-auto max-w-7xl px-6 lg:px-8 pt-24 md:pt-32">
         <AnimatedSection light>
           <div className="mb-16 text-center">
-            <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-coral">
+            <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-coral-light">
               Servicios
             </span>
-            <h2 className="text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-bold leading-[1] tracking-tight text-background md:text-5xl lg:text-6xl">
               ¿Qué hago?
             </h2>
           </div>
@@ -1063,11 +973,7 @@ function ServicesSection() {
         <div className="space-y-8">
           {services.map((service, i) => (
             <AnimatedSection key={i} delay={i * 0.08} light>
-              <div
-                className="group relative overflow-visible rounded-3xl border border-coral/10 p-8 shadow-sm transition-all duration-500 hover:shadow-md hover:shadow-coral/[0.08] md:p-10"
-                style={{ backgroundColor: MARKETING_BAND_LIGHT }}
-              >
-                <ServiceCardScreenshotOverlay serviceIndex={i} />
+              <div className="group relative overflow-visible rounded-3xl border border-white/10 bg-white/5 p-8 shadow-none transition-all duration-500 hover:bg-white/[0.07] hover:shadow-lg hover:shadow-black/25 md:p-10">
                 <ServiceCardCornerOverlays serviceIndex={i} />
 
                 <span className="pointer-events-none absolute -right-4 -top-4 z-0 select-none text-[10rem] font-bold leading-none text-coral/10">
@@ -1077,15 +983,15 @@ function ServicesSection() {
                 <div className="relative z-10 grid gap-8 lg:grid-cols-5">
                   <div className="lg:col-span-2">
                     <div className="mb-4 flex items-center gap-3">
-                      <span className="text-sm font-bold text-coral">{service.num}</span>
-                      <span className="h-0.5 w-8 bg-coral" />
+                      <span className="text-sm font-bold text-coral-light">{service.num}</span>
+                      <span className="h-0.5 w-8 bg-coral-light" />
                     </div>
-                    <h3 className="mb-3 text-2xl font-bold text-foreground">{service.title}</h3>
-                    <p className="mb-2 font-medium text-coral">{service.subtitle}</p>
-                    <p className="text-sm text-foreground/70">{service.desc}</p>
+                    <h3 className="mb-3 text-2xl font-bold text-background">{service.title}</h3>
+                    <p className="mb-2 font-medium text-coral-light">{service.subtitle}</p>
+                    <p className="text-sm text-white/70">{service.desc}</p>
                     <Link
                       href="/contacto/marketing"
-                      className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-coral underline-offset-4 transition-colors hover:text-coral-dark hover:underline md:text-base"
+                      className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-coral-light underline-offset-4 transition-colors hover:text-background hover:underline md:text-base"
                     >
                       Hablemos de tu marca
                       <svg
@@ -1108,14 +1014,14 @@ function ServicesSection() {
                       {service.items.map((item, j) => (
                         <li
                           key={j}
-                          className="flex items-start gap-3 rounded-xl p-3 text-foreground/85 transition-colors hover:bg-coral/[0.04]"
+                          className="flex items-start gap-3 rounded-xl p-3 text-white/85 transition-colors hover:bg-white/5"
                         >
-                          <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-coral" />
+                          <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-coral-light" />
                           <span>{item}</span>
                         </li>
                       ))}
                     </ul>
-                    <p className="border-t border-coral/10 pt-4 text-sm italic text-foreground/55">
+                    <p className="border-t border-white/10 pt-4 text-sm italic text-white/55">
                       {service.tagline}
                     </p>
                   </div>
@@ -1131,20 +1037,17 @@ function ServicesSection() {
 
 function ForWhomSection() {
   return (
-    <section
-      className="relative overflow-hidden pb-0 pt-0"
-      style={{ backgroundColor: MARKETING_BAND }}
-    >
-      <BlobShape color="var(--coral)" size={400} className="-top-40 right-0" opacity={0.06} />
+    <section className="relative overflow-hidden bg-foreground pb-0 pt-[3.6rem] text-background md:pt-[4.8rem]">
+      <BlobShape color="var(--coral)" size={400} className="-top-40 right-0" opacity={0.1} />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-24 md:pb-32 pt-4 md:pt-6">
-        <div className="grid gap-16 lg:grid-cols-2">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-24 md:pb-32">
+        <div className="grid lg:grid-cols-2 gap-16">
           <div>
             <AnimatedSection light>
-              <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-coral">
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral-light mb-4 block">
                 ¿Es para tu marca?
               </span>
-              <h2 className="mb-8 text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl">
+              <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8">
                 Para quién es este trabajo
               </h2>
             </AnimatedSection>
@@ -1152,9 +1055,7 @@ function ForWhomSection() {
             <AnimatedSection delay={0.05} light>
               <div className="space-y-6">
                 <div>
-                  <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-coral">
-                    Trabajo con marcas que:
-                  </h4>
+                  <h4 className="text-sm font-semibold text-coral-light mb-4 uppercase tracking-wider">Trabajo con marcas que:</h4>
                   <ul className="space-y-3">
                     {[
                       "Ya venden o están listas para escalar",
@@ -1162,8 +1063,8 @@ function ForWhomSection() {
                       "Valoran la estrategia tanto como la ejecución",
                       "Buscan un partner estratégico, no solo un gestor de ads",
                     ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-foreground/80">
-                        <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-coral" />
+                      <li key={i} className="flex items-start gap-3 text-white/80">
+                        <span className="mt-1.5 w-2 h-2 rounded-full bg-coral-light shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -1174,10 +1075,7 @@ function ForWhomSection() {
           </div>
 
           <AnimatedSection delay={0.1} direction="left" light>
-            <div
-              className="relative overflow-visible rounded-3xl border border-coral/10 p-8 shadow-sm"
-              style={{ backgroundColor: MARKETING_BAND_LIGHT }}
-            >
+            <div className="relative overflow-visible rounded-3xl border border-white/10 bg-white/5 p-8">
               <div
                 className={`${MKT_X_STICKER_BASE} bottom-0 right-0 translate-x-[calc(40%-70px)] translate-y-[calc(36%+15px)] rotate-[7deg]`}
                 aria-hidden
@@ -1191,7 +1089,7 @@ function ForWhomSection() {
                 />
               </div>
               <div className="relative z-10">
-                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-foreground/45">
+                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/40">
                   No es para marcas que:
                 </h4>
                 <ul className="mb-8 space-y-3">
@@ -1200,8 +1098,8 @@ function ForWhomSection() {
                     "Cambian de dirección cada semana",
                     'Buscan "solo anuncios que vendan" sin mirar el sistema completo',
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-foreground/55">
-                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-coral/35" />
+                    <li key={i} className="flex items-start gap-3 text-white/50">
+                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-white/20" />
                       {item}
                     </li>
                   ))}
@@ -1212,7 +1110,7 @@ function ForWhomSection() {
         </div>
       </div>
 
-      <MarketingBandBottomCurve />
+      <MarketingDarkBandBottomCurve />
     </section>
   );
 }
@@ -1236,7 +1134,6 @@ function ProcessSteps({ steps }: { steps: string[] }) {
         .filter((p): p is { x: number; y: number } => p !== null);
       if (pts.length >= 2) setSvgData({ pts, w: cr.width, h: cr.height });
     };
-    // Wait for whileInView fade-ins to settle before measuring layout
     const t = setTimeout(calc, 700);
     window.addEventListener("resize", calc);
     return () => { clearTimeout(t); window.removeEventListener("resize", calc); };
@@ -1246,7 +1143,6 @@ function ProcessSteps({ steps }: { steps: string[] }) {
     <div>
       <div ref={containerRef} className="relative">
 
-        {/* SVG diagonal connecting line — measured after mount */}
         {svgData && (
           <svg
             className="absolute inset-0 pointer-events-none"
@@ -1288,7 +1184,6 @@ function ProcessSteps({ steps }: { steps: string[] }) {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Node — solid coral circle */}
             <div
               ref={(el) => { nodeRefs.current[i] = el; }}
               className="relative z-10 shrink-0 w-14 h-14 md:w-[3.75rem] md:h-[3.75rem] rounded-full bg-coral flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
@@ -1302,10 +1197,8 @@ function ProcessSteps({ steps }: { steps: string[] }) {
               </span>
             </div>
 
-            {/* Short rule between node and text */}
             <span className="shrink-0 w-5 h-px bg-coral/30 group-hover:bg-coral/60 transition-colors duration-300" aria-hidden />
 
-            {/* Step text */}
             <p
               className="text-[1.05rem] md:text-[1.15rem] font-medium leading-snug group-hover:text-foreground transition-colors duration-300"
               style={{ color: `rgba(26,26,26,${1 - i * 0.07})` }}
@@ -1315,33 +1208,6 @@ function ProcessSteps({ steps }: { steps: string[] }) {
           </motion.div>
         ))}
       </div>
-
-      <motion.div
-        className="relative -top-[30px] mt-8 flex w-full justify-end pr-[80px] md:mt-10"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.45, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <Link
-          href="/contacto/marketing#formulario"
-          className="group inline-flex items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-medium text-white shadow-lg shadow-coral/20 transition-all duration-300 hover:bg-coral-dark"
-        >
-          Hablemos de tu marca
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="transition-transform group-hover:translate-x-1"
-            aria-hidden
-          >
-            <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
-      </motion.div>
 
       <motion.div
         className="mt-[72px] max-w-[min(100%,26rem)] -ml-1 sm:-ml-0.5 mr-auto"
@@ -1380,7 +1246,6 @@ function ProcessAndWhySection() {
 
   return (
     <section className="mt-[136px] py-32 md:py-40 bg-white relative overflow-hidden">
-      {/* Radial coral hint — top right, subtle */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -1392,7 +1257,6 @@ function ProcessAndWhySection() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-[56px]">
 
-        {/* Hero-style label + editorial headline */}
         <AnimatedSection light>
           <div className="flex items-center gap-3 mb-5">
             <span className="w-12 h-0.5 bg-coral" aria-hidden />
@@ -1432,20 +1296,15 @@ function ProcessAndWhySection() {
           </div>
         </AnimatedSection>
 
-        {/* Main grid — mobile: photo first, steps below */}
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 xl:gap-24 items-start">
-          {/* Left: connected timeline */}
           <div className="order-2 lg:order-1 min-w-0">
             <ProcessSteps steps={steps} />
           </div>
 
-          {/* Right: sticky photo */}
           <div className="order-1 lg:order-2 lg:sticky lg:top-24">
 
-            {/* Photo with coral radial glow */}
             <AnimatedSection direction="left" light>
               <div className="relative">
-                {/* Radial glow behind photo — echoes hero treatment */}
                 <div
                   className="pointer-events-none absolute -inset-8 rounded-[3rem]"
                   style={{
@@ -1463,7 +1322,6 @@ function ProcessAndWhySection() {
                     sizes="(max-width: 1024px) 100vw, 36vw"
                     priority={false}
                   />
-                  {/* Bottom gradient + caption — coral tinted */}
                   <div
                     className="absolute bottom-0 left-0 right-0 h-1/2 pointer-events-none"
                     style={{
@@ -1487,7 +1345,6 @@ function ProcessAndWhySection() {
               </div>
             </AnimatedSection>
 
-            {/* Pills — under the photo (~15% larger than prior compact size) */}
             <AnimatedSection delay={0.25} light>
               <div className="mt-[56px] px-1">
                 <p className="text-[11.5px] font-semibold uppercase tracking-[0.16em] text-coral mb-3.5">
@@ -1530,11 +1387,7 @@ function CTASection() {
   ];
 
   return (
-    <section
-      id="contacto"
-      className="relative overflow-hidden py-24 md:py-32"
-      style={{ backgroundColor: MARKETING_BAND }}
-    >
+    <section id="contacto" className="py-24 md:py-32 relative overflow-hidden">
       <BlobShape color="var(--coral)" size={400} className="top-0 right-0" opacity={0.06} />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
@@ -1613,7 +1466,7 @@ function MarqueeBanner() {
   );
 }
 
-export default function MarketingPage() {
+export default function MarketingAltPage() {
   return (
     <div className="min-h-screen bg-white">
       <HeroSection />
@@ -1625,7 +1478,6 @@ export default function MarketingPage() {
       <ServicesSection />
       <ForWhomSection />
       <ProcessAndWhySection />
-      <MarketingCtaSemicircleDivider />
       <CTASection />
     </div>
   );

@@ -89,7 +89,7 @@ export default function Navigation() {
 
   /** Transparent nav sitting on a dark or saturated hero (blue home hero, sistema top band). */
   const navOverDarkHero =
-    (pathname === "/sistema" && !scrolled) || (pathname === "/" && !scrolled);
+    (pathname === "/sistema" && !scrolled) || (pathname === "/" && !scrolled) || (pathname === "/teams-alt" && !scrolled);
 
   const navLinks = [
     { href: "/", label: "Teams & Charlas", hoverColor: "blue" as const },
@@ -181,13 +181,16 @@ export default function Navigation() {
       ? "inline-block bg-white text-foreground border border-black/15 shadow-sm px-8 py-4 rounded-full text-lg font-semibold mt-4 hover:bg-white/95 cursor-pointer"
       : "inline-block bg-black text-white px-8 py-4 rounded-full text-lg font-medium mt-4 hover:bg-black/88 cursor-pointer";
 
+  const isTeamsAlt = pathname === "/teams-alt";
+  const navPosition = isTeamsAlt ? "absolute" : "fixed";
+
   return (
     <>
       <motion.nav
         initial={false}
         animate={{ y: footerInView ? -100 : 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
+        className={`${navPosition} top-0 left-0 right-0 transition-all duration-500 ${
           scrolled ? "z-[10000] bg-background/90 backdrop-blur-xl shadow-sm" : "z-[10000] bg-transparent"
         }`}
       >

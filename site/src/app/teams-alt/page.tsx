@@ -1,39 +1,95 @@
 "use client";
 
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type RefObject, type ReactNode } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlobShape from "@/components/BlobShape";
 import Marquee from "@/components/Marquee";
+import ScrollDrawLine from "@/components/ScrollDrawLine";
 import Link from "next/link";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
-import { SistemaLandingHero } from "@/components/SistemaLandingHero";
-import { TeamsPhilosophyOrbitSection } from "@/components/TeamsPhilosophyOrbitSection";
+import { TeamsAltHero } from "@/components/TeamsAltHero";
 import HorizontalScroll from "@/components/HorizontalScroll";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Framed panel — near-white beige outside, white squircle inside (overflow visible for cards/images)
+// HERO CTA — blue band between hero and marquee
 // ─────────────────────────────────────────────────────────────────────────────
-const FRAMED_PANEL_RADIUS =
-  "rounded-[2.75rem] sm:rounded-[3.25rem] md:rounded-[3.75rem] lg:rounded-[4.5rem]";
+const HERO_CTA_POLAROIDS = [
+  { gradient: "from-coral/35 via-coral/15 to-coral/40", rotate: -8, translateX: "translate-x-12" },
+  { gradient: "from-blue/30 via-blue/15 to-blue/45", rotate: 2, translateX: "translate-x-0" },
+  { gradient: "from-amber-300/40 via-amber-200/20 to-amber-400/40", rotate: 7, translateX: "-translate-x-12" },
+] as const;
 
-function FramedSectionPanel({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return <div className={`relative bg-white ${FRAMED_PANEL_RADIUS} ${className}`}>{children}</div>;
+function HeroCTASection() {
+  return (
+    <section className="relative overflow-hidden bg-blue pt-5 pb-14 md:pb-20">
+      {/* Decorative floating shapes */}
+      <div className="pointer-events-none absolute -top-16 -left-16 h-64 w-64 rounded-full bg-white/5 blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-white/5 blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[28rem] w-[28rem] rounded-full border border-white/10" aria-hidden />
+
+      <div className="relative mx-auto max-w-5xl px-6 lg:px-8">
+        <AnimatedSection>
+          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
+            {/* Left: stars + eyebrow + title */}
+            <div>
+              <div className="mb-4 flex items-center gap-1.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg key={i} viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-amber-400" fill="currentColor" aria-hidden>
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                ))}
+              </div>
+              <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                Bienestar corporativo
+              </span>
+              <h2 className="text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-5xl">
+                Equipos que rinden{" "}
+                <span className="italic font-light text-white/85">desde el bienestar</span>
+              </h2>
+            </div>
+
+            {/* Right: subtitle + button */}
+            <div className="md:text-right">
+              <p className="mb-8 text-lg leading-relaxed text-white/85 md:text-xl max-w-sm md:ml-auto">
+                Charlas, workshops y sesiones que se quedan. Menos exigencia, más estructura consciente.
+              </p>
+              <div className="md:flex md:justify-end">
+                <Link
+                  href="/contacto/equipos"
+                  className="group inline-flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-base font-bold text-blue shadow-[0_10px_40px_rgba(255,255,255,0.25)] transition-all duration-300 hover:shadow-[0_15px_50px_rgba(255,255,255,0.4)] hover:-translate-y-0.5"
+                >
+                  Quiero una charla para mi equipo
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0 transition-transform group-hover:translate-x-1">
+                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Polaroid row — three overlapping placeholders, centered under both columns */}
+        <AnimatedSection delay={0.15}>
+          <div className="mt-14 flex items-center justify-center md:mt-20">
+            <div className="relative flex items-center justify-center">
+              {HERO_CTA_POLAROIDS.map((p, i) => (
+                <div
+                  key={i}
+                  className={`relative ${i === 0 ? "" : "-ml-10 md:-ml-14"} ${p.translateX} bg-white p-3 pb-12 md:p-4 md:pb-16 shadow-[0_18px_50px_rgba(0,0,0,0.25)] rounded-[2px]`}
+                  style={{ transform: `rotate(${p.rotate}deg)`, zIndex: i === 1 ? 3 : 2 }}
+                >
+                  <div className={`h-36 w-36 md:h-48 md:w-48 bg-gradient-to-br ${p.gradient}`} aria-hidden />
+                </div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
 }
-
-/** Shared sizing for horizontal-scroll panels (full viewport width × height). */
-const HORIZONTAL_PANEL =
-  "relative flex h-screen min-h-screen max-h-[100dvh] w-screen min-w-screen shrink-0 items-center overflow-visible bg-frame-outer text-foreground px-8 pt-[60px] pb-[40px] md:px-[140px] md:pt-[120px] md:pb-[80px]";
-
-const HORIZONTAL_PANEL_INNER =
-  "relative mx-auto flex h-full min-h-0 w-full max-w-[1500px] items-center px-8 py-12 sm:px-16 sm:py-16 md:px-20 md:py-20 lg:px-24 lg:py-24";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MARQUEE — sits between Philosophy and Stacking
@@ -209,10 +265,10 @@ function StackingCardsSection() {
   return (
     <>
       {/* ── Mobile text header (above sticky animation) ── */}
-      <div className="bg-frame-outer px-6 pt-12 pb-6 md:hidden">
-        <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.25em] text-blue">Temas</span>
-        <h2 className="mb-3 text-3xl font-bold leading-tight text-foreground">Qué trabajo con los equipos</h2>
-        <p className="mb-6 text-[15px] leading-relaxed text-foreground/60">
+      <div className="md:hidden px-6 py-14 bg-background">
+        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-blue mb-4 block">Temas</span>
+        <h2 className="text-3xl font-bold leading-tight text-foreground mb-3">Qué trabajo con los equipos</h2>
+        <p className="text-foreground/60 text-[15px] leading-relaxed mb-6">
           El bienestar en el trabajo se construye con hábitos simples, sostenibles y humanos.
         </p>
         <Link
@@ -226,19 +282,17 @@ function StackingCardsSection() {
         </Link>
       </div>
 
-      {/* ── Stacking animation — open on white page; asymmetric padding (top heavier than bottom) ── */}
-      <div style={{ height: STICKY_HEIGHT }} className="relative">
+      {/* ── Stacking animation — all screen sizes ── */}
+      <div style={{ height: STICKY_HEIGHT, backgroundColor: "var(--background)" }} className="relative">
         <div
           ref={containerRef}
           style={{ height: SCROLL_HEIGHT }}
           className="relative pointer-events-none"
           aria-hidden
         />
-        <div
-          className="sticky top-0 z-[2] flex h-screen items-center overflow-visible bg-frame-outer px-4 pt-[60px] pb-[40px] md:px-[70px] md:pt-[120px] md:pb-[80px]"
-          style={{ marginTop: `calc(-1 * ${SCROLL_HEIGHT})` }}
-        >
-          <FramedSectionPanel className="relative z-[1] mx-auto flex h-full w-full max-w-[1500px] flex-col items-center gap-6 px-4 py-8 md:grid md:grid-cols-2 md:items-center md:gap-16 md:px-10 md:py-12 lg:px-14 lg:py-14">
+        <div className="sticky top-0 h-screen overflow-hidden flex items-center bg-background mx-6 md:mx-10 lg:mx-14 relative z-[2]" style={{ marginTop: `calc(-1 * ${SCROLL_HEIGHT})` }}>
+          <div className="max-w-7xl mx-auto w-full flex flex-col items-center gap-6 md:grid md:grid-cols-2 md:gap-16 md:items-center pb-64 md:pb-80 rounded-[2.5rem] px-8 py-12 md:px-14 md:py-16 lg:px-20" style={{ backgroundColor: "var(--cream)" }}>
+
             {/* Left: copy — desktop only (mobile shows text above the sticky zone) */}
             <div className="hidden md:block relative z-10">
               <span className="text-xs font-semibold uppercase tracking-[0.25em] text-blue mb-5 block">
@@ -266,8 +320,8 @@ function StackingCardsSection() {
               </Link>
             </div>
 
-            {/* Cards wrapper — centered on mobile, right column on desktop; shifted 20px down for new top/bottom balance; high z-index so cards float above any framing */}
-            <div className="relative z-[20] mt-[20px] flex items-center justify-center">
+            {/* Cards wrapper — centered on mobile, right column on desktop */}
+            <div className="relative flex items-center justify-center">
               <div
                 className="relative"
                 style={{ width: CARD_W, height: CARD_H + (N - 1) * OFF }}
@@ -330,7 +384,7 @@ function StackingCardsSection() {
                 })}
               </div>
             </div>
-          </FramedSectionPanel>
+          </div>
         </div>
       </div>
     </>
@@ -367,8 +421,10 @@ function FiveStars({ className = "" }: { className?: string }) {
 // ─────────────────────────────────────────────────────────────────────────────
 function ExperienceSection() {
   return (
-    <section className={`${HORIZONTAL_PANEL} max-md:py-8`}>
-      <FramedSectionPanel className={`${HORIZONTAL_PANEL_INNER} max-md:max-h-full max-md:overflow-y-auto`}>
+    <section className="relative flex h-screen max-h-[100dvh] w-screen shrink-0 items-center overflow-hidden bg-background text-foreground px-4 py-6 sm:px-6 md:px-10 md:py-10">
+      <BlobShape color="var(--blue)" size={300} className="-top-32 -right-32" opacity={0.08} />
+
+      <div className="mx-auto w-full max-w-6xl rounded-[2.5rem] bg-[var(--cream)] px-6 py-10 sm:px-10 sm:py-12 md:px-14 md:py-14 lg:px-16 lg:py-16 max-md:max-h-full max-md:overflow-y-auto max-md:overflow-x-hidden">
         <div className="grid items-center gap-6 md:gap-10 lg:grid-cols-2">
           <div className="max-md:min-h-0">
             <AnimatedSection>
@@ -447,7 +503,7 @@ function ExperienceSection() {
             </div>
           </AnimatedSection>
         </div>
-      </FramedSectionPanel>
+      </div>
     </section>
   );
 }
@@ -495,35 +551,21 @@ const TESTIMONIAL_CARD_SHAPES = [
 
 function CharlaTestimonialsSection() {
   return (
-    <section className={`${HORIZONTAL_PANEL} max-md:justify-start max-md:overflow-y-auto max-md:overflow-x-hidden max-md:py-10`}>
+    <section className="relative flex h-screen max-h-[100dvh] w-screen shrink-0 flex-col justify-center bg-background text-foreground px-4 py-6 sm:px-6 md:px-10 md:py-10 max-md:justify-start max-md:overflow-y-auto max-md:overflow-x-hidden">
       <BlobShape color="var(--coral)" size={240} className="-bottom-24 -left-16 max-md:opacity-[0.04]" opacity={0.06} />
 
-      <FramedSectionPanel className={`${HORIZONTAL_PANEL_INNER} flex-col items-stretch justify-center`}>
-        <AnimatedSection className="w-full self-start text-left">
-          <div className="relative mb-3 w-full md:mb-4">
-            <div className="max-w-[36rem] text-left lg:max-w-[44rem]">
-              <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-blue md:mb-3 md:text-sm">
-                Historias de equipos
-              </span>
-              <h2 className="text-2xl font-bold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
-                Cuando la charla{" "}
-                <span className="italic font-light text-blue">sí deja huella</span>
-              </h2>
-            </div>
-            {/* Photo — absolute to header row only; does not shift copy */}
-            <div className="pointer-events-none absolute top-1/2 right-[-2.5rem] hidden h-[170px] w-[170px] -translate-y-1/2 -rotate-[3deg] overflow-hidden rounded-[2rem] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.28)] ring-4 ring-white md:right-[-3.5rem] lg:block lg:right-[-5rem] lg:h-[220px] lg:w-[220px] xl:right-[-6.5rem]">
-              <Image
-                src="/andreacoachsevilla-55.webp"
-                alt="Andrea Vásquez"
-                fill
-                className="object-cover object-center"
-                sizes="220px"
-                quality={Q.photo}
-                loading="lazy"
-              />
-            </div>
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center rounded-[2.5rem] bg-[var(--cream)] px-6 py-10 sm:px-10 sm:py-12 md:px-14 md:py-14 lg:px-16 lg:py-16">
+        <AnimatedSection>
+          <div className="mb-3 max-w-4xl md:mb-4">
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-blue md:mb-3 md:text-sm">
+              Historias de equipos
+            </span>
+            <h2 className="text-2xl font-bold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
+              Cuando la charla{" "}
+              <span className="italic font-light text-blue">sí deja huella</span>
+            </h2>
           </div>
-          <p className="mb-3 max-w-3xl text-left text-sm leading-snug text-foreground/50 md:mb-5 md:text-base md:leading-relaxed md:text-lg">
+          <p className="mb-3 max-w-3xl text-sm leading-snug text-foreground/50 md:mb-5 md:text-base md:leading-relaxed md:text-lg">
             <span className="md:hidden">Equipos de distintos sectores: menos discurso genérico, más conversación real.</span>
             <span className="hidden md:inline">
               Equipos de distintos sectores han compartido cómo se sintió el espacio: menos discurso genérico,
@@ -541,7 +583,7 @@ function CharlaTestimonialsSection() {
           </Link>
         </AnimatedSection>
 
-        <div className="grid w-full grid-cols-1 gap-3 self-start sm:gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-5 md:grid-cols-3">
           {CHARLA_TESTIMONIALS.map((t, i) => (
             <AnimatedSection key={t.name} delay={0.08 * i}>
               <article
@@ -579,7 +621,7 @@ function CharlaTestimonialsSection() {
             </AnimatedSection>
           ))}
         </div>
-      </FramedSectionPanel>
+      </div>
     </section>
   );
 }
@@ -589,16 +631,16 @@ function CharlaTestimonialsSection() {
 // ─────────────────────────────────────────────────────────────────────────────
 function TrustedByLogoCloudSection() {
   return (
-    <section className={HORIZONTAL_PANEL}>
-      <FramedSectionPanel className={HORIZONTAL_PANEL_INNER}>
-        <div className="grid w-full grid-cols-1 items-start gap-6 md:gap-10 lg:grid-cols-[7fr_3fr] lg:items-center lg:gap-10 xl:gap-12">
-          {/* Left ~70%: title + logos */}
+    <section className="relative flex h-screen max-h-[100dvh] w-screen shrink-0 items-center overflow-hidden bg-background px-4 py-8 md:min-h-0 md:px-10 md:py-12 lg:px-12">
+      <div className="mx-auto w-full max-w-7xl translate-y-0 rounded-[2.5rem] bg-[var(--cream)] px-6 py-10 sm:px-10 sm:py-12 md:translate-y-[40px] md:px-14 md:py-14 lg:px-16 lg:py-16">
+        <div className="grid grid-cols-1 items-start gap-6 md:gap-10 lg:grid-cols-[7fr_3fr] lg:items-center lg:gap-10 xl:gap-12">
+          {/* Left ~70%: title + logos (shifted left, modest scale) */}
           <div className="max-lg:translate-x-0 lg:-translate-x-7 xl:-translate-x-10">
             <h2 className="mb-4 text-center text-2xl leading-[1.08] tracking-tight md:mb-8 md:text-5xl lg:mb-8 lg:text-left lg:text-6xl xl:whitespace-nowrap">
               <span className="font-bold text-foreground not-italic">Algunos de </span>
               <span className="font-light italic text-blue">nuestros clientes</span>
             </h2>
-            <div className="w-full rounded-[1.6rem] bg-white p-8 md:rounded-[2.2rem] md:p-20 lg:max-w-none lg:p-[4.5rem]">
+            <div className="w-full origin-top scale-[0.92] rounded-[1.6rem] bg-background p-4 shadow-[0_6px_32px_rgba(0,0,0,0.05)] md:origin-left md:scale-100 md:rounded-[2.2rem] md:p-10 lg:max-w-none lg:-translate-x-2 lg:scale-[1.04] lg:p-9">
               <Image
                 src="/home/clientes.webp"
                 alt="Algunos de nuestros clientes"
@@ -638,7 +680,7 @@ function TrustedByLogoCloudSection() {
             </Link>
           </div>
         </div>
-      </FramedSectionPanel>
+      </div>
     </section>
   );
 }
@@ -685,55 +727,69 @@ const FOR_WHOM_ITEMS: { image: string; content: ReactNode }[] = [
   },
 ];
 
-function ForWhomSection() {
+function ForWhomSection({ sectionRef }: { sectionRef?: RefObject<HTMLElement | null> }) {
   return (
-    <section className="relative z-10 bg-white pt-[60px] pb-[40px] md:pt-[120px] md:pb-[80px]">
-      <div className="relative mx-auto w-full max-w-[1500px] px-6 md:px-[70px]">
-        <div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-            {/* Left — heading copy */}
-            <AnimatedSection>
-              <div className="lg:sticky lg:top-32">
-                <span className="mb-5 block text-sm font-semibold uppercase tracking-[0.2em] text-blue">
-                  ¿Es para tu equipo?
-                </span>
-                <h2 className="mb-6 text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
-                  Para qué tipo de{" "}
-                  <span className="italic font-light text-blue">equipos</span> es
-                </h2>
-                <p className="max-w-md text-lg leading-relaxed text-foreground/65">
-                  Swap That for Teams es para equipos que buscan algo real, no un beneficio más en la lista.
-                </p>
-              </div>
-            </AnimatedSection>
+    <section ref={sectionRef} className="relative z-10 bg-transparent py-28 md:py-40">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-[2]">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          {/* Left — heading + subtext */}
+          <AnimatedSection>
+            <div className="lg:sticky lg:top-32">
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-blue mb-5 block">
+                ¿Es para tu equipo?
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1] tracking-tight mb-6">
+                Para qué tipo de equipos es
+              </h2>
+              <p className="text-lg leading-relaxed text-white max-w-md">
+                Swap That for Teams es para equipos que buscan algo real, no un beneficio más en la lista.
+              </p>
+            </div>
+          </AnimatedSection>
 
-            {/* Right — 2×2 cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5">
-              {FOR_WHOM_ITEMS.map((item, i) => (
-                <AnimatedSection key={i} delay={i * 0.05}>
-                  <article
-                    className={`group relative flex h-full flex-col items-center rounded-[1.5rem] bg-background p-6 text-center transition-transform duration-300 hover:-translate-y-1 md:p-7 ${
-                      i >= 2 ? "sm:-translate-x-[150px]" : ""
+          {/* Right — frosted bars are text-only; illustrations overlaid, alternating left / right */}
+          <div className="flex flex-col gap-6 md:gap-7">
+            {FOR_WHOM_ITEMS.map((item, i) => {
+              const iconRight = i % 2 === 1;
+              return (
+                <div
+                  key={i}
+                  className={`relative overflow-visible py-1 ${i % 2 === 1 ? "lg:ml-12" : ""}`}
+                >
+                  <div
+                    className={`relative z-[1] rounded-2xl border border-gray-light/50 bg-background/90 py-5 shadow-[0_2px_20px_rgba(0,0,0,0.04)] backdrop-blur-sm md:py-6 ${
+                      iconRight
+                        ? "px-5 pr-[8.5rem] pl-5 md:px-7 md:pr-[10.625rem] md:pl-7"
+                        : "px-5 pl-[8.5rem] pr-5 md:px-7 md:pl-[10.625rem] md:pr-7"
                     }`}
                   >
-                    <div className="relative mb-5 h-32 w-32 shrink-0 md:h-36 md:w-36">
-                      <Image
-                        src={item.image}
-                        alt=""
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 128px, 144px"
-                        quality={Q.icon}
-                        loading="lazy"
-                      />
-                    </div>
-                    <p className="text-[15px] font-medium leading-snug text-foreground/85 md:text-[17px]">
+                    <span className="text-[18px] font-medium leading-snug text-foreground/70">
                       {item.content}
-                    </p>
-                  </article>
-                </AnimatedSection>
-              ))}
-            </div>
+                    </span>
+                  </div>
+                  <div
+                    className={`pointer-events-none absolute top-1/2 z-[2] h-[8.925rem] w-[8.925rem] -translate-y-1/2 md:h-[10.2rem] md:w-[10.2rem] ${
+                      iconRight
+                        ? "right-0 translate-x-[18%] md:translate-x-[14%] -rotate-[5deg]"
+                        : "left-0 -translate-x-[18%] md:-translate-x-[14%] rotate-[5deg]"
+                    }`}
+                    aria-hidden
+                  >
+                    <Image
+                      src={item.image}
+                      alt=""
+                      fill
+                      className={`object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.09)] ${iconRight ? "object-right" : "object-left"}`}
+                      sizes="(max-width: 768px) 143px, 163px"
+                      quality={Q.icon}
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
+        </div>
       </div>
     </section>
   );
@@ -753,6 +809,14 @@ const TEAMS_FAQ = [
     a: "Sí. El contenido se adapta al canal: en remoto trabajamos pausas, dinámica y participación para que no sea “otra videollamada más”; presencial permite ir un poco más al cuerpo y al ritmo del grupo. Combinamos lo que encaje con tu oficina y tus franjas horarias.",
   },
   {
+    q: "¿Hay un tamaño mínimo o máximo de equipo?",
+    a: "No hay una cifra mágica: lo importante es que el espacio siga siendo conversación y no “auditorio”. Para grupos muy grandes se puede plantear una charla plenaria más somera o dividir en turnos/cocinas según necesidad.",
+  },
+  {
+    q: "¿Necesitamos gimnasio, equipamiento o un nivel de fitness concreto?",
+    a: "No. No es una clase deportiva ni una exigencia física. El foco es bienestar sostenible y aplicable a jornadas largas: movimiento como regulación, foco, energía y hábitos sin extremos.",
+  },
+  {
     q: "¿Qué pasa después de la charla? ¿Hay materiales o seguimiento?",
     a: "Se puede acordar un cierre con ideas o recursos para el día a día, y en algunos casos una segunda sesión o check-in breve para aterrizar lo vivido. En la primera conversación previa alineamos expectativas, tono y si queréis algo más documentado o más experiencial.",
   },
@@ -766,142 +830,128 @@ function TeamsFaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative z-0 scroll-mt-24 bg-white pt-[60px] pb-10 md:pt-[120px] md:pb-14">
-      <div className="relative mx-auto w-full max-w-[1500px] px-6 md:px-[70px]">
-          <AnimatedSection>
-            <div className="mx-auto mb-12 max-w-4xl text-center md:mb-16">
+    <section id="faq" className="relative z-10 scroll-mt-24 bg-transparent pt-12 pb-24 md:pt-16 md:pb-32">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent"
+        aria-hidden
+      />
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <AnimatedSection>
+          <div className="mx-auto mb-12 max-w-3xl md:mb-16">
+            <div className="rounded-2xl border border-gray-light/50 bg-background/90 px-6 py-8 text-center shadow-[0_2px_20px_rgba(0,0,0,0.04)] backdrop-blur-sm md:px-10 md:py-10">
               <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-blue">
                 Dudas habituales
               </span>
-              <h2 className="mb-5 text-3xl font-bold leading-[1.08] tracking-tight text-foreground md:text-5xl lg:text-[2.75rem]">
+              <h2 className="mb-5 text-3xl font-bold leading-[1.08] tracking-tight md:text-5xl lg:text-[2.75rem]">
                 Preguntas{" "}
                 <span className="italic font-light text-blue">frecuentes</span>
               </h2>
-              <p className="text-lg leading-relaxed text-foreground/65 md:text-xl">
+              <p className="text-lg leading-relaxed text-gray md:text-xl">
                 Respuestas claras sobre formato, logística y qué podés esperar antes de reservar una charla para tu equipo.
               </p>
             </div>
-          </AnimatedSection>
+          </div>
+        </AnimatedSection>
 
-          <ul className="mx-auto max-w-[1074px] list-none space-y-3 md:space-y-4" role="list">
-            {TEAMS_FAQ.map((item, i) => {
-              const isOpen = openIndex === i;
-              const panelId = `faq-panel-${i}`;
-              const headerId = `faq-header-${i}`;
-              return (
-                <li key={item.q} className="list-none">
-                  <AnimatedSection delay={Math.min(i, 5) * 0.05}>
-                    <div
-                      className={`overflow-hidden rounded-2xl bg-white transition-shadow duration-300 ${
-                        isOpen
-                          ? "shadow-[0_20px_60px_-12px_rgba(223,223,255,0.95),0_4px_16px_rgba(100,102,233,0.12)]"
-                          : "shadow-[0_10px_30px_-12px_rgba(223,223,255,0.7)]"
-                      }`}
-                    >
-                      <h3 className="m-0 text-lg font-semibold md:text-xl">
-                        <button
-                          type="button"
-                          id={headerId}
-                          className="flex w-full items-center justify-between gap-4 bg-[#fcfbfa] p-6 text-left text-foreground md:p-7"
-                          onClick={() => setOpenIndex(isOpen ? null : i)}
-                          aria-expanded={isOpen}
-                          aria-controls={panelId}
+        <ul className="mx-auto max-w-3xl list-none space-y-3 md:space-y-4" role="list">
+          {TEAMS_FAQ.map((item, i) => {
+            const isOpen = openIndex === i;
+            const panelId = `faq-panel-${i}`;
+            const headerId = `faq-header-${i}`;
+            return (
+              <li key={item.q} className="list-none">
+                <AnimatedSection delay={Math.min(i, 5) * 0.05}>
+                  <div className="overflow-hidden rounded-2xl border border-foreground/10 shadow-[0_2px_20px_rgba(26,26,26,0.05)]">
+                    <h3 className="m-0 text-base font-semibold md:text-lg">
+                      <button
+                        type="button"
+                        id={headerId}
+                        className="flex w-full items-center justify-between gap-4 bg-background/85 p-6 text-left text-foreground backdrop-blur-md transition-colors hover:bg-background/95 md:p-7"
+                        onClick={() => setOpenIndex(isOpen ? null : i)}
+                        aria-expanded={isOpen}
+                        aria-controls={panelId}
+                      >
+                        <span className="pr-2 leading-snug">{item.q}</span>
+                        <motion.span
+                          className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-blue/20 bg-background/80 text-blue backdrop-blur-sm"
+                          animate={{ rotate: isOpen ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          aria-hidden
                         >
-                          <span className="pr-2 text-lg leading-snug md:text-xl">{item.q}</span>
-                          <motion.span
-                            className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-blue shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
-                            animate={{ rotate: isOpen ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                            aria-hidden
-                          >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                              <path d="M6 9l6 6 6-6" />
-                            </svg>
-                          </motion.span>
-                        </button>
-                      </h3>
-                      <AnimatePresence initial={false}>
-                        {isOpen && (
-                          <motion.div
-                            id={panelId}
-                            role="region"
-                            aria-labelledby={headerId}
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
-                            className="overflow-hidden"
-                          >
-                            <div className="border-t border-foreground/8 bg-white px-6 pb-6 pt-5 md:px-7 md:pb-7 md:pt-6">
-                              <p className="text-base leading-relaxed text-foreground/70 md:text-[17px]">{item.a}</p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </AnimatedSection>
-                </li>
-              );
-            })}
-          </ul>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <path d="M6 9l6 6 6-6" />
+                          </svg>
+                        </motion.span>
+                      </button>
+                    </h3>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          id={panelId}
+                          role="region"
+                          aria-labelledby={headerId}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+                          className="overflow-hidden"
+                        >
+                          <div className="border-t border-foreground/10 bg-background px-6 pb-6 md:px-7 md:pb-7">
+                            <p className="pt-5 text-base leading-relaxed text-gray md:text-[17px]">{item.a}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </AnimatedSection>
+              </li>
+            );
+          })}
+        </ul>
 
-          <AnimatedSection delay={0.15}>
-            <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-relaxed text-foreground/65 md:mt-14">
-              ¿No encontrás lo que buscás?{" "}
-              <Link href="/contacto/equipos" className="font-semibold text-blue underline-offset-4 hover:underline">
-                Escribinos
-              </Link>{" "}
-              y lo vemos en una conversación corta.
-            </p>
-          </AnimatedSection>
+        <AnimatedSection delay={0.15}>
+          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-relaxed text-white md:mt-14">
+            ¿No encontrás lo que buscás?{" "}
+            <Link href="/contacto/equipos" className="font-semibold text-white underline-offset-4 hover:underline">
+              Escribinos
+            </Link>{" "}
+            y lo vemos en una conversación corta.
+          </p>
+        </AnimatedSection>
       </div>
     </section>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CTA curve divider — semicircle pointing down (sits between FAQ and CTA)
-// ─────────────────────────────────────────────────────────────────────────────
-function CtaSemicircleDivider() {
-  return (
-    <div
-      className="relative z-30 -mt-px w-full leading-[0] text-[0]"
-      style={{ height: "clamp(4.5rem, 12vw, 7.5rem)" }}
-      aria-hidden
-    >
-      <svg
-        className="block h-full w-full"
-        viewBox="0 0 1440 100"
-        preserveAspectRatio="none"
-      >
-        <path d="M0,28 Q720,100 1440,28 L1440,100 L0,100 Z" fill="var(--marketing-band)" />
-      </svg>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // CTA
 // ─────────────────────────────────────────────────────────────────────────────
-function CTASection() {
+function CTASection({ sectionRef }: { sectionRef?: RefObject<HTMLElement | null> }) {
   return (
     <section
       id="contacto"
-      className="relative z-20 bg-background pb-[40px] pt-[60px] md:pb-[80px] md:pt-[120px]"
+      ref={sectionRef}
+      className="relative z-10 overflow-hidden bg-transparent py-28 md:py-40"
     >
-      <div className="relative mx-auto w-full max-w-[1500px] px-6 md:px-[70px]">
-        <div className="relative px-2 md:px-8 lg:px-12">
-          <div className="px-6 py-10 text-center md:px-12 md:py-12">
+      <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-[2]">
+        <div className="relative rounded-[2.5rem] border border-gray-light/60 bg-background/95 px-8 py-16 shadow-[0_4px_24px_rgba(0,0,0,0.03)] backdrop-blur-sm md:px-16 md:py-20 lg:px-20">
+          {/* Decorative corner marks */}
+          <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-blue/20 rounded-tl-lg" />
+          <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-blue/20 rounded-tr-lg" />
+          <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-blue/20 rounded-bl-lg" />
+          <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-blue/20 rounded-br-lg" />
+
+          <div className="text-center">
             <AnimatedSection>
-              <h2 className="mb-6 text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1] tracking-tight mb-6">
                 Equipos regulados{" "}
                 <span className="gradient-text-blue italic">trabajan mejor</span>
               </h2>
             </AnimatedSection>
 
             <AnimatedSection delay={0.1}>
-              <div className="mx-auto mb-8 h-px w-16 bg-blue/30" />
-              <p className="mx-auto mb-12 max-w-2xl text-xl leading-relaxed text-foreground/65">
+              <div className="w-16 h-px bg-blue/30 mx-auto mb-8" />
+              <p className="text-xl text-gray max-w-2xl mx-auto leading-relaxed mb-12">
                 Personas cuidadas toman mejores decisiones. Lleva la filosofía Swap That a tu equipo.
               </p>
             </AnimatedSection>
@@ -909,13 +959,13 @@ function CTASection() {
             <AnimatedSection delay={0.2}>
               <Link
                 href="/contacto/equipos"
-                className="group inline-flex items-center justify-center gap-3 rounded-full bg-blue px-10 py-5 text-lg font-medium text-white shadow-[0_10px_40px_rgba(99,102,241,0.25)] transition-all duration-300 hover:bg-blue-dark"
+                className="group inline-flex items-center justify-center gap-3 bg-blue text-white px-10 py-5 rounded-full text-lg font-medium hover:bg-blue-dark transition-all duration-300 shadow-[0_10px_40px_rgba(99,102,241,0.25)]"
               >
                 Quiero una charla para mi equipo
                 <svg
                   width="20" height="20" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" strokeWidth="2"
-                  className="transition-transform group-hover:translate-x-1"
+                  className="group-hover:translate-x-1 transition-transform"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -1012,28 +1062,58 @@ function ServicesPreview() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-export default function HomePage() {
+export default function TeamsAltPage() {
+  const droneSectionRef = useRef<HTMLDivElement>(null);
+  const ctaSectionRef = useRef<HTMLElement | null>(null);
+  const forWhomSectionRef = useRef<HTMLElement | null>(null);
+
   return (
     <>
-      <SistemaLandingHero />
+      <TeamsAltHero />
+      <HeroCTASection />
       <MarqueeBanner />
 
       <div className="relative">
         <StackingCardsSection />
       </div>
 
-      <HorizontalScroll className="bg-frame-outer">
+      <HorizontalScroll>
         <ExperienceSection />
         <CharlaTestimonialsSection />
         <TrustedByLogoCloudSection />
       </HorizontalScroll>
 
-      <div className="relative z-[1] bg-white">
-        <ForWhomSection />
-        <TeamsPhilosophyOrbitSection />
+      {/* Drone line — SVG above white base, below section content (z-0 → z-5 → z-10) */}
+      <div ref={droneSectionRef} className="relative z-[1]">
+        <div className="pointer-events-none absolute inset-0 z-0 bg-background" aria-hidden />
+        <ScrollDrawLine
+          scrollTargetRef={droneSectionRef}
+          scrollStartAnchorRef={forWhomSectionRef}
+          scrollEndAnchorRef={ctaSectionRef}
+          containerWidth="min(56rem, calc(100% - 2.5rem))"
+          geometryScale={2.645}
+          geometryScaleOrigin={{ x: 475, y: 850 }}
+          endTip={{ cx: 500, cy: 1680, rx: 56, ry: 8 }}
+          scrollAdvancePx={0}
+          progressDivisor={1.3}
+          path={`
+            M 100 0
+            C 400 60, 700 100, 950 40
+            C 1100 -20, 900 180, 600 300
+            C 200 450, -50 350, 100 500
+            C 350 650, 800 580, 900 700
+            C 1000 820, 600 900, 300 950
+            C 0 1000, -50 1100, 200 1200
+            C 450 1300, 900 1250, 950 1400
+            C 750 1580, 200 1720, 400 1880
+            C 520 1880, 480 1720, 500 1680
+          `}
+          viewBox="-800 -1100 2900 4300"
+          thickness={238}
+        />
+        <ForWhomSection sectionRef={forWhomSectionRef} />
         <TeamsFaqSection />
-        <CtaSemicircleDivider />
-        <CTASection />
+        <CTASection sectionRef={ctaSectionRef} />
         {/* <ServicesPreview /> — hidden for now */}
       </div>
     </>

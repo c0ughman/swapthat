@@ -10,9 +10,20 @@
   --coral-light: #f472b6;
   --coral-dark: #dc2626;
   --cream: #f5f1e8;
+  /** Warm frame behind squircle panels — cream-leaning, between white and --cream. */
+  --frame-outer: #f7f4ed;
+  /** Marketing band — same warm beige as footer “Coaching 1-on-1” (`--background`). */
+  --marketing-band: var(--background);
+  /** Lighter tint for cards on the marketing band. */
+  --marketing-band-light: color-mix(in srgb, var(--marketing-band) 58%, white);
+  --wave-gray: #e8e8e8;
   --gray: #6b7280;
   --gray-light: #e5e5e5;
   --beige-dark: #e8e3d6;
+  --ivory: #e8dec5;
+  --cream-light: #faf3df;
+  --peach: #fff6f1;
+  --blue-soft: #dfdfff;
 }
 
 @theme inline {
@@ -25,9 +36,17 @@
   --color-coral-light: var(--coral-light);
   --color-coral-dark: var(--coral-dark);
   --color-cream: var(--cream);
+  --color-frame-outer: var(--frame-outer);
+  --color-marketing-band: var(--marketing-band);
+  --color-marketing-band-light: var(--marketing-band-light);
+  --color-wave-gray: var(--wave-gray);
   --color-gray: var(--gray);
   --color-gray-light: var(--gray-light);
   --color-beige-dark: var(--beige-dark);
+  --color-ivory: var(--ivory);
+  --color-cream-light: var(--cream-light);
+  --color-peach: var(--peach);
+  --color-blue-soft: var(--blue-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
