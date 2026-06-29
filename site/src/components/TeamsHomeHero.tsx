@@ -258,7 +258,9 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
   const dupMinDistPx = SISTEMA_STICKER_PX * 2.25;
   /** Target gap between unrelated neighbors — pick the valid spot closest to this. */
   const idealNeighborPx = SISTEMA_STICKER_PX * 1.08;
-  const maxCopiesPerSrc = 5;
+  // Fewer copies per sticker source = lighter sistema hero (fewer DOM nodes +
+  // lazy-image requests) with no meaningful change to how dense it looks.
+  const maxCopiesPerSrc = 4;
   const midX = (ex.l + ex.r) / 2;
   const midY = (ex.t + ex.b) / 2;
   const gridSpanL = SISTEMA_SCATTER_BOUNDS.r - SISTEMA_SCATTER_BOUNDS.l;
@@ -776,15 +778,15 @@ export function TeamsHomeHero({
       <div
         className={
           swapThatSystemHero
-            ? "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-black/[0.08] blur-3xl"
-            : "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-blue/15 blur-3xl"
+            ? "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-black/[0.08] blur-2xl"
+            : "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-blue/15 blur-2xl"
         }
       />
       <div
         className={
           swapThatSystemHero
-            ? "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-black/[0.06] blur-3xl"
-            : "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-coral/10 blur-3xl"
+            ? "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-black/[0.06] blur-2xl"
+            : "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-coral/10 blur-2xl"
         }
       />
 
@@ -801,15 +803,15 @@ export function TeamsHomeHero({
         <div
           className={
             swapThatSystemHero
-              ? "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-black/[0.07] blur-3xl"
-              : "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-blue/[0.14] blur-3xl"
+              ? "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-black/[0.07] blur-2xl"
+              : "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-blue/[0.14] blur-2xl"
           }
         />
         <div
           className={
             swapThatSystemHero
-              ? "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-black/[0.05] blur-3xl"
-              : "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-coral/[0.12] blur-3xl"
+              ? "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-black/[0.05] blur-2xl"
+              : "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-coral/[0.12] blur-2xl"
           }
         />
 

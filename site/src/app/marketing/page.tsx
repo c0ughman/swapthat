@@ -180,8 +180,7 @@ function ProblemSolutionHeadlineScroll() {
 }
 
 function HeroSection() {
-  const { skippedInitialAnimation, arrivalAnimationReady } = useTransitionArrival();
-  const bubblesVisible = !skippedInitialAnimation || arrivalAnimationReady;
+  const { skippedInitialAnimation } = useTransitionArrival();
 
 
   return (
@@ -208,7 +207,9 @@ function HeroSection() {
                 src="/360marketing.mp4"
                 autoPlay
                 muted
+                loop
                 playsInline
+                preload="metadata"
                 suppressHydrationWarning
                 className="block h-full w-full object-cover object-top lg:h-auto lg:object-contain"
                 aria-label="Marketing video"
@@ -232,24 +233,16 @@ function HeroSection() {
             </motion.div>
 
             <div className="relative mb-6 pt-2 md:pt-3">
-              {/* Floating cards — 2 top / 1 bottom, above title */}
-              <motion.div
+              {/* Decorative pills above the title — static (no float) to avoid jitter */}
+              <div
                 className="pointer-events-none absolute -top-[160px] right-0 z-[1] hidden md:block pr-4 pt-3 md:pr-6 md:pt-4"
                 aria-hidden
-                initial={skippedInitialAnimation ? { opacity: 0 } : false}
-                animate={skippedInitialAnimation ? (bubblesVisible ? { opacity: 1 } : { opacity: 0 }) : {}}
-                transition={{ duration: 0.5, delay: 0.1 }}
               >
-                {/* Floating pills: white fill, coral type, faint coral glow */}
                 <div className="flex w-[min(100vw-2rem,19rem)] translate-x-[29px] translate-y-[29px] flex-col items-end gap-[1.855rem] p-4 sm:p-5 lg:w-[22rem] lg:gap-[2.17rem]">
                   <div className="flex w-full items-end justify-between gap-[1.575rem] lg:gap-[1.925rem]">
                     <div className="translate-x-[22px] -translate-y-[14px]">
                       <div className="inline-block origin-center scale-[0.855]">
-                        <motion.div
-                          className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5"
-                          animate={{ y: [0, -6, 0] }}
-                          transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-                        >
+                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5">
                           <svg
                             viewBox="0 0 24 24"
                             fill="none"
@@ -268,15 +261,11 @@ function HeroSection() {
                           <span className="whitespace-nowrap text-center text-[10px] font-semibold leading-tight tracking-wide lg:text-[11px]">
                             Estrategia
                           </span>
-                        </motion.div>
+                        </div>
                       </div>
                     </div>
                     <div className="inline-block origin-center scale-[0.855]">
-                      <motion.div
-                        className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5"
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", delay: 0.35 }}
-                      >
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -294,16 +283,12 @@ function HeroSection() {
                         <span className="whitespace-nowrap text-center text-[10px] font-semibold leading-tight tracking-wide lg:text-[11px]">
                           Contenido
                         </span>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                   <div className="flex w-full justify-end pr-1 pt-0.5 lg:pr-2">
                     <div className="inline-block origin-center scale-[0.855]">
-                      <motion.div
-                        className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5"
-                        animate={{ y: [0, -5.5, 0] }}
-                        transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 0.65 }}
-                      >
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -319,11 +304,11 @@ function HeroSection() {
                         <span className="whitespace-nowrap text-center text-[10px] font-semibold leading-tight tracking-wide lg:text-[11px]">
                           Meta Ads
                         </span>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               <motion.h1
                 layout={false}

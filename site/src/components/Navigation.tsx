@@ -97,6 +97,15 @@ export default function Navigation() {
     { href: "/sistema", label: "Swap That System", hoverColor: "foreground" as const },
   ];
 
+  // The nav uses plain <a> (custom router.push), so Next's automatic <Link>
+  // prefetch never kicks in. Prefetch the main routes up front so switching
+  // pages is instant instead of a cold load.
+  useEffect(() => {
+    for (const href of ["/", "/marketing", "/sistema"]) {
+      if (href !== pathname) router.prefetch(href);
+    }
+  }, [pathname, router]);
+
   const isOnSistema = pathname === "/sistema";
 
   /** Route accent on hover (inactive links only). */
