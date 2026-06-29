@@ -1284,28 +1284,24 @@ function ForWhomSection() {
 function ProcessSteps({ steps }: { steps: string[] }) {
   return (
     <div>
-      {/* Straight vertical rail; each row nudges right on hover */}
-      <ol className="relative m-0 list-none p-0">
-        {/* Continuous vertical line running through the node centers (node = 3.5rem ⇒ center at 1.75rem) */}
-        <span
-          className="pointer-events-none absolute left-[1.75rem] top-7 bottom-7 w-px bg-gradient-to-b from-coral/70 via-coral/40 to-coral/10 md:left-[1.875rem]"
-          aria-hidden
-        />
-
+      {/* Each step is its own off-white card; pinks + slides right (dramatically) on hover */}
+      <ol className="relative m-0 list-none space-y-3 p-0 md:space-y-4">
         {steps.map((step, i) => (
           <motion.li
             key={i}
-            className="group relative flex items-center gap-5 py-3 md:gap-6 md:py-4 cursor-default"
+            className="group cursor-default"
             initial={{ opacity: 0, x: -12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Inner wrapper handles the hover slide so the entrance animation isn't fought */}
-            <div className="flex w-full items-center gap-5 transition-transform duration-300 ease-out group-hover:translate-x-2 md:gap-6">
-              {/* Node — solid coral circle, uniform size, sits on the rail */}
+            <div
+              className="flex w-full items-center gap-5 rounded-2xl border border-coral/8 px-5 py-4 transition-all duration-300 ease-out group-hover:translate-x-5 group-hover:border-coral/25 group-hover:bg-coral/[0.06] group-hover:shadow-[0_10px_30px_-12px_rgba(232,93,117,0.3)] md:gap-6 md:px-6 md:py-5"
+              style={{ backgroundColor: MARKETING_BAND_LIGHT }}
+            >
+              {/* Node — solid coral circle */}
               <div
-                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-coral transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(232,93,117,0.4)]"
+                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-coral transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_22px_rgba(232,93,117,0.45)]"
                 style={{ boxShadow: "0 4px 18px rgba(232,93,117,0.28)" }}
               >
                 <span className="relative z-10 text-base font-bold tabular-nums text-white md:text-lg">
@@ -1313,7 +1309,7 @@ function ProcessSteps({ steps }: { steps: string[] }) {
                 </span>
               </div>
 
-              {/* Step text — full strength, no fade ramp */}
+              {/* Step text */}
               <p className="text-[1.05rem] font-medium leading-snug text-foreground/80 transition-colors duration-300 group-hover:text-foreground md:text-[1.15rem]">
                 {step}
               </p>

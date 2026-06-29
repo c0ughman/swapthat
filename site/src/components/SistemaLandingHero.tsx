@@ -22,11 +22,13 @@ const SISTEMA_HERO_SLIDES: HeroSlide[] = [
 const HERO_SLIDE_INTERVAL_MS = 4500;
 
 /**
- * One hero slide. When it becomes active it wipes in from the right edge over
- * whatever was showing; once active it sits fully revealed underneath the next
- * incoming wipe. Re-mounts its wipe layer on each activation (via `revealKey`)
- * so the clip animation replays every cycle.
+ * Diagonal wipe: the incoming slide sweeps in from the top-right corner along a
+ * tilted leading edge. Implemented with an over-sized parallelogram clip-path
+ * that travels from fully off-frame (top-right) to fully covering the frame.
+ * Points are pushed past 0–100% so the slanted edge stays straight as it crosses.
  */
+const WIPE_HIDDEN = "polygon(100% -40%, 160% -40%, 160% 60%, 40% 140%)";
+const WIPE_SHOWN = "polygon(-60% -40%, 160% -40%, 160% 140%, -60% 140%)";
 function SlideLayer({
   slide,
   active,
@@ -63,9 +65,9 @@ function SlideLayer({
       key={active ? `active-${cycle}` : "idle"}
       className="absolute inset-0"
       style={{ zIndex: active ? 2 : 1 }}
-      initial={active ? { clipPath: "inset(0 0 0 100%)" } : false}
-      animate={{ clipPath: "inset(0 0 0 0%)" }}
-      transition={{ duration: 0.85, ease: [0.77, 0, 0.175, 1] }}
+      initial={active ? { clipPath: WIPE_HIDDEN } : false}
+      animate={{ clipPath: WIPE_SHOWN }}
+      transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
       aria-hidden={!active}
     >
       {img}
@@ -113,11 +115,12 @@ export function SistemaLandingHero() {
               />
             );
           })}
-          {/* 20px strip — fills the gap left of the shifted gradient only */}
-          <div className="absolute inset-y-0 left-0 w-[25px] bg-white" aria-hidden />
+          {/* 20px strip — fills the gap left of the shifted gradient only.
+              z-[3] so it stays ABOVE the wiping slide layers (which use z 1–2). */}
+          <div className="absolute inset-y-0 left-0 z-[3] w-[25px] bg-white" aria-hidden />
           {/* Two plateaus, tilted 25° up, shifted 20px right via background-position */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 z-[3]"
             style={{
               background:
                 "linear-gradient(65deg, #ffffff 0%, #ffffff 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
@@ -126,10 +129,10 @@ export function SistemaLandingHero() {
             }}
             aria-hidden
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-white/10 via-transparent to-transparent" />
           {/* Vignette — darkens corners subtly so the image reads richer, more cinematic */}
           <div
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-0 z-[3]"
             style={{
               background:
                 "radial-gradient(120% 90% at 70% 35%, transparent 55%, rgba(0,0,0,0.16) 100%)",
@@ -138,7 +141,7 @@ export function SistemaLandingHero() {
           />
           {/* Fine film grain — kills the flat/digital look, reads as premium print texture */}
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay"
+            className="pointer-events-none absolute inset-0 z-[3] opacity-[0.06] mix-blend-overlay"
             style={{
               backgroundImage:
                 "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
