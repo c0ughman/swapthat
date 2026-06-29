@@ -10,6 +10,7 @@ import Marquee from "@/components/Marquee";
 import { DotGrid } from "@/components/DecorativeSVGs";
 import Image from "next/image";
 import Link from "next/link";
+import { SHOW_PLACEHOLDER_CONTENT } from "@/lib/placeholderContent";
 
 const PROBLEM_HEADLINE_CHARS: { char: string; italic: boolean }[] = [
   ..."El problema no es invertir en marketing. ".split("").map((char) => ({ char, italic: false })),
@@ -36,6 +37,9 @@ const MARKETING_BAND_LIGHT = "var(--marketing-band-light)";
 
 /** Screenshot placeholders — overlaid outside card corners (like service icons), larger. */
 function ServiceCardScreenshotOverlay({ serviceIndex }: { serviceIndex: number }) {
+  // Empty "Screenshot" boxes — hidden until real product screenshots exist
+  if (!SHOW_PLACEHOLDER_CONTENT) return null;
+
   const baseWrap =
     "pointer-events-none absolute z-[7] aspect-[16/10] w-[12.5rem] sm:w-[14.5rem] md:w-[18rem] lg:w-[20rem]";
 
@@ -1622,7 +1626,8 @@ export default function MarketingPage() {
       <MarqueeBanner />
       <ProblemSection />
       <ApproachSection />
-      <ResultsSection />
+      {/* Results = invented stats + empty image grid — hidden until real case data exists */}
+      {SHOW_PLACEHOLDER_CONTENT ? <ResultsSection /> : null}
       <MarketingClientLogosSection />
       <ServicesSection />
       <ForWhomSection />

@@ -6,7 +6,7 @@ import { StarBurst } from "@/components/DecorativeSVGs";
 import Link from "next/link";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
-import { cartoon3dPath } from "@/lib/cartoonAssets";
+import { SHOW_PLACEHOLDER_CONTENT } from "@/lib/placeholderContent";
 import { useTransitionArrival } from "./CarouselTransition/useTransitionArrival";
 
 const HERO_SLIDESHOW_IMGS = ["/philosophy/1.webp", "/philosophy/2.webp", "/philosophy/3.webp", "/philosophy/4.webp", "/philosophy/5.webp"];
@@ -1045,39 +1045,52 @@ export function TeamsHomeHero({
               style={{ zIndex: SISTEMA_HERO_FLANK_Z }}
             >
               <div className="flex w-full max-w-[min(100%,1180px)] items-end justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
-                <SistemaHeroSideImageSet
-                  title="Antes"
-                  placeholders={SISTEMA_HERO_LEFT_PLACEHOLDERS}
-                  align="left"
-                  skippedInitialAnimation={skippedInitialAnimation}
-                />
+                {/* Antes/Después are empty placeholders — hidden until real photos exist */}
+                {SHOW_PLACEHOLDER_CONTENT ? (
+                  <SistemaHeroSideImageSet
+                    title="Antes"
+                    placeholders={SISTEMA_HERO_LEFT_PLACEHOLDERS}
+                    align="left"
+                    skippedInitialAnimation={skippedInitialAnimation}
+                  />
+                ) : null}
+                {/* Center focal point — polaroid of Andrea training */}
                 <motion.div
-                  className="flex shrink-0 items-end justify-center"
-                  initial={{ y: 260, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
+                  className="flex shrink-0 items-end justify-center pb-2 md:pb-4"
+                  initial={{ y: 260, opacity: 0, rotate: -4 }}
+                  animate={{ y: 0, opacity: 1, rotate: -3 }}
                   transition={{
                     y: { delay: 0.7, type: "spring", stiffness: 90, damping: 16, mass: 1 },
                     opacity: { delay: 0.7, duration: 0.55, ease: "easeOut" },
+                    rotate: { delay: 0.7, duration: 0.55, ease: "easeOut" },
                   }}
                 >
-                  <Image
-                    src={cartoon3dPath("jump.png")}
-                    alt=""
-                    width={1350}
-                    height={1350}
-                    className="mx-auto h-[min(82vh,640px)] w-auto max-w-none object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.14)] select-none will-change-transform sm:h-[min(88vh,720px)] md:h-[min(94vh,840px)] lg:h-[min(108vh,1180px)]"
-                    quality={Q.hero}
-                    priority
-                    sizes="(min-width: 1024px) 68vw, 98vw"
-                    draggable={false}
-                  />
+                  <div className="relative rounded-[0.5rem] bg-white p-3 pb-[3.5rem] shadow-[0_28px_70px_-20px_rgba(26,26,26,0.4)] sm:p-4 sm:pb-[4.5rem] md:p-5 md:pb-[5.5rem]">
+                    <div className="relative aspect-[3/4] w-[16rem] overflow-hidden bg-neutral-100 sm:w-[20rem] md:w-[24rem] lg:w-[28rem]">
+                      <Image
+                        src="/movement.webp"
+                        alt="Andrea entrenando"
+                        fill
+                        className="object-cover object-[center_25%]"
+                        sizes="(min-width: 1024px) 28rem, (min-width: 768px) 24rem, 80vw"
+                        quality={Q.hero}
+                        priority
+                        draggable={false}
+                      />
+                    </div>
+                    <p className="absolute inset-x-0 bottom-4 text-center font-serif text-[17px] italic tracking-wide text-foreground/70 sm:bottom-6 sm:text-[19px] md:bottom-8 md:text-[22px]">
+                      volver a ti
+                    </p>
+                  </div>
                 </motion.div>
-                <SistemaHeroSideImageSet
-                  title="Después"
-                  placeholders={SISTEMA_HERO_RIGHT_PLACEHOLDERS}
-                  align="right"
-                  skippedInitialAnimation={skippedInitialAnimation}
-                />
+                {SHOW_PLACEHOLDER_CONTENT ? (
+                  <SistemaHeroSideImageSet
+                    title="Después"
+                    placeholders={SISTEMA_HERO_RIGHT_PLACEHOLDERS}
+                    align="right"
+                    skippedInitialAnimation={skippedInitialAnimation}
+                  />
+                ) : null}
               </div>
             </div>
           ) : null}

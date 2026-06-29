@@ -15,6 +15,7 @@ import { TeamsPhilosophyOrbitSection } from "@/components/TeamsPhilosophyOrbitSe
 import HorizontalScroll from "@/components/HorizontalScroll";
 import { motion } from "framer-motion";
 import { getSwapThatAppHref } from "@/lib/swapThatAppUrl";
+import { SHOW_PLACEHOLDER_CONTENT } from "@/lib/placeholderContent";
 
 /** Three-card block only — orange / lime / black (rest of page is monochrome). */
 const CARD_ORANGE = "#f5a623";
@@ -722,24 +723,27 @@ function GrowthSection() {
           </div>
         </FramedSectionPanel>
 
-        <AnimatedSection delay={0.2} light>
-          <div className="mt-14 grid grid-cols-1 gap-4 md:mt-16 md:grid-cols-3 md:gap-5 lg:mt-20">
-            {GROWTH_FAKE_REVIEWS.map((t) => (
-              <div
-                key={t.name}
-                className="flex min-h-[16rem] flex-col rounded-2xl border border-foreground/8 bg-white p-6 py-7 shadow-sm sm:min-h-[17.5rem] md:min-h-[18rem]"
-              >
-                <FiveStars />
-                <p className="mt-2.5 flex-1 text-[13px] font-medium italic leading-snug text-foreground/70">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/35">
-                  — {t.name} · {t.role}
-                </p>
-              </div>
-            ))}
-          </div>
-        </AnimatedSection>
+        {/* Placeholder reviews — hidden until real member testimonials exist */}
+        {SHOW_PLACEHOLDER_CONTENT ? (
+          <AnimatedSection delay={0.2} light>
+            <div className="mt-14 grid grid-cols-1 gap-4 md:mt-16 md:grid-cols-3 md:gap-5 lg:mt-20">
+              {GROWTH_FAKE_REVIEWS.map((t) => (
+                <div
+                  key={t.name}
+                  className="flex min-h-[16rem] flex-col rounded-2xl border border-foreground/8 bg-white p-6 py-7 shadow-sm sm:min-h-[17.5rem] md:min-h-[18rem]"
+                >
+                  <FiveStars />
+                  <p className="mt-2.5 flex-1 text-[13px] font-medium italic leading-snug text-foreground/70">
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/35">
+                    — {t.name} · {t.role}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
+        ) : null}
       </div>
     </section>
   );

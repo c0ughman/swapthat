@@ -11,6 +11,7 @@ import { Q } from "@/lib/imageQuality";
 import { SistemaLandingHero } from "@/components/SistemaLandingHero";
 import { TeamsPhilosophyOrbitSection } from "@/components/TeamsPhilosophyOrbitSection";
 import HorizontalScroll from "@/components/HorizontalScroll";
+import { SHOW_PLACEHOLDER_CONTENT } from "@/lib/placeholderContent";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Framed panel — near-white beige outside, white squircle inside (overflow visible for cards/images)
@@ -1027,7 +1028,8 @@ export default function HomePage() {
 
       <HorizontalScroll className="bg-frame-outer">
         <ExperienceSection />
-        <CharlaTestimonialsSection />
+        {/* Testimonials are placeholder copy — hidden until real reviews exist */}
+        {SHOW_PLACEHOLDER_CONTENT ? <CharlaTestimonialsSection /> : null}
         <TrustedByLogoCloudSection />
       </HorizontalScroll>
 

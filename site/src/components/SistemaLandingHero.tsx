@@ -21,6 +21,58 @@ const SISTEMA_HERO_SLIDES: HeroSlide[] = [
 
 const HERO_SLIDE_INTERVAL_MS = 4500;
 
+/**
+ * One hero slide. When it becomes active it wipes in from the right edge over
+ * whatever was showing; once active it sits fully revealed underneath the next
+ * incoming wipe. Re-mounts its wipe layer on each activation (via `revealKey`)
+ * so the clip animation replays every cycle.
+ */
+function SlideLayer({
+  slide,
+  active,
+  priority,
+  cycle,
+}: {
+  slide: HeroSlide;
+  active: boolean;
+  priority: boolean;
+  /** Parent's slide index — changes every cycle so the active wipe replays. */
+  cycle: number;
+}) {
+  const img = (
+    <motion.div
+      className="absolute inset-0"
+      initial={false}
+      animate={active ? { scale: 1.08, x: slide.flip ? 10 : -10 } : { scale: 1.0, x: 0 }}
+      transition={{ duration: HERO_SLIDE_INTERVAL_MS / 1000 + 1, ease: "linear" }}
+    >
+      <Image
+        src={slide.src}
+        alt=""
+        fill
+        className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
+        sizes="(max-width: 768px) 100vw, 1280px"
+        quality={Q.hero}
+        priority={priority}
+      />
+    </motion.div>
+  );
+
+  return (
+    <motion.div
+      key={active ? `active-${cycle}` : "idle"}
+      className="absolute inset-0"
+      style={{ zIndex: active ? 2 : 1 }}
+      initial={active ? { clipPath: "inset(0 0 0 100%)" } : false}
+      animate={{ clipPath: "inset(0 0 0 0%)" }}
+      transition={{ duration: 0.85, ease: [0.77, 0, 0.175, 1] }}
+      aria-hidden={!active}
+    >
+      {img}
+    </motion.div>
+  );
+}
+
 /** Home (`/`) hero: equipos first; image carousel in the main panel, CTAs hacia contacto y Sistema. */
 export function SistemaLandingHero() {
   const primaryHref = "/contacto/equipos";
@@ -52,35 +104,13 @@ export function SistemaLandingHero() {
           {SISTEMA_HERO_SLIDES.map((slide, i) => {
             const active = i === slideIndex;
             return (
-              <motion.div
+              <SlideLayer
                 key={slide.src}
-                className="absolute inset-0"
-                animate={{ opacity: active ? 1 : 0 }}
-                transition={{ duration: 0.9, ease: "easeInOut" }}
-                aria-hidden={!active}
-              >
-                {/* Ken Burns: active slide drifts/zooms slowly for a living, premium feel */}
-                <motion.div
-                  className="absolute inset-0"
-                  initial={false}
-                  animate={
-                    active
-                      ? { scale: 1.08, x: slide.flip ? 10 : -10 }
-                      : { scale: 1.0, x: 0 }
-                  }
-                  transition={{ duration: HERO_SLIDE_INTERVAL_MS / 1000 + 1, ease: "linear" }}
-                >
-                  <Image
-                    src={slide.src}
-                    alt=""
-                    fill
-                    className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
-                    sizes="(max-width: 768px) 100vw, 1280px"
-                    quality={Q.hero}
-                    priority={i === 0}
-                  />
-                </motion.div>
-              </motion.div>
+                slide={slide}
+                active={active}
+                priority={i === 0}
+                cycle={slideIndex}
+              />
             );
           })}
           {/* 20px strip — fills the gap left of the shifted gradient only */}
