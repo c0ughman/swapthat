@@ -634,83 +634,67 @@ const GROWTH_FAKE_REVIEWS: { quote: string; name: string; role: string }[] = [
   },
 ];
 
-/** Top-right L-shape over “Más que fitness” (hero-style corner, smaller). */
-const GROWTH_TOPRIGHT_STICKER_PX = 88;
-const GROWTH_TOPRIGHT_STICKERS: { src: string; className: string }[] = [
-  { src: "/stickers/blueberry-cluster.webp", className: "right-0 top-0 z-[3] rotate-[6deg]" },
-  { src: "/stickers/frothy-mug-floral.webp", className: "right-[4.9rem] top-0.5 z-[2] -rotate-[4deg] sm:right-[5.1rem]" },
-  { src: "/stickers/wa-114932-2.webp", className: "right-0 top-[4.75rem] z-[1] rotate-[3deg] sm:top-[5rem]" },
-];
-
 function GrowthSection() {
   return (
     <section className={`relative py-14 md:py-32 ${SISTEMA_BEIGE_SECTION}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <FramedSectionPanel className="px-6 py-10 sm:px-8 sm:py-12 md:px-12 md:py-14 lg:px-16 lg:py-16">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
-            {/* Image */}
+        <FramedSectionPanel className="overflow-hidden px-6 py-10 sm:px-8 sm:py-12 md:px-12 md:py-14 lg:px-16 lg:py-16">
+          {/* Centered header */}
+          <AnimatedSection light>
+            <div className="mx-auto mb-12 max-w-2xl text-center md:mb-16">
+              <span className="mb-3 block text-sm font-semibold uppercase tracking-[0.2em] text-foreground/50">
+                Más que fitness
+              </span>
+              <h2 className="text-4xl font-bold leading-[1] tracking-tight md:text-5xl lg:text-[3.25rem]">
+                Por qué entrenar te hace <span className="italic font-light">crecer</span>
+              </h2>
+              <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-gray">
+                El fitness bien diseñado no solo cambia tu cuerpo. Cambia cómo te relacionas contigo.
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            {/* Polaroid — movement.webp, portrait, white frame with thick bottom */}
             <AnimatedSection direction="right" light>
-              <div className="relative">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-gray-light/50 shadow-sm">
-                  <Image
-                    src="/movement.webp"
-                    alt="Movimiento y entrenamiento al aire libre"
-                    fill
-                    className="object-cover object-center"
-                    sizes="(max-width: 1024px) 100vw, 42vw"
-                    quality={Q.photo}
-                    loading="eager"
-                    fetchPriority="high"
-                  />
-                </div>
+              <div className="relative mx-auto w-fit">
+                <motion.div
+                  initial={{ rotate: -3 }}
+                  whileHover={{ rotate: 0, y: -6 }}
+                  transition={{ type: "spring", stiffness: 120, damping: 14 }}
+                  className="relative rounded-[0.4rem] bg-white p-3 pb-16 shadow-[0_22px_55px_-18px_rgba(26,26,26,0.35)] sm:p-3.5 sm:pb-[4.5rem]"
+                >
+                  <div className="relative aspect-[3/4] w-[16rem] overflow-hidden bg-neutral-100 sm:w-[18rem] lg:w-[20rem]">
+                    <Image
+                      src="/movement.webp"
+                      alt="Andrea entrenando al aire libre"
+                      fill
+                      className="object-cover object-[center_25%]"
+                      sizes="(max-width: 1024px) 80vw, 20rem"
+                      quality={Q.photo}
+                      loading="eager"
+                      fetchPriority="high"
+                    />
+                  </div>
+                  {/* Handwritten-style caption on the thick bottom border */}
+                  <p className="absolute inset-x-0 bottom-5 text-center font-serif text-[15px] italic tracking-wide text-foreground/70 sm:bottom-6">
+                    volver a ti
+                  </p>
+                </motion.div>
                 <DotGrid className="absolute -bottom-6 -right-6 hidden lg:block" cols={5} rows={5} />
               </div>
             </AnimatedSection>
 
+            {/* Right column — numbered growth list + closing line */}
             <div>
               <AnimatedSection light>
-                <div className="relative min-h-0 sm:min-h-[8.5rem]">
-                  <div className="relative z-10 pr-0 sm:pr-[5.5rem] md:pr-[6.5rem]">
-                    <span className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground mb-2 block">
-                      Más que fitness
-                    </span>
-                    <FiveStars variant="section" />
-                    <h2 className="text-4xl md:text-5xl font-bold leading-[1] tracking-tight mb-8">
-                      Por qué entrenar te hace <span className="italic font-light">crecer</span>
-                    </h2>
-                  </div>
-                  <div
-                    className="pointer-events-none absolute -right-2 top-0 z-0 h-[12rem] w-[14rem] max-w-[min(100%,18rem)] overflow-visible sm:right-0 sm:h-[13rem] sm:w-[16rem] translate-x-6 -translate-y-4 hidden sm:block"
-                    aria-hidden
-                  >
-                    {GROWTH_TOPRIGHT_STICKERS.map((s) => (
-                      <div
-                        key={s.src}
-                        className={`absolute drop-shadow-[0_3px_10px_rgba(0,0,0,0.1)] ${s.className}`}
-                        style={{ width: GROWTH_TOPRIGHT_STICKER_PX, height: GROWTH_TOPRIGHT_STICKER_PX }}
-                      >
-                        <Image
-                          src={s.src}
-                          alt=""
-                          width={GROWTH_TOPRIGHT_STICKER_PX}
-                          height={GROWTH_TOPRIGHT_STICKER_PX}
-                          className="h-full w-full object-contain"
-                          quality={Q.section}
-                          loading="lazy"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection delay={0.05} light>
-                <p className="text-lg text-gray mb-8 leading-relaxed">
-                  El fitness bien diseñado no solo cambia tu cuerpo. Te enseña a:
+                <FiveStars variant="section" />
+                <p className="mb-6 mt-3 text-lg leading-relaxed text-gray">
+                  Un buen proceso de entrenamiento te enseña a:
                 </p>
               </AnimatedSection>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {[
                   "Regularte en lugar de exigirte",
                   "Confiar en ti y en tu proceso",
@@ -718,8 +702,8 @@ function GrowthSection() {
                   "Avanzar incluso con altibajos",
                 ].map((item, i) => (
                   <AnimatedSection key={i} delay={0.1 + i * 0.05} light>
-                    <div className="flex items-center gap-4 p-4 rounded-2xl hover:bg-black/[0.04] transition-colors duration-300 group">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 text-background bg-foreground transition-colors duration-300 group-hover:bg-foreground/85">
+                    <div className="group flex items-center gap-4 rounded-2xl border border-foreground/8 bg-frame-outer/60 p-4 transition-all duration-300 hover:border-foreground/15 hover:bg-frame-outer">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background transition-transform duration-300 group-hover:scale-110">
                         {i + 1}
                       </div>
                       <p className="text-lg">{item}</p>
@@ -729,9 +713,9 @@ function GrowthSection() {
               </div>
 
               <AnimatedSection delay={0.35} light>
-                <p className="text-gray mt-8 leading-relaxed">
+                <p className="mt-7 border-t border-foreground/8 pt-6 leading-relaxed text-gray">
                   Eso se traduce en cómo trabajas, cómo decides y cómo te relacionas contigo.{" "}
-                  <span className="text-foreground font-semibold">Entrenar también es crecer.</span>
+                  <span className="font-semibold text-foreground">Entrenar también es crecer.</span>
                 </p>
               </AnimatedSection>
             </div>

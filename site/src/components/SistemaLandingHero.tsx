@@ -49,25 +49,40 @@ export function SistemaLandingHero() {
       >
         {/* Cycling background — same photos as before, full-bleed in the panel */}
         <div className="absolute inset-0 bg-neutral-800" aria-hidden>
-          {SISTEMA_HERO_SLIDES.map((slide, i) => (
-            <motion.div
-              key={slide.src}
-              className="absolute inset-0"
-              animate={{ opacity: i === slideIndex ? 1 : 0 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-              aria-hidden={i !== slideIndex}
-            >
-              <Image
-                src={slide.src}
-                alt=""
-                fill
-                className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
-                sizes="(max-width: 768px) 100vw, 1280px"
-                quality={Q.hero}
-                priority={i === 0}
-              />
-            </motion.div>
-          ))}
+          {SISTEMA_HERO_SLIDES.map((slide, i) => {
+            const active = i === slideIndex;
+            return (
+              <motion.div
+                key={slide.src}
+                className="absolute inset-0"
+                animate={{ opacity: active ? 1 : 0 }}
+                transition={{ duration: 0.9, ease: "easeInOut" }}
+                aria-hidden={!active}
+              >
+                {/* Ken Burns: active slide drifts/zooms slowly for a living, premium feel */}
+                <motion.div
+                  className="absolute inset-0"
+                  initial={false}
+                  animate={
+                    active
+                      ? { scale: 1.08, x: slide.flip ? 10 : -10 }
+                      : { scale: 1.0, x: 0 }
+                  }
+                  transition={{ duration: HERO_SLIDE_INTERVAL_MS / 1000 + 1, ease: "linear" }}
+                >
+                  <Image
+                    src={slide.src}
+                    alt=""
+                    fill
+                    className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
+                    sizes="(max-width: 768px) 100vw, 1280px"
+                    quality={Q.hero}
+                    priority={i === 0}
+                  />
+                </motion.div>
+              </motion.div>
+            );
+          })}
           {/* 20px strip — fills the gap left of the shifted gradient only */}
           <div className="absolute inset-y-0 left-0 w-[25px] bg-white" aria-hidden />
           {/* Two plateaus, tilted 25° up, shifted 20px right via background-position */}
@@ -82,6 +97,25 @@ export function SistemaLandingHero() {
             aria-hidden
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent" />
+          {/* Vignette — darkens corners subtly so the image reads richer, more cinematic */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(120% 90% at 70% 35%, transparent 55%, rgba(0,0,0,0.16) 100%)",
+            }}
+            aria-hidden
+          />
+          {/* Fine film grain — kills the flat/digital look, reads as premium print texture */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+              backgroundSize: "160px 160px",
+            }}
+            aria-hidden
+          />
         </div>
 
         <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-center px-6 py-8 sm:px-8 md:min-h-0 md:px-14 lg:px-16">
@@ -141,7 +175,7 @@ export function SistemaLandingHero() {
             >
               <Link
                 href={primaryHref}
-                className="group inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-left text-sm font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark sm:text-center md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
+                className="group inline-flex w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-center text-[clamp(0.78rem,2.6vw,0.9rem)] font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark md:px-7 md:text-sm lg:w-auto xl:px-8"
               >
                 Quiero una charla para mi equipo
                 <svg

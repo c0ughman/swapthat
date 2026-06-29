@@ -217,7 +217,7 @@ function StackingCardsSection() {
         </p>
         <Link
           href="/contacto/equipos"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-blue px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-[clamp(0.8rem,3.4vw,0.875rem)] font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
         >
           Quiero una charla para mi equipo
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
@@ -455,6 +455,9 @@ function ExperienceSection() {
 // ─────────────────────────────────────────────────────────────────────────────
 // CHARLA TESTIMONIALS — under “Cómo se siente una charla”, light band
 // ─────────────────────────────────────────────────────────────────────────────
+// ⚠️ MISSING / PLACEHOLDER: these three testimonials are invented. Swap for real,
+// verified quotes (with name, role, sector, and ideally a real photo) before launch.
+// Also update CHARLA_TESTIMONIALS_SHORT below to match.
 const CHARLA_TESTIMONIALS = [
   {
     quote:
@@ -618,7 +621,7 @@ function TrustedByLogoCloudSection() {
             <p className="max-w-md text-base font-semibold leading-snug text-foreground md:text-lg md:text-xl">
               Menos exigencia. Más estructura consciente.
             </p>
-            <p className="max-w-md text-sm leading-snug text-foreground/80 md:text-base md:leading-relaxed md:text-[17px]">
+            <p className="max-w-md text-sm leading-snug text-foreground/60 md:text-base md:leading-relaxed md:text-lg">
               <span className="md:hidden">
                 Charlas y talleres con la filosofía Swap That: hábitos y regulación que sí aplican en el trabajo.
               </span>
@@ -629,7 +632,7 @@ function TrustedByLogoCloudSection() {
             </p>
             <Link
               href="/contacto/equipos"
-              className="mt-1 inline-flex w-fit items-center justify-center gap-2 self-center rounded-full bg-blue px-5 py-3 text-xs font-semibold text-white shadow-[0_10px_40px_rgba(99,102,241,0.25)] transition-colors hover:bg-blue-dark active:scale-[0.98] md:self-end md:px-8 md:py-4 md:text-base"
+              className="mt-1 inline-flex w-fit items-center justify-center gap-2 self-center whitespace-nowrap rounded-full bg-blue px-5 py-3 text-xs font-semibold text-white shadow-[0_10px_40px_rgba(99,102,241,0.25)] transition-colors hover:bg-blue-dark active:scale-[0.98] md:self-end md:px-8 md:py-4 md:text-base"
             >
               Quiero una charla para mi equipo
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
@@ -909,7 +912,7 @@ function CTASection() {
             <AnimatedSection delay={0.2}>
               <Link
                 href="/contacto/equipos"
-                className="group inline-flex items-center justify-center gap-3 rounded-full bg-blue px-10 py-5 text-lg font-medium text-white shadow-[0_10px_40px_rgba(99,102,241,0.25)] transition-all duration-300 hover:bg-blue-dark"
+                className="group inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-full bg-blue px-7 py-5 text-[clamp(0.95rem,3.6vw,1.125rem)] font-medium text-white shadow-[0_10px_40px_rgba(99,102,241,0.25)] transition-all duration-300 hover:bg-blue-dark md:px-10"
               >
                 Quiero una charla para mi equipo
                 <svg

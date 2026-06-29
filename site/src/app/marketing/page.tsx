@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useRef, type ReactNode } from "react";
 import type { MotionValue } from "framer-motion";
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useTransitionArrival } from "@/components/CarouselTransition/useTransitionArrival";
 import BlobShape from "@/components/BlobShape";
@@ -389,6 +389,27 @@ function HeroSection() {
                 Explorar servicios
               </Link>
             </motion.div>
+
+            {/* Trust badges — social proof under the CTAs (fills the empty hero space) */}
+            <motion.ul
+              layout={false}
+              initial={skippedInitialAnimation ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.65 }}
+              className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4 max-w-xl list-none p-0"
+            >
+              {HERO_TRUST_BADGES.map((badge) => (
+                <li key={badge.label} className="flex items-center gap-2.5">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral/8 text-coral">
+                    {badge.icon}
+                  </span>
+                  <span className="flex flex-col leading-tight">
+                    <span className="text-sm font-bold text-foreground">{badge.stat}</span>
+                    <span className="text-xs text-gray">{badge.label}</span>
+                  </span>
+                </li>
+              ))}
+            </motion.ul>
           </div>
         </div>
       </div>
@@ -396,6 +417,42 @@ function HeroSection() {
     </section>
   );
 }
+
+/**
+ * Hero trust badges — social proof. ⚠️ MISSING / PLACEHOLDER stats:
+ * confirm real numbers with Andrea (years, brands, ROAS) before launch.
+ */
+const HERO_TRUST_BADGES: { stat: string; label: string; icon: ReactNode }[] = [
+  {
+    stat: "+5 años",
+    label: "creciendo marcas",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+      </svg>
+    ),
+  },
+  {
+    stat: "+340% ROAS",
+    label: "en campañas Meta",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M3 3v18h18" />
+        <path d="M7 14l4-4 3 3 5-6" />
+      </svg>
+    ),
+  },
+  {
+    stat: "Meta Partner",
+    label: "ads con estructura",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M12 2l8.5 4.9v9.8L12 22l-8.5-5.3V6.9z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    ),
+  },
+];
 
 function ProblemSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -753,6 +810,9 @@ function ApproachSection() {
 }
 
 function ResultsSection() {
+  // ⚠️ MISSING / PLACEHOLDER: these headline stats (+340% ROAS, 0→80K, -60% CPL) and
+  // descriptions are invented. Replace with real case-study numbers + the actual
+  // result screenshots (the image grid below is also placeholder) before launch.
   const results = [
     {
       headline: "+340% en ROAS",
@@ -1218,103 +1278,45 @@ function ForWhomSection() {
 }
 
 function ProcessSteps({ steps }: { steps: string[] }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [svgData, setSvgData] = useState<{ pts: { x: number; y: number }[]; w: number; h: number } | null>(null);
-
-  useEffect(() => {
-    const calc = () => {
-      const c = containerRef.current;
-      if (!c) return;
-      const cr = c.getBoundingClientRect();
-      const pts = nodeRefs.current
-        .map((el) => {
-          if (!el) return null;
-          const r = el.getBoundingClientRect();
-          return { x: r.left + r.width / 2 - cr.left, y: r.top + r.height / 2 - cr.top };
-        })
-        .filter((p): p is { x: number; y: number } => p !== null);
-      if (pts.length >= 2) setSvgData({ pts, w: cr.width, h: cr.height });
-    };
-    // Wait for whileInView fade-ins to settle before measuring layout
-    const t = setTimeout(calc, 700);
-    window.addEventListener("resize", calc);
-    return () => { clearTimeout(t); window.removeEventListener("resize", calc); };
-  }, []);
-
   return (
     <div>
-      <div ref={containerRef} className="relative">
-
-        {/* SVG diagonal connecting line — measured after mount */}
-        {svgData && (
-          <svg
-            className="absolute inset-0 pointer-events-none"
-            width={svgData.w}
-            height={svgData.h}
-            style={{ overflow: "visible" }}
-            aria-hidden
-          >
-            <defs>
-              <linearGradient
-                id="diagGrad"
-                gradientUnits="userSpaceOnUse"
-                x1={svgData.pts[0].x} y1={svgData.pts[0].y}
-                x2={svgData.pts[svgData.pts.length - 1].x}
-                y2={svgData.pts[svgData.pts.length - 1].y}
-              >
-                <stop offset="0%" stopColor="#e85d75" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#e85d75" stopOpacity="0.1" />
-              </linearGradient>
-            </defs>
-            <polyline
-              points={svgData.pts.map((p) => `${p.x},${p.y}`).join(" ")}
-              stroke="url(#diagGrad)"
-              strokeWidth="1.5"
-              strokeDasharray="5 5"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </svg>
-        )}
+      {/* Straight vertical rail; each row nudges right on hover */}
+      <ol className="relative m-0 list-none p-0">
+        {/* Continuous vertical line running through the node centers (node = 3.5rem ⇒ center at 1.75rem) */}
+        <span
+          className="pointer-events-none absolute left-[1.75rem] top-7 bottom-7 w-px bg-gradient-to-b from-coral/70 via-coral/40 to-coral/10 md:left-[1.875rem]"
+          aria-hidden
+        />
 
         {steps.map((step, i) => (
-          <motion.div
+          <motion.li
             key={i}
-            className="group relative flex items-center gap-4 md:gap-6 py-2 md:py-5 cursor-default [--step-indent:24px] md:[--step-indent:38px]"
-            style={{ paddingLeft: `calc(${i} * var(--step-indent))` }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="group relative flex items-center gap-5 py-3 md:gap-6 md:py-4 cursor-default"
+            initial={{ opacity: 0, x: -12 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Node — solid coral circle */}
-            <div
-              ref={(el) => { nodeRefs.current[i] = el; }}
-              className="relative z-10 shrink-0 w-14 h-14 md:w-[3.75rem] md:h-[3.75rem] rounded-full bg-coral flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-              style={{
-                boxShadow: "0 4px 18px rgba(232,93,117,0.32)",
-                opacity: 1 - i * 0.06,
-              }}
-            >
-              <span className="relative z-10 text-white font-bold text-base md:text-lg tabular-nums">
-                {i + 1}
-              </span>
+            {/* Inner wrapper handles the hover slide so the entrance animation isn't fought */}
+            <div className="flex w-full items-center gap-5 transition-transform duration-300 ease-out group-hover:translate-x-2 md:gap-6">
+              {/* Node — solid coral circle, uniform size, sits on the rail */}
+              <div
+                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-coral transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(232,93,117,0.4)]"
+                style={{ boxShadow: "0 4px 18px rgba(232,93,117,0.28)" }}
+              >
+                <span className="relative z-10 text-base font-bold tabular-nums text-white md:text-lg">
+                  {i + 1}
+                </span>
+              </div>
+
+              {/* Step text — full strength, no fade ramp */}
+              <p className="text-[1.05rem] font-medium leading-snug text-foreground/80 transition-colors duration-300 group-hover:text-foreground md:text-[1.15rem]">
+                {step}
+              </p>
             </div>
-
-            {/* Short rule between node and text */}
-            <span className="shrink-0 w-5 h-px bg-coral/30 group-hover:bg-coral/60 transition-colors duration-300" aria-hidden />
-
-            {/* Step text */}
-            <p
-              className="text-[1.05rem] md:text-[1.15rem] font-medium leading-snug group-hover:text-foreground transition-colors duration-300"
-              style={{ color: `rgba(26,26,26,${1 - i * 0.07})` }}
-            >
-              {step}
-            </p>
-          </motion.div>
+          </motion.li>
         ))}
-      </div>
+      </ol>
 
       <motion.div
         className="relative -top-[30px] mt-8 flex w-full justify-end pr-[80px] md:mt-10"

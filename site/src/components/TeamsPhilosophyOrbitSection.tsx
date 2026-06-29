@@ -62,7 +62,7 @@ function PhilosophyOrbitHub({ sistemaVariant }: { sistemaVariant: boolean }) {
           </p>
           <Link
             href={TEAMS_CHARLA_CTA_HREF}
-            className="group relative z-20 inline-flex max-w-[min(100%,18rem)] items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-center text-sm font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+            className="group relative z-20 inline-flex w-fit items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-center text-[clamp(0.8rem,3.4vw,0.875rem)] font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
           >
             Quiero una charla para mi equipo
             <svg
@@ -238,7 +238,7 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
               <p className="text-2xl font-bold italic font-light tracking-tight text-blue">for Teams</p>
               <Link
                 href={TEAMS_CHARLA_CTA_HREF}
-                className="group inline-flex w-full max-w-sm items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+                className="group inline-flex w-fit items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-[clamp(0.8rem,3.4vw,0.875rem)] font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
               >
                 Quiero una charla para mi equipo
                 <svg

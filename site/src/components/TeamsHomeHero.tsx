@@ -49,7 +49,11 @@ type SistemaHeroSidePlaceholder = {
   bgClass: string;
 };
 
-/** Placeholder cards flanking the jump render — swap for final antes/después assets. */
+/**
+ * ⚠️ MISSING / PLACEHOLDER: empty cards flanking the jump render (left = "Antes",
+ * right = "Después"). Replace with the real before/after transformation photos
+ * of a real member before launch.
+ */
 const SISTEMA_HERO_LEFT_PLACEHOLDERS: SistemaHeroSidePlaceholder[] = [
   { width: 108, height: 136, rotateDeg: -2.5, bgClass: "bg-neutral-100" },
   { width: 108, height: 136, rotateDeg: 2.5, bgClass: "bg-neutral-200" },
