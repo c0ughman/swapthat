@@ -22,55 +22,44 @@ const SISTEMA_HERO_SLIDES: HeroSlide[] = [
 const HERO_SLIDE_INTERVAL_MS = 4500;
 
 /**
- * Diagonal wipe: the incoming slide sweeps in from the top-right corner along a
- * tilted leading edge. Implemented with an over-sized parallelogram clip-path
- * that travels from fully off-frame (top-right) to fully covering the frame.
- * Points are pushed past 0–100% so the slanted edge stays straight as it crosses.
+ * One hero slide. Simple cross-fade between slides (opacity only), with a slow
+ * Ken Burns drift on the active image underneath.
  */
-const WIPE_HIDDEN = "polygon(100% -40%, 160% -40%, 160% 60%, 40% 140%)";
-const WIPE_SHOWN = "polygon(-60% -40%, 160% -40%, 160% 140%, -60% 140%)";
 function SlideLayer({
   slide,
   active,
   priority,
-  cycle,
 }: {
   slide: HeroSlide;
   active: boolean;
   priority: boolean;
-  /** Parent's slide index — changes every cycle so the active wipe replays. */
-  cycle: number;
 }) {
-  const img = (
-    <motion.div
-      className="absolute inset-0"
-      initial={false}
-      animate={active ? { scale: 1.08, x: slide.flip ? 10 : -10 } : { scale: 1.0, x: 0 }}
-      transition={{ duration: HERO_SLIDE_INTERVAL_MS / 1000 + 1, ease: "linear" }}
-    >
-      <Image
-        src={slide.src}
-        alt=""
-        fill
-        className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
-        sizes="(max-width: 768px) 100vw, 1280px"
-        quality={Q.hero}
-        priority={priority}
-      />
-    </motion.div>
-  );
-
   return (
     <motion.div
-      key={active ? `active-${cycle}` : "idle"}
       className="absolute inset-0"
       style={{ zIndex: active ? 2 : 1 }}
-      initial={active ? { clipPath: WIPE_HIDDEN } : false}
-      animate={{ clipPath: WIPE_SHOWN }}
-      transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
+      initial={false}
+      animate={{ opacity: active ? 1 : 0 }}
+      transition={{ duration: 0.9, ease: "easeInOut" }}
       aria-hidden={!active}
     >
-      {img}
+      {/* Ken Burns: active slide drifts/zooms slowly for a living, premium feel */}
+      <motion.div
+        className="absolute inset-0"
+        initial={false}
+        animate={active ? { scale: 1.08, x: slide.flip ? 10 : -10 } : { scale: 1.0, x: 0 }}
+        transition={{ duration: HERO_SLIDE_INTERVAL_MS / 1000 + 1, ease: "linear" }}
+      >
+        <Image
+          src={slide.src}
+          alt=""
+          fill
+          className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
+          sizes="(max-width: 768px) 100vw, 1280px"
+          quality={Q.hero}
+          priority={priority}
+        />
+      </motion.div>
     </motion.div>
   );
 }
@@ -103,18 +92,14 @@ export function SistemaLandingHero() {
       >
         {/* Cycling background — same photos as before, full-bleed in the panel */}
         <div className="absolute inset-0 bg-neutral-800" aria-hidden>
-          {SISTEMA_HERO_SLIDES.map((slide, i) => {
-            const active = i === slideIndex;
-            return (
-              <SlideLayer
-                key={slide.src}
-                slide={slide}
-                active={active}
-                priority={i === 0}
-                cycle={slideIndex}
-              />
-            );
-          })}
+          {SISTEMA_HERO_SLIDES.map((slide, i) => (
+            <SlideLayer
+              key={slide.src}
+              slide={slide}
+              active={i === slideIndex}
+              priority={i === 0}
+            />
+          ))}
           {/* 20px strip — fills the gap left of the shifted gradient only.
               z-[3] so it stays ABOVE the wiping slide layers (which use z 1–2). */}
           <div className="absolute inset-y-0 left-0 z-[3] w-[25px] bg-white" aria-hidden />
