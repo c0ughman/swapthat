@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlobShape from "@/components/BlobShape";
 import Marquee from "@/components/Marquee";
@@ -124,12 +124,25 @@ function StackingCardsSection() {
   // Use scroll progress directly — spring can prevent animation from reaching final state
   const smoothProgress = scrollYProgress;
 
+  // Mobile shows the cards single-column (no left copy), so the final stack needs
+  // a bigger per-card offset — otherwise the 2-line titles get buried under the
+  // next card. Detect viewport once on mount + on resize.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const N = 5;
   // PX: pixel scale factor — compensates for switching from zoom:0.8 to font-size:80%.
   // All hard-coded px values are multiplied by this so the visual result stays identical.
   const PX = 0.8;
   const CARD_SCALE = 1.15;
-  const OFF = Math.round(56 * CARD_SCALE * PX);
+  // Mobile: larger reveal per card so each title band (up to 2 lines) stays visible.
+  const OFF = isMobile ? Math.round(98 * CARD_SCALE * PX) : Math.round(56 * CARD_SCALE * PX);
   const FINAL_YS = [0, 1 * OFF, 2 * OFF, 3 * OFF, (N - 1) * OFF];
 
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;

@@ -400,8 +400,10 @@ function WhatIsSection() {
               style={{ transformStyle: "preserve-3d" }}
               initial={{
                 opacity: 0,
-                y: 72,
-                scale: 0.78,
+                // Mobile: upright fade-up with no downward push, so a still-animating
+                // card never sweeps into the CTA below it.
+                y: noTilt ? 12 : 72,
+                scale: noTilt ? 1 : 0.78,
                 rotateX: noTilt ? 0 : 14,
                 rotateZ: noTilt ? 0 : (restRotateZ[i] ?? 0) * 1.6,
               }}
@@ -448,7 +450,7 @@ function WhatIsSection() {
         </div>
 
         <AnimatedSection light delay={0.2}>
-          <div className="mt-10 flex justify-center sm:mt-12 md:mt-14">
+          <div className="mt-20 flex justify-center sm:mt-14 md:mt-14">
             <Link
               href="/contacto/sistema#formulario"
               className={SISTEMA_CTA_ON_LIGHT}

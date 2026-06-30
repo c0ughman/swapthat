@@ -228,9 +228,13 @@ function pickSistemaEdgeSide(seed: number): 0 | 1 | 2 | 3 {
 
 function getSistemaStickerContentCore(viewportW: number) {
   /** Tight bounds around centered copy + jump image (not the full squircle). */
+  // Phones: widen the protected core so scatter stickers can't graze the copy
+  // column (e.g. a sticker landing over "a su ritmo").
   return viewportW >= 1024
     ? { l: 33, t: 7, r: 67, b: 91 }
-    : { l: 17, t: 6, r: 83, b: 92 };
+    : viewportW >= 768
+      ? { l: 17, t: 6, r: 83, b: 92 }
+      : { l: 9, t: 5, r: 91, b: 93 };
 }
 
 type PlacedSistemaSticker = { left: number; top: number; src: string; rot: number };
@@ -643,6 +647,12 @@ export function TeamsHomeHero({
     [viewportSize.w, viewportSize.h]
   );
 
+  // The 1.25× content scale is a desktop flourish; on phones it pushes the
+  // full-width CTAs past the squircle padding (buttons touch the screen edges)
+  // and overlaps copy. Scale down progressively on small viewports.
+  const sistemaContentScale =
+    viewportSize.w < 480 ? 1.0 : viewportSize.w < 768 ? 1.1 : SISTEMA_CONTENT_SCALE;
+
   const sistemaInnerTranslateY = swapThatSystemHero ? undefined : "translateY(-35px)";
   const sistemaHeadlineTranslate = swapThatSystemHero
     ? `scale(${SISTEMA_HEADLINE_INNER_SCALE})`
@@ -840,7 +850,7 @@ export function TeamsHomeHero({
               ? "relative z-[30] flex min-h-0 min-w-0 flex-1 flex-col items-center gap-0 origin-top w-full"
               : "translate-y-[50px]"
           }
-          style={swapThatSystemHero ? { transform: `scale(${SISTEMA_CONTENT_SCALE})` } : undefined}
+          style={swapThatSystemHero ? { transform: `scale(${sistemaContentScale})` } : undefined}
         >
           <div
             className={

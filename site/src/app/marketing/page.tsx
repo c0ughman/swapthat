@@ -482,7 +482,7 @@ function ProblemSection() {
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-7 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
-          <div className="-translate-y-[100px]">
+          <div className="lg:-translate-y-[100px]">
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70 mb-4 block">
               El problema
             </span>
@@ -512,9 +512,9 @@ function ProblemSection() {
           </div>
 
           <AnimatedSection delay={0.1} direction="left" light>
-            <div className="relative -translate-x-[120px] translate-y-[100px] overflow-visible px-2 py-6 text-white md:px-4 md:py-8">
+            <div className="relative overflow-visible px-2 py-6 text-white md:px-4 md:py-8 lg:-translate-x-[120px] lg:translate-y-[100px]">
               <div
-                className={`${MKT_X_STICKER_BASE} right-0 top-0 translate-x-[calc(40%-70px)] translate-y-[calc(-36%_-_40px)] rotate-[5deg] opacity-100`}
+                className={`${MKT_X_STICKER_BASE} left-0 top-0 -translate-x-3 -translate-y-[5.5rem] rotate-[5deg] opacity-100 lg:left-auto lg:right-0 lg:translate-x-[calc(40%-70px)] lg:-translate-y-[calc(36%_+_40px)]`}
                 aria-hidden
               >
                 <Image
@@ -525,7 +525,7 @@ function ProblemSection() {
                   className={`${MKT_X_STICKER_IMG} opacity-100`}
                 />
               </div>
-              <div className="relative z-10 flex flex-col items-end text-right">
+              <div className="relative z-10 flex flex-col items-start text-left lg:items-end lg:text-right">
                 <ul className="mb-10 max-w-md list-none space-y-4">
                   {results.map((item, i) => (
                     <li
