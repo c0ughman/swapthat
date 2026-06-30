@@ -243,9 +243,137 @@ type PlacedSistemaSticker = { left: number; top: number; src: string; rot: numbe
  * `/sistema` hero: random scatter hugging open margins around copy + image.
  * Each source may appear up to 5×; duplicates stay on opposite sides and at least ~2.25× apart.
  */
+/**
+ * Mobile `/sistema` hero scatter — deterministic, fully on-panel. Uses jittered-grid
+ * (blue-noise) placement: each side gutter is a column of evenly-spaced cells with one
+ * sticker jittered inside each, so coverage is even (no chunks, no bare patches) while
+ * still looking random. Sources are chosen so no two neighbours repeat. The center
+ * content column (copy + CTAs + jump art) is kept clear; a strip sits under the image.
+ */
+function buildSistemaMobileScatterItems(): ScatterItem[] {
+  const srcs = HERO_STICKER_SRCS;
+  const items: ScatterItem[] = [];
+
+  // Half-size sticker ≈ 3.3% of panel width. Wide side gutters so each row can hold
+  // 1–2 stickers at varied depths (breaks the "straight column" look); center
+  // (34–66%) stays clear of the copy + jump art.
+  const GUTTER = { lMin: 2, lMax: 33, rMin: 67, rMax: 98 } as const;
+
+  // Picks a source that differs from every already-placed sticker within `nearPct`,
+  // so duplicates never land next to each other. Falls back to least-recently-used.
+  const lastUseOrder: Record<string, number> = {};
+  let useTick = 0;
+  function pickSrc(left: number, top: number, seed: number): string {
+    const tooNear = new Set(
+      items
+        .filter((it) => {
+          const dl = parseFloat(it.left) - left;
+          const dt = (parseFloat(it.top) - top) * 0.62;
+          return Math.hypot(dl, dt) < 16; // ban same src within ~16%
+        })
+        .map((it) => it.src),
+    );
+    // Deterministic candidate order from the seed; first allowed one wins.
+    const start = Math.floor(sistemaScatterRnd(seed, 4) * srcs.length);
+    let best: string | null = null;
+    let bestAge = Infinity;
+    for (let o = 0; o < srcs.length; o++) {
+      const src = srcs[(start + o) % srcs.length]!;
+      const age = lastUseOrder[src] ?? -1; // older (smaller) = used longer ago
+      if (!tooNear.has(src)) {
+        return src; // first non-adjacent duplicate
+      }
+      if (age < bestAge) {
+        bestAge = age;
+        best = src;
+      }
+    }
+    return best ?? srcs[start]!;
+  }
+
+  const placed: { left: number; top: number }[] = [];
+  const MIN_GAP = 5; // % — no two stickers touch
+  function place(left: number, top: number, seed: number) {
+    for (const p of placed) {
+      if (Math.hypot(p.left - left, (p.top - top) * 0.6) < MIN_GAP) return; // skip overlaps
+    }
+    placed.push({ left, top });
+    const src = pickSrc(left, top, seed);
+    lastUseOrder[src] = useTick++;
+    const rot = (sistemaScatterRnd(seed, 2) - 0.5) * 30;
+    items.push({
+      src,
+      left: `${left.toFixed(1)}%`,
+      top: `${top.toFixed(1)}%`,
+      wave: true,
+      rotateDeg: Math.round(rot * 10) / 10,
+    });
+  }
+
+  // ── Side gutters: jittered grid, 1–2 stickers per row at varied depths ──
+  // Each row may drop a second sticker at a different horizontal depth and a vertical
+  // half-cell offset, so the field never lines up into a straight column.
+  const ROWS = 9;
+  const TOP = 6;
+  const BOTTOM = 88;
+  const rowH = (BOTTOM - TOP) / ROWS;
+  let seed = 200;
+  for (const side of ["l", "r"] as const) {
+    const min = side === "l" ? GUTTER.lMin : GUTTER.rMin;
+    const max = side === "l" ? GUTTER.lMax : GUTTER.rMax;
+    const span = max - min;
+    for (let row = 0; row < ROWS; row++) {
+      // Each row gets 1 or 2 stickers; ~55% of rows get a second one.
+      const second = sistemaScatterRnd(row * 13 + (side === "l" ? 0 : 500), 5) < 0.55;
+      const count = second ? 2 : 1;
+      for (let c = 0; c < count; c++) {
+        seed += 7;
+        // Vertical: spread the 2 within the cell (top-ish / bottom-ish) + jitter, so
+        // a paired row isn't a flat 2-across line either.
+        const vBias = count === 2 ? (c === 0 ? 0.1 : 0.55) : 0.2;
+        const top = TOP + (row + vBias + sistemaScatterRnd(seed, 0) * 0.45) * rowH;
+        // Horizontal: split the gutter into inner/outer halves and put each sticker
+        // in a different half, then jitter — guarantees depth variation across rows.
+        const half = count === 2 ? c : (row % 2); // alternate single ones inner/outer
+        const hStart = min + half * (span * 0.42);
+        const left = hStart + sistemaScatterRnd(seed, 1) * (span * 0.58);
+        const nearTop = top < 30;
+        // Keep the very top clear of the eyebrow/title/CTAs by pushing outward.
+        const adjLeft =
+          nearTop && side === "l" ? Math.max(min, left - 4)
+          : nearTop && side === "r" ? Math.min(max, left + 4)
+          : left;
+        place(adjLeft, top, seed);
+      }
+    }
+  }
+
+  // ── Bottom strip under the image — evenly spaced across the width with jitter ──
+  const BOTTOM_N = 6;
+  for (let k = 0; k < BOTTOM_N; k++) {
+    seed += 7;
+    const cellW = 84 / BOTTOM_N;
+    const left = 8 + (k + 0.2 + sistemaScatterRnd(seed, 0) * 0.6) * cellW;
+    const top = 91 + sistemaScatterRnd(seed, 1) * 6; // 91%..97%
+    place(left, top, seed);
+  }
+
+  return items;
+}
+
 function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): ScatterItem[] {
   const w = Math.max(320, viewportW);
   const h = Math.max(520, viewportH * 1.28);
+
+  // Mobile: the edge-hugging desktop algorithm collapses on a narrow viewport
+  // (almost no room beside the copy column), so it places only a sticker or two.
+  // Use a dedicated mobile layout instead: every sticker source once, fully inside
+  // the panel, woven through the open margins around the copy + image.
+  if (viewportW < 768) {
+    return buildSistemaMobileScatterItems();
+  }
+
+  const bounds = SISTEMA_SCATTER_BOUNDS;
 
   const core = getSistemaStickerContentCore(viewportW);
   /** Only exclude sticker centers that would overlap content — edges can graze the column. */
@@ -267,22 +395,22 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
   const maxCopiesPerSrc = 4;
   const midX = (ex.l + ex.r) / 2;
   const midY = (ex.t + ex.b) / 2;
-  const gridSpanL = SISTEMA_SCATTER_BOUNDS.r - SISTEMA_SCATTER_BOUNDS.l;
-  const gridSpanT = SISTEMA_SCATTER_BOUNDS.b - SISTEMA_SCATTER_BOUNDS.t;
+  const gridSpanL = bounds.r - bounds.l;
+  const gridSpanT = bounds.b - bounds.t;
 
   function scatterGridKey(l: number, t: number): string {
     const gx = Math.min(
       SISTEMA_SCATTER_GRID.cols - 1,
       Math.max(
         0,
-        Math.floor(((l - SISTEMA_SCATTER_BOUNDS.l) / gridSpanL) * SISTEMA_SCATTER_GRID.cols)
+        Math.floor(((l - bounds.l) / gridSpanL) * SISTEMA_SCATTER_GRID.cols)
       )
     );
     const gy = Math.min(
       SISTEMA_SCATTER_GRID.rows - 1,
       Math.max(
         0,
-        Math.floor(((t - SISTEMA_SCATTER_BOUNDS.t) / gridSpanT) * SISTEMA_SCATTER_GRID.rows)
+        Math.floor(((t - bounds.t) / gridSpanT) * SISTEMA_SCATTER_GRID.rows)
       )
     );
     return `${gx}-${gy}`;
@@ -290,10 +418,10 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
 
   function gridCellBlocked(gx: number, gy: number): boolean {
     const l =
-      SISTEMA_SCATTER_BOUNDS.l +
+      bounds.l +
       ((gx + 0.5) / SISTEMA_SCATTER_GRID.cols) * gridSpanL;
     const t =
-      SISTEMA_SCATTER_BOUNDS.t +
+      bounds.t +
       ((gy + 0.5) / SISTEMA_SCATTER_GRID.rows) * gridSpanT;
     return inBlocked(l, t);
   }
@@ -331,10 +459,10 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
     if (
       inBlocked(l, t) ||
       inTopCenterBand(l, t) ||
-      l < SISTEMA_SCATTER_BOUNDS.l ||
-      l > SISTEMA_SCATTER_BOUNDS.r ||
-      t < SISTEMA_SCATTER_BOUNDS.t ||
-      t > SISTEMA_SCATTER_BOUNDS.b ||
+      l < bounds.l ||
+      l > bounds.r ||
+      t < bounds.t ||
+      t > bounds.b ||
       t + halfH > 99.5
     ) {
       return false;
@@ -425,8 +553,8 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
     }
     if (side === 2) {
       const upperLeft = sistemaScatterRnd(seed, 6) < 0.5;
-      const upperSpan = Math.max(5, ex.t - SISTEMA_SCATTER_BOUNDS.t);
-      const upperT = SISTEMA_SCATTER_BOUNDS.t + alongTopBias * upperSpan;
+      const upperSpan = Math.max(5, ex.t - bounds.t);
+      const upperT = bounds.t + alongTopBias * upperSpan;
       if (upperLeft) {
         return {
           l: ex.l - halfW * hugSide,
@@ -440,7 +568,7 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
     }
     return {
       l: core.l - alongPad + along * (core.r - core.l + alongPad * 2),
-      t: Math.min(SISTEMA_SCATTER_BOUNDS.b, ex.b + halfH * Math.min(hugSide, 0.88)),
+      t: Math.min(bounds.b, ex.b + halfH * Math.min(hugSide, 0.88)),
     };
   }
 
@@ -461,23 +589,23 @@ function buildSistemaRandomScatterItems(viewportW: number, viewportH: number): S
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const seed = qi * 131 + attempt * 17;
       const nearEdge = attempt % 6 !== 0;
-      const spanL = SISTEMA_SCATTER_BOUNDS.r - SISTEMA_SCATTER_BOUNDS.l;
-      const spanT = SISTEMA_SCATTER_BOUNDS.b - SISTEMA_SCATTER_BOUNDS.t;
+      const spanL = bounds.r - bounds.l;
+      const spanT = bounds.b - bounds.t;
       const { l: rawL, t: rawT } = nearEdge
         ? sampleNearContentEdge(seed)
         : {
-            l: SISTEMA_SCATTER_BOUNDS.l + sistemaScatterRnd(seed, 0) * spanL,
+            l: bounds.l + sistemaScatterRnd(seed, 0) * spanL,
             t:
-              SISTEMA_SCATTER_BOUNDS.t +
+              bounds.t +
               Math.pow(sistemaScatterRnd(seed, 1), 1.25) * spanT,
           };
       const l = Math.min(
-        SISTEMA_SCATTER_BOUNDS.r,
-        Math.max(SISTEMA_SCATTER_BOUNDS.l, rawL)
+        bounds.r,
+        Math.max(bounds.l, rawL)
       );
       const t = Math.min(
-        SISTEMA_SCATTER_BOUNDS.b,
-        Math.max(SISTEMA_SCATTER_BOUNDS.t, rawT)
+        bounds.b,
+        Math.max(bounds.t, rawT)
       );
       const { h: hImb, v: vImb } = zoneImbalance();
       if (hImb > 2 && l > midX + 3) continue;
@@ -668,7 +796,7 @@ export function TeamsHomeHero({
     : "clamp(2.8rem, 7.1vw, 5.65rem)";
   /** Sistema: tighter headline scale on all breakpoints. */
   const sistemaHeadlineSizeClass =
-    "text-[clamp(1.85rem,6.8vw,2.75rem)] sm:text-[clamp(2.15rem,7.2vw,3.15rem)] md:text-[clamp(2.55rem,5.8vw,4.65rem)]";
+    "text-[clamp(2.6rem,9.5vw,3.6rem)] sm:text-[clamp(2.15rem,7.2vw,3.15rem)] md:text-[clamp(2.55rem,5.8vw,4.65rem)]";
 
   const eyebrowLineClass = swapThatSystemHero ? "bg-black" : "bg-blue";
   const eyebrowLabelClass = swapThatSystemHero ? "text-black" : "text-blue";
@@ -677,10 +805,10 @@ export function TeamsHomeHero({
     ? "h-0.5 w-[9rem] mx-auto origin-center shrink-0 bg-gradient-to-r from-black/35 to-black/15"
     : "h-0.5 w-[9rem] shrink-0 bg-gradient-to-r from-blue/45 to-coral/35";
   const primaryCtaClass = swapThatSystemHero
-    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-black px-[1.65rem] py-[0.55rem] text-[0.9625rem] font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:gap-2 md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
+    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-black px-[1.65rem] py-[0.95rem] text-[0.9625rem] font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:gap-2 md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
     : `group inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-blue px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-md shadow-blue/22 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-blue-dark sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const secondaryCtaClass = swapThatSystemHero
-    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-black/25 bg-white/85 px-[1.65rem] py-[0.55rem] text-[0.9625rem] font-semibold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
+    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-black/25 bg-white/85 px-[1.65rem] py-[0.95rem] text-[0.9625rem] font-semibold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
     : `inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-foreground/18 bg-white/75 px-5 py-2.5 text-[0.75rem] font-bold text-foreground ${HERO_BODY_GLOW} ${HERO_BTN_HALO} backdrop-blur-[2px] transition-all duration-300 hover:bg-foreground/[0.06] sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const pillClass = swapThatSystemHero
     ? `flex items-center gap-1 rounded-full border border-black/20 bg-white/75 px-2.5 py-1 text-[0.6875rem] leading-tight text-foreground/90 backdrop-blur-sm sm:text-[0.75rem] ${HERO_BODY_GLOW} shadow-[0_2px_10px_rgba(255,255,255,0.55)]`
@@ -806,7 +934,7 @@ export function TeamsHomeHero({
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative z-[2] mx-5 mt-0 flex min-w-0 flex-col rounded-[2.5rem] border border-beige-dark/55 bg-white shadow-[0_14px_44px_-12px_rgba(26,26,26,0.11)] md:mx-8 md:rounded-[3rem] lg:mx-10 ${
           swapThatSystemHero
-            ? "min-h-[min(165vh,1475px)] overflow-visible pt-6 pb-[min(20vh,180px)] md:pt-8 md:pb-[min(22vh,200px)] lg:pt-9"
+            ? "min-h-[min(128vh,1475px)] overflow-visible pt-6 pb-[min(10vh,180px)] md:min-h-[min(165vh,1475px)] md:pt-8 md:pb-[min(22vh,200px)] lg:pt-9"
             : "min-h-0 min-w-0 flex-1 overflow-hidden pt-8"
         }`}
       >
@@ -1034,7 +1162,7 @@ export function TeamsHomeHero({
                 initial={skippedInitialAnimation ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
-                className={`${swapThatSystemHero ? "mt-[21px] md:mt-[25px]" : "mt-4 md:mt-5"} flex w-full flex-wrap gap-2 ${
+                className={`${swapThatSystemHero ? "mt-[21px] md:mt-[25px] max-md:hidden" : "mt-4 md:mt-5"} flex w-full flex-wrap gap-2 ${
                   swapThatSystemHero ? "justify-center" : "justify-center"
                 }`}
               >
@@ -1053,7 +1181,7 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[86px] md:-translate-y-[90px]"
+              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[40px] md:-translate-y-[90px]"
               style={{ zIndex: SISTEMA_HERO_FLANK_Z }}
             >
               <div className="flex w-full max-w-[min(100%,1180px)] items-end justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
@@ -1083,7 +1211,7 @@ export function TeamsHomeHero({
                         src="/movement.webp"
                         alt="Andrea entrenando"
                         fill
-                        className="object-cover object-[center_25%]"
+                        className="object-cover object-[center_55%] md:object-[center_25%]"
                         sizes="(min-width: 1024px) 28rem, (min-width: 768px) 24rem, 80vw"
                         quality={Q.hero}
                         priority
@@ -1110,7 +1238,7 @@ export function TeamsHomeHero({
 
         {swapThatSystemHero ? (
           <div
-            className="pointer-events-none absolute inset-0 z-[20] overflow-visible select-none"
+            className="pointer-events-none absolute inset-0 z-[20] overflow-visible select-none max-md:z-[46]"
             aria-hidden
           >
             <div className="relative h-full w-full">
@@ -1125,7 +1253,7 @@ export function TeamsHomeHero({
                         ? Math.round(HERO_CAT_STICKER_PX * SISTEMA_STICKER_SCALE * SISTEMA_STICKER_RENDER_SCALE)
                         : Math.round(SISTEMA_STICKER_PX * SISTEMA_STICKER_RENDER_SCALE)
                     }
-                    scale={viewportSize.w < 640 ? 0.86 : 1}
+                    scale={viewportSize.w < 768 ? 0.5 : viewportSize.w < 640 ? 0.86 : 1}
                   />
                 ))}
             </div>

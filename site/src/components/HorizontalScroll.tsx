@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useLayoutEffect, Children } from "react";
+import { useRef, useLayoutEffect, useState, useEffect, Children } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HorizontalScrollBottomWaves, {
   WAVE_PARALLAX_BACK,
   WAVE_PARALLAX_FRONT,
+  WAVE_LENGTH_MULTIPLIER,
 } from "@/components/HorizontalScrollBottomWaves";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,6 +29,21 @@ export default function HorizontalScroll({
   const wavesBackRef = useRef<HTMLDivElement>(null);
   const wavesFrontRef = useRef<HTMLDivElement>(null);
   const panelCount = Children.count(children);
+
+  // Mobile squishes the wave strip into a much narrower physical width, sharpening
+  // the wavelengths. Widen the strip (longer wavelength) and slow the parallax.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const waveLengthMultiplier = isMobile ? WAVE_LENGTH_MULTIPLIER * 2.4 : WAVE_LENGTH_MULTIPLIER;
+  const waveParallaxBack = isMobile ? WAVE_PARALLAX_BACK * 0.12 : WAVE_PARALLAX_BACK;
+  const waveParallaxFront = isMobile ? WAVE_PARALLAX_FRONT * 0.12 : WAVE_PARALLAX_FRONT;
 
   useLayoutEffect(() => {
     const outer = outerRef.current;
@@ -72,27 +88,40 @@ export default function HorizontalScroll({
         ease: "none",
         scrollTrigger,
       });
+      // Waves: the strip is far wider than the viewport, so its resting position is
+      // a big negative startX. We must SET that immediately (fromTo) and only scrub
+      // the small parallax delta — otherwise the tween animates the whole startX
+      // offset across the scroll and the waves appear to race sideways no matter how
+      // small the parallax factor is.
       if (showBottomWaves && wavesBack) {
-        gsap.to(wavesBack, {
-          x: () => {
-            const { scrollX } = getMetrics();
-            const startX = -(wavesBack.offsetWidth - outer.clientWidth);
-            return startX - scrollX * WAVE_PARALLAX_BACK;
+        gsap.fromTo(
+          wavesBack,
+          { x: () => -(wavesBack.offsetWidth - outer.clientWidth) },
+          {
+            x: () => {
+              const { scrollX } = getMetrics();
+              const startX = -(wavesBack.offsetWidth - outer.clientWidth);
+              return startX - scrollX * waveParallaxBack;
+            },
+            ease: "none",
+            scrollTrigger,
           },
-          ease: "none",
-          scrollTrigger,
-        });
+        );
       }
       if (showBottomWaves && wavesFront) {
-        gsap.to(wavesFront, {
-          x: () => {
-            const { scrollX } = getMetrics();
-            const startX = -(wavesFront.offsetWidth - outer.clientWidth);
-            return startX - scrollX * WAVE_PARALLAX_FRONT;
+        gsap.fromTo(
+          wavesFront,
+          { x: () => -(wavesFront.offsetWidth - outer.clientWidth) },
+          {
+            x: () => {
+              const { scrollX } = getMetrics();
+              const startX = -(wavesFront.offsetWidth - outer.clientWidth);
+              return startX - scrollX * waveParallaxFront;
+            },
+            ease: "none",
+            scrollTrigger,
           },
-          ease: "none",
-          scrollTrigger,
-        });
+        );
       }
     }, outer);
 
@@ -118,7 +147,7 @@ export default function HorizontalScroll({
       window.removeEventListener("resize", onWindowResize);
       outer.style.height = "";
     };
-  }, [panelCount, showBottomWaves]);
+  }, [panelCount, showBottomWaves, waveParallaxBack, waveParallaxFront]);
 
   return (
     <div
@@ -134,6 +163,7 @@ export default function HorizontalScroll({
             panelCount={panelCount}
             backRef={wavesBackRef}
             frontRef={wavesFrontRef}
+            lengthMultiplier={waveLengthMultiplier}
           />
         ) : null}
       </div>

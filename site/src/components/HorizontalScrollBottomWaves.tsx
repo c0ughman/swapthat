@@ -68,14 +68,17 @@ type HorizontalScrollBottomWavesProps = {
   panelCount: number;
   backRef: RefObject<HTMLDivElement | null>;
   frontRef: RefObject<HTMLDivElement | null>;
+  /** Extra horizontal stretch (mobile widens the strip so waves aren't squished). */
+  lengthMultiplier?: number;
 };
 
 export default function HorizontalScrollBottomWaves({
   panelCount,
   backRef,
   frontRef,
+  lengthMultiplier = WAVE_LENGTH_MULTIPLIER,
 }: HorizontalScrollBottomWavesProps) {
-  const trackWidthVw = panelCount * 100 * WAVE_LENGTH_MULTIPLIER;
+  const trackWidthVw = panelCount * 100 * lengthMultiplier;
 
   const waveFront = useMemo(
     () =>

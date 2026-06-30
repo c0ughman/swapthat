@@ -156,7 +156,14 @@ function StackingCardsSection() {
   const START_X = Math.round(-90 * CARD_SCALE * PX);  // Start left of center
   const START_Y = Math.round(880 * CARD_SCALE * PX);  // Start well below viewport so cards are hidden until animation begins
   const CTRL_X = 0;       // Control above destination → arc sweeps left-to-right, tangent starts up-right
-  const CTRL_Y = Math.round(280 * CARD_SCALE * PX);  // Peak above final stack — all cards approach from above, no tangent reversal
+  // Peak must stay above ALL final Ys (incl. the last card's max offset) so every
+  // card approaches from above — otherwise the tangent reverses and the last card
+  // spins/loops into place. Mobile's larger OFF pushes the bottom card down, so the
+  // control point has to clear it too.
+  const CTRL_Y = Math.max(
+    Math.round(280 * CARD_SCALE * PX),
+    (N - 1) * OFF + Math.round(40 * CARD_SCALE * PX),
+  );
 
   const cardTransform = (i: number) => (p: number) => {
     const pScaled = Math.min(1, p / ANIMATION_COMPLETE_AT);
@@ -231,7 +238,7 @@ function StackingCardsSection() {
         </p>
         <Link
           href="/contacto/equipos"
-          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-[clamp(0.8rem,3.4vw,0.875rem)] font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-7 py-4 text-[clamp(0.9rem,3.8vw,1rem)] font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
         >
           Quiero una charla para mi equipo
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>

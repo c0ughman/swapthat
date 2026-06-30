@@ -29,10 +29,12 @@ function SlideLayer({
   slide,
   active,
   priority,
+  objectPosition,
 }: {
   slide: HeroSlide;
   active: boolean;
   priority: boolean;
+  objectPosition: string;
 }) {
   return (
     <motion.div
@@ -50,21 +52,28 @@ function SlideLayer({
         animate={active ? { scale: 1.08, x: slide.flip ? 10 : -10 } : { scale: 1.0, x: 0 }}
         transition={{ duration: HERO_SLIDE_INTERVAL_MS / 1000 + 1, ease: "linear" }}
       >
-        <Image
-          src={slide.src}
-          alt=""
-          fill
-          className={`object-cover object-[center_35%] ${slide.flip ? "-scale-x-100" : ""}`}
-          sizes="(max-width: 768px) 100vw, 1280px"
-          quality={Q.hero}
-          priority={priority}
-          fetchPriority={priority ? "high" : undefined}
-          loading={priority ? "eager" : undefined}
-          // First slide is the LCP image: serve the raw .webp (already small) so
-          // there's no image-optimizer round-trip — the priority preload then
-          // points straight at the file and it lands as fast as the page.
-          unoptimized={priority}
-        />
+        {/* Mobile: the panel is narrower than these portrait photos, so object-cover
+            already shows the full image height — vertical object-position alone does
+            nothing. This wrapper scales the image up from its bottom edge so the
+            lower-middle of the subject fills the frame and the top is pushed out. */}
+        <div className="absolute inset-0 origin-bottom scale-[1.45] md:scale-100 md:origin-center">
+          <Image
+            src={slide.src}
+            alt=""
+            fill
+            className={`object-cover ${slide.flip ? "-scale-x-100" : ""}`}
+            style={{ objectPosition }}
+            sizes="(max-width: 768px) 100vw, 1280px"
+            quality={Q.hero}
+            priority={priority}
+            fetchPriority={priority ? "high" : undefined}
+            loading={priority ? "eager" : undefined}
+            // First slide is the LCP image: serve the raw .webp (already small) so
+            // there's no image-optimizer round-trip — the priority preload then
+            // points straight at the file and it lands as fast as the page.
+            unoptimized={priority}
+          />
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -77,6 +86,18 @@ export function SistemaLandingHero() {
   const { skippedInitialAnimation } = useTransitionArrival();
   const [slideIndex, setSlideIndex] = useState(0);
 
+  // Mobile crops these portrait photos into a tall panel — focus the lower-middle
+  // of the frame (not dead center). Desktop keeps the upper-third framing.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  const heroObjectPosition = isMobile ? "center 75%" : "center 35%";
+
   useEffect(() => {
     const id = setInterval(
       () => setSlideIndex((i) => (i + 1) % SISTEMA_HERO_SLIDES.length),
@@ -86,7 +107,7 @@ export function SistemaLandingHero() {
   }, []);
 
   return (
-    <section className="relative flex h-screen flex-col overflow-hidden bg-blue pt-[calc(5rem+10px)] pb-[clamp(5.5rem,24vw,8rem)] md:pb-8 lg:pb-10">
+    <section className="relative flex h-[calc(100vh+140px)] flex-col overflow-hidden bg-blue pt-[calc(5rem+10px)] pb-[clamp(5.5rem,24vw,8rem)] md:h-screen md:pb-8 lg:pb-10">
       <div className="pointer-events-none absolute top-1/4 right-0 hidden h-2/3 w-1/3 rounded-l-[6rem] bg-white/[0.07] lg:block" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-64 rounded-tr-[4rem] bg-blue-dark/35 md:h-56 md:w-80" />
 
@@ -104,19 +125,30 @@ export function SistemaLandingHero() {
               slide={slide}
               active={i === slideIndex}
               priority={i === 0}
+              objectPosition={heroObjectPosition}
             />
           ))}
           {/* 20px strip — fills the gap left of the shifted gradient only.
-              z-[3] so it stays ABOVE the wiping slide layers (which use z 1–2). */}
-          <div className="absolute inset-y-0 left-0 z-[3] w-[25px] bg-white" aria-hidden />
-          {/* Two plateaus, tilted 25° up, shifted 20px right via background-position */}
+              z-[3] so it stays ABOVE the wiping slide layers (which use z 1–2). Desktop only. */}
+          <div className="absolute inset-y-0 left-0 z-[3] hidden w-[25px] bg-white md:block" aria-hidden />
+          {/* Desktop: two plateaus, tilted 25° up, shifted 20px right via background-position */}
           <div
-            className="absolute inset-0 z-[3]"
+            className="absolute inset-0 z-[3] hidden md:block"
             style={{
               background:
                 "linear-gradient(65deg, #ffffff 0%, #ffffff 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
               backgroundSize: "120% 120%",
               backgroundPosition: "20px center",
+            }}
+            aria-hidden
+          />
+          {/* Mobile: strong bottom-up white gradient — image reads at the top (and
+              faintly mid), lower portion fades to solid white where the copy sits. */}
+          <div
+            className="absolute inset-0 z-[3] md:hidden"
+            style={{
+              background:
+                "linear-gradient(to top, #ffffff 0%, #ffffff 44%, rgba(255,255,255,0.85) 58%, rgba(255,255,255,0) 84%)",
             }}
             aria-hidden
           />
@@ -142,7 +174,7 @@ export function SistemaLandingHero() {
           />
         </div>
 
-        <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-center px-6 py-8 sm:px-8 md:min-h-0 md:px-14 lg:px-16">
+        <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-end px-6 py-8 max-md:pb-6 sm:px-8 md:items-center md:min-h-0 md:px-14 lg:px-16">
           <div className="w-full max-w-2xl text-foreground">
             <motion.div
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
@@ -199,7 +231,7 @@ export function SistemaLandingHero() {
             >
               <Link
                 href={primaryHref}
-                className="group inline-flex w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-center text-[clamp(0.78rem,2.6vw,0.9rem)] font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark md:px-7 md:text-sm lg:w-auto xl:px-8"
+                className="group inline-flex w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-6 py-5 text-center text-[clamp(0.875rem,3.4vw,1rem)] font-bold leading-tight text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark md:px-7 md:py-3.5 md:text-sm lg:w-auto xl:px-8"
               >
                 Quiero una charla para mi equipo
                 <svg
@@ -216,7 +248,7 @@ export function SistemaLandingHero() {
               </Link>
               <Link
                 href={secondaryHref}
-                className="inline-flex w-full shrink-0 items-center justify-center rounded-full border border-foreground/18 bg-white/80 px-6 py-3.5 text-center text-sm font-bold leading-tight text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white/95 md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
+                className="inline-flex w-full shrink-0 items-center justify-center rounded-full border border-foreground/18 bg-white/80 px-6 py-5 text-center text-[clamp(0.875rem,3.4vw,1rem)] font-bold leading-tight text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white/95 md:py-3.5 md:text-sm md:px-7 lg:w-auto lg:whitespace-nowrap xl:px-8"
               >
                 Coaching 1-on-1
               </Link>
@@ -226,7 +258,7 @@ export function SistemaLandingHero() {
               initial={skippedInitialAnimation ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 1.1 }}
-              className="mt-8 flex flex-wrap gap-3"
+              className="mt-8 hidden flex-wrap gap-3 md:flex"
             >
               {["Bienestar real", "Sin culpa", "Equipos que rinden más"].map((pill, i) => (
                 <span

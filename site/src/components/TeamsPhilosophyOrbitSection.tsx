@@ -235,10 +235,9 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
 
           {!sistemaVariant && (
             <div className="flex flex-col items-center gap-4 px-2 pb-2 lg:hidden">
-              <p className="text-2xl font-bold italic font-light tracking-tight text-blue">for Teams</p>
               <Link
                 href={TEAMS_CHARLA_CTA_HREF}
-                className="group inline-flex w-fit items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-3.5 text-[clamp(0.8rem,3.4vw,0.875rem)] font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
+                className="group inline-flex w-fit items-center justify-center gap-2 whitespace-nowrap rounded-full bg-blue px-7 py-4 text-[clamp(0.9rem,3.8vw,1rem)] font-bold text-white shadow-lg shadow-blue/25 transition-all duration-300 hover:bg-blue-dark"
               >
                 Quiero una charla para mi equipo
                 <svg

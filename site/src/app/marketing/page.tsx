@@ -373,7 +373,7 @@ function HeroSection() {
             >
               <Link
                 href="/contacto/marketing#formulario"
-                className="group inline-flex items-center justify-center gap-2 bg-coral text-white px-8 py-4 rounded-full text-base font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
+                className="group inline-flex items-center justify-center gap-2 bg-coral text-white px-8 py-5 sm:py-4 rounded-full text-base font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
               >
                 Hablemos de tu marca
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:translate-x-1 transition-transform">
@@ -382,7 +382,7 @@ function HeroSection() {
               </Link>
               <Link
                 href="/contacto/marketing#formulario"
-                className="inline-flex items-center justify-center gap-2 border-2 border-foreground/10 px-8 py-4 rounded-full text-base font-medium hover:border-coral/30 transition-all duration-300 max-sm:mb-8 max-sm:self-end"
+                className="inline-flex items-center justify-center gap-2 border-2 border-foreground/10 px-8 py-5 sm:py-4 rounded-full text-base font-medium hover:border-coral/30 transition-all duration-300 max-sm:mb-8 max-sm:self-end"
               >
                 Explorar servicios
               </Link>
@@ -394,7 +394,7 @@ function HeroSection() {
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.65 }}
-              className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4 max-w-xl list-none p-0"
+              className="mt-3 mb-10 flex flex-wrap items-center gap-x-7 gap-y-4 max-w-xl list-none p-0 md:mt-4 md:mb-0"
             >
               {HERO_TRUST_BADGES.map((badge) => (
                 <li key={badge.label} className="flex items-center gap-2.5">
@@ -695,7 +695,7 @@ function PerformanceWithStructureStackingSection() {
   return (
     <>
       {/* ── Mobile text header (above sticky animation) ── */}
-      <div className="md:hidden px-6 py-14 bg-coral/5">
+      <div className="md:hidden mx-4 px-6 py-14 bg-coral/5 rounded-[2rem]">
         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-coral mb-4 block">Enfoque</span>
         <h2 className="text-3xl font-bold leading-tight text-foreground mb-3">
           Performance con <span className="gradient-text-coral italic">estructura</span>
@@ -1313,7 +1313,7 @@ function ProcessSteps({ steps }: { steps: string[] }) {
       </ol>
 
       <motion.div
-        className="relative -top-[30px] mt-8 flex w-full justify-end pr-[80px] md:mt-10"
+        className="relative mt-14 flex w-full justify-end pr-[80px] md:mt-16"
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}

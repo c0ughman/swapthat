@@ -94,7 +94,7 @@ export function TeamsAltHero() {
                 src={HERO_BG_IMAGES[slideIndex]!}
                 alt=""
                 fill
-                className="object-cover object-[center_32%]"
+                className="object-cover object-[center_72%] md:object-[center_32%]"
                 priority={slideIndex === 0}
                 quality={Q.hero}
                 sizes="100vw"
