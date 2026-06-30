@@ -688,9 +688,12 @@ function PerformanceWithStructureStackingSection() {
 
   const CARD_W = Math.round(288 * PX);  // 230
   const CARD_H = Math.round(288 * PX);  // 230
-  /** Taller track than index hero-cards so sticky + animation aren’t over in a flick (parent must not use overflow:hidden). */
-  const SCROLL_HEIGHT = "400vh";
-  const STICKY_HEIGHT = "500vh";
+  /** Taller track than index hero-cards so sticky + animation aren’t over in a flick (parent must not use overflow:hidden).
+   *  `svh` is fixed to the largest browser-chrome state, so it doesn't recalculate as the
+   *  mobile URL bar collapses on scroll — plain `vh` did, shifting scroll progress and
+   *  jittering the pin back up. */
+  const SCROLL_HEIGHT = "400svh";
+  const STICKY_HEIGHT = "500svh";
 
   return (
     <>

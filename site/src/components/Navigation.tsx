@@ -17,7 +17,10 @@ const MASK = {
 function LogoMaskSpan({ fill }: { fill: string }) {
   return (
     <span
-      className="block h-[2.4rem] aspect-[240/67] shrink-0 max-w-[min(100%,15rem)]"
+      // Explicit width (not just aspect-ratio) — mobile Safari fails to derive the
+      // intrinsic width of a masked span from height alone, collapsing it to 0px and
+      // hiding the logo. The 240/67 ratio at h-2.4rem ≈ 8.6rem wide.
+      className="block h-[2.4rem] w-[8.6rem] shrink-0 max-w-[min(100%,15rem)]"
       style={{
         backgroundColor: fill,
         WebkitMaskImage: "url(/av-logo-white.png)",
@@ -163,7 +166,7 @@ export default function Navigation() {
       );
     }
     if (pathname === "/marketing") {
-      return <LogoMaskSpan fill="var(--coral)" />;
+      return <LogoMaskSpan fill="var(--coral-light)" />;
     }
     if (pathname === "/" && scrolled) {
       return <LogoMaskSpan fill="var(--blue)" />;

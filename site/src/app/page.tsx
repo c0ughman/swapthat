@@ -224,8 +224,11 @@ function StackingCardsSection() {
   const CARD_H = Math.round(288 * CARD_SCALE * PX);
 
   // Scroll target drives animation. Sticky lives in taller outer so it stays visible after animation completes.
-  const SCROLL_HEIGHT = "228vh";   // 30% faster (was 325vh)
-  const STICKY_HEIGHT = "298vh";   // 30% faster (was 425vh)
+  // `svh` (small viewport height) is fixed to the *largest* browser-chrome state, so it
+  // does NOT change as the mobile URL bar collapses on scroll. Plain `vh` recalculated
+  // mid-scroll, shifting scrollYProgress and yanking the scroll back up (the jitter).
+  const SCROLL_HEIGHT = "228svh";   // 30% faster (was 325vh)
+  const STICKY_HEIGHT = "298svh";   // 30% faster (was 425vh)
 
   return (
     <>

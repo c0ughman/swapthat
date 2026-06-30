@@ -60,8 +60,14 @@ export default function HorizontalScroll({
       return { scrollDistance, scrollX: -scrollDistance };
     };
 
+    // Pin viewport height is captured ONCE so it doesn't track the mobile URL bar
+    // collapsing/expanding. Using a live `window.innerHeight` here made the outer
+    // height (and therefore the pinned scroll distance) shrink mid-scroll, which
+    // yanked the page back up — the jitter. Lock it to the initial value instead.
+    const pinViewportH = window.innerHeight;
+
     const syncOuterHeight = (scrollDistance: number) => {
-      outer.style.height = `${scrollDistance + window.innerHeight}px`;
+      outer.style.height = `${scrollDistance + pinViewportH}px`;
     };
 
     const refreshLayout = () => {
@@ -73,13 +79,19 @@ export default function HorizontalScroll({
     const { scrollDistance } = getMetrics();
     syncOuterHeight(scrollDistance);
 
+    // Tell GSAP to ignore the mobile address-bar show/hide resize events that would
+    // otherwise fire `refresh()` mid-scroll and snap the pin position around.
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
     const scrollTrigger = {
       trigger: outer,
       start: "top top",
       end: () => `+=${getMetrics().scrollDistance}`,
       scrub: true,
       invalidateOnRefresh: true,
-      anticipatePin: 1,
+      // anticipatePin causes a visible jump on mobile when combined with scrub; the
+      // pin engages cleanly without it on touch devices.
+      anticipatePin: isMobile ? 0 : 1,
     };
 
     const ctx = gsap.context(() => {
@@ -125,13 +137,24 @@ export default function HorizontalScroll({
       }
     }, outer);
 
-    const resizeObserver = new ResizeObserver(refreshLayout);
+    // Only the horizontal layout depends on width; height changes (mobile URL bar)
+    // must NOT trigger a refresh or the pin jumps. Track the last seen width and
+    // bail out of refreshes that aren't caused by a real width change.
+    let lastWidth = outer.clientWidth;
+    const refreshIfWidthChanged = () => {
+      const w = outer.clientWidth;
+      if (w === lastWidth) return;
+      lastWidth = w;
+      refreshLayout();
+    };
+
+    const resizeObserver = new ResizeObserver(refreshIfWidthChanged);
     resizeObserver.observe(track);
     for (const panel of Array.from(track.children)) {
       resizeObserver.observe(panel);
     }
 
-    const onWindowResize = () => refreshLayout();
+    const onWindowResize = () => refreshIfWidthChanged();
     window.addEventListener("resize", onWindowResize);
 
     const images = track.querySelectorAll("img");
@@ -147,7 +170,7 @@ export default function HorizontalScroll({
       window.removeEventListener("resize", onWindowResize);
       outer.style.height = "";
     };
-  }, [panelCount, showBottomWaves, waveParallaxBack, waveParallaxFront]);
+  }, [panelCount, showBottomWaves, waveParallaxBack, waveParallaxFront, isMobile]);
 
   return (
     <div
