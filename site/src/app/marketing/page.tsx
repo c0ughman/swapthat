@@ -202,7 +202,11 @@ function HeroSection() {
             className="relative flex items-center justify-center order-first lg:order-1 lg:justify-start"
           >
             {/* Mobile: portrait crop. Desktop: full landscape frame with stable aspect ratio */}
-            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[560px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:unset]">
+            {/* Aspect ratio is reserved on BOTH breakpoints so the column height
+                is stable on first paint — the video's intrinsic size isn't known
+                until metadata loads, and letting it drive layout caused the hero
+                (and the absolutely-anchored pills) to jump once it arrived. */}
+            <div className="relative w-full max-w-[300px] overflow-hidden rounded-[1.5rem] bg-white shadow-none [aspect-ratio:9/11.2] lg:max-w-[420px] lg:rounded-[2.5rem] lg:shadow-none lg:[aspect-ratio:1072/1928]">
               <video
                 src="/360marketing.mp4"
                 autoPlay
@@ -211,7 +215,7 @@ function HeroSection() {
                 playsInline
                 preload="metadata"
                 suppressHydrationWarning
-                className="block h-full w-full object-cover object-top lg:h-auto lg:object-contain"
+                className="block h-full w-full object-cover object-top"
                 aria-label="Marketing video"
               />
             </div>
@@ -233,10 +237,15 @@ function HeroSection() {
             </motion.div>
 
             <div className="relative mb-6 pt-2 md:pt-3">
-              {/* Decorative pills above the title — static (no float) to avoid jitter */}
-              <div
+              {/* Decorative pills above the title — static (no float). Fade in
+                  after first paint so the brief pre-layout-settle frame (where
+                  the absolute anchor sits too high) is never visible. */}
+              <motion.div
                 className="pointer-events-none absolute -top-[160px] right-0 z-[1] hidden md:block pr-4 pt-3 md:pr-6 md:pt-4"
                 aria-hidden
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.35, delay: 0.45 }}
               >
                 <div className="flex w-[min(100vw-2rem,19rem)] translate-x-[29px] translate-y-[29px] flex-col items-end gap-[1.855rem] p-4 sm:p-5 lg:w-[22rem] lg:gap-[2.17rem]">
                   <div className="flex w-full items-end justify-between gap-[1.575rem] lg:gap-[1.925rem]">
@@ -308,7 +317,7 @@ function HeroSection() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               <motion.h1
                 layout={false}
