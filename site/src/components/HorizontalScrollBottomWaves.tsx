@@ -7,8 +7,8 @@ const WAVE_FILL_BACK = "var(--blue)";
 /** Parallax vs panels (1.0 = moves with content). Both kept well below 1 so the
  *  waves drift slowly on scroll, with a wide gap so the two layers move at very
  *  noticeably different speeds. */
-export const WAVE_PARALLAX_BACK = 0.35;
-export const WAVE_PARALLAX_FRONT = 0.65;
+export const WAVE_PARALLAX_BACK = 0.15;
+export const WAVE_PARALLAX_FRONT = 0.32;
 
 /** Strip is 2× panel span; cycle count scales 2× so wavelength stays the same. */
 export const WAVE_LENGTH_MULTIPLIER = 2;

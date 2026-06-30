@@ -114,7 +114,7 @@ export function SistemaLandingHero() {
             className="absolute inset-0 z-[3]"
             style={{
               background:
-                "linear-gradient(65deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
+                "linear-gradient(65deg, #ffffff 0%, #ffffff 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
               backgroundSize: "120% 120%",
               backgroundPosition: "20px center",
             }}
