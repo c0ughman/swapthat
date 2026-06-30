@@ -74,7 +74,7 @@ export default function Navigation() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -154,7 +154,7 @@ export default function Navigation() {
       );
     }
     if (pathname === "/marketing") {
-      return <LogoMaskSpan fill="#fa8072" />;
+      return <LogoMaskSpan fill="var(--coral)" />;
     }
     if (pathname === "/" && scrolled) {
       return <LogoMaskSpan fill="var(--blue)" />;

@@ -120,17 +120,42 @@ export default function ScrollDrawLine({
     };
 
     let rafId = 0;
+    let running = false;
     const loop = () => {
       update();
       rafId = requestAnimationFrame(loop);
     };
-    rafId = requestAnimationFrame(loop);
+    const start = () => {
+      if (running) return;
+      running = true;
+      rafId = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(rafId);
+    };
+
+    // The loop reads getBoundingClientRect() every frame (forced reflow), so only run
+    // it while the section is near the viewport. A large rootMargin keeps the stroke
+    // in sync just before it scrolls in; offscreen the loop is fully paused. `update()`
+    // fires once on each visibility change so the resting state is always correct.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        update();
+        if (entry.isIntersecting) start();
+        else stop();
+      },
+      { rootMargin: "200px 0px 200px 0px" },
+    );
+    io.observe(el);
 
     const onResize = () => update();
     window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
-      cancelAnimationFrame(rafId);
+      stop();
+      io.disconnect();
       window.removeEventListener("resize", onResize);
     };
   }, [scrollTargetRef, scrollEndAnchorRef, scrollStartAnchorRef, progress, scrollAdvancePx]);
