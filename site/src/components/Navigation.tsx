@@ -50,7 +50,6 @@ function explorarHrefForPathname(pathname: string): string {
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [footerInView, setFooterInView] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { triggerTransition } = useCarouselTransition();
@@ -78,17 +77,6 @@ export default function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setFooterInView(entry.isIntersecting),
-      { threshold: 0, rootMargin: "0px 0px 0px 0px" }
-    );
-    observer.observe(footer);
-    return () => observer.disconnect();
-  }, [pathname]);
 
   /** Transparent nav sitting on a dark or saturated hero (blue home hero, sistema top band). */
   const navOverDarkHero =
@@ -166,7 +154,7 @@ export default function Navigation() {
       );
     }
     if (pathname === "/marketing") {
-      return <LogoMaskSpan fill="var(--coral-light)" />;
+      return <LogoMaskSpan fill="#fa8072" />;
     }
     if (pathname === "/" && scrolled) {
       return <LogoMaskSpan fill="var(--blue)" />;
@@ -198,11 +186,8 @@ export default function Navigation() {
 
   return (
     <>
-      <motion.nav
-        initial={false}
-        animate={{ y: footerInView || scrolled ? -120 : 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className={`${navPosition} top-0 left-0 right-0 z-[10000] bg-transparent transition-transform duration-500`}
+      <nav
+        className={`${navPosition} top-0 left-0 right-0 z-[10000] bg-transparent`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-[calc(5rem+10px)]">
@@ -262,7 +247,7 @@ export default function Navigation() {
             </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
