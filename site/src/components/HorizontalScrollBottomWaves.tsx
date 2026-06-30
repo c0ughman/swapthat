@@ -4,9 +4,11 @@ import { useMemo, type RefObject } from "react";
 const WAVE_FILL = "#ffffff";
 const WAVE_FILL_BACK = "var(--blue)";
 
-/** Parallax vs panels — gray faster; blue noticeably slower. */
-export const WAVE_PARALLAX_BACK = 1.12;
-export const WAVE_PARALLAX_FRONT = 1.38;
+/** Parallax vs panels (1.0 = moves with content). Both kept well below 1 so the
+ *  waves drift slowly on scroll, with a wide gap so the two layers move at very
+ *  noticeably different speeds. */
+export const WAVE_PARALLAX_BACK = 0.35;
+export const WAVE_PARALLAX_FRONT = 0.65;
 
 /** Strip is 2× panel span; cycle count scales 2× so wavelength stays the same. */
 export const WAVE_LENGTH_MULTIPLIER = 2;

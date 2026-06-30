@@ -197,11 +197,9 @@ export default function Navigation() {
     <>
       <motion.nav
         initial={false}
-        animate={{ y: footerInView ? -100 : 0 }}
+        animate={{ y: footerInView || scrolled ? -120 : 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className={`${navPosition} top-0 left-0 right-0 transition-all duration-500 ${
-          scrolled ? "z-[10000] bg-background/90 backdrop-blur-xl shadow-sm" : "z-[10000] bg-transparent"
-        }`}
+        className={`${navPosition} top-0 left-0 right-0 z-[10000] bg-transparent transition-transform duration-500`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-[calc(5rem+10px)]">
