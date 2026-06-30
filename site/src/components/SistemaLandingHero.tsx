@@ -58,6 +58,12 @@ function SlideLayer({
           sizes="(max-width: 768px) 100vw, 1280px"
           quality={Q.hero}
           priority={priority}
+          fetchPriority={priority ? "high" : undefined}
+          loading={priority ? "eager" : undefined}
+          // First slide is the LCP image: serve the raw .webp (already small) so
+          // there's no image-optimizer round-trip — the priority preload then
+          // points straight at the file and it lands as fast as the page.
+          unoptimized={priority}
         />
       </motion.div>
     </motion.div>
@@ -108,7 +114,7 @@ export function SistemaLandingHero() {
             className="absolute inset-0 z-[3]"
             style={{
               background:
-                "linear-gradient(65deg, #ffffff 0%, #ffffff 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
+                "linear-gradient(65deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
               backgroundSize: "120% 120%",
               backgroundPosition: "20px center",
             }}
