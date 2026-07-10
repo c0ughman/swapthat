@@ -16,7 +16,7 @@ function useContactHref() {
   return "/contacto/equipos";
 }
 
-const INSTAGRAM_URL = "https://www.instagram.com/andreavpty/";
+const INSTAGRAM_URL = "https://www.instagram.com/mueveteconandrea/";
 
 const FOOTER_IMAGES = [
   "/instagram/ig-1.webp",

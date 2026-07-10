@@ -16,9 +16,9 @@ import HorizontalScroll from "@/components/HorizontalScroll";
 // HERO CTA — blue band between hero and marquee
 // ─────────────────────────────────────────────────────────────────────────────
 const HERO_CTA_POLAROIDS = [
-  { gradient: "from-coral/35 via-coral/15 to-coral/40", rotate: -8, translateX: "translate-x-12" },
-  { gradient: "from-blue/30 via-blue/15 to-blue/45", rotate: 2, translateX: "translate-x-0" },
-  { gradient: "from-amber-300/40 via-amber-200/20 to-amber-400/40", rotate: 7, translateX: "-translate-x-12" },
+  { gradient: "from-coral/35 via-coral/25 to-coral/40", rotate: -8, translateX: "translate-x-12" },
+  { gradient: "from-blue/30 via-blue/25 to-blue/45", rotate: 2, translateX: "translate-x-0" },
+  { gradient: "from-amber-300/40 via-amber-200/30 to-amber-400/40", rotate: 7, translateX: "-translate-x-12" },
 ] as const;
 
 function HeroCTASection() {
