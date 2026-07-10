@@ -83,13 +83,13 @@ export default function ContactoSistemaPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-white">
+    <div className="relative min-h-[100dvh] overflow-x-clip bg-white">
 
       {/* ════════════════════════════════════════════════════════════════════
           HERO — 100vh — dark background
       ════════════════════════════════════════════════════════════════════ */}
       <section
-        className="relative flex h-screen min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8"
+        className="relative flex h-[100dvh] min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8"
         style={{ background: "var(--foreground)" }}
       >
         {/* Subtle glow blobs on dark */}
@@ -154,7 +154,7 @@ export default function ContactoSistemaPage() {
       {/* ════════════════════════════════════════════════════════════════════
           MIDDLE — 100vh: photos + benefits + social proof
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-screen min-h-[640px] items-center overflow-hidden border-b border-foreground/6 bg-white">
+      <section className="relative flex h-[100dvh] min-h-[640px] items-center overflow-hidden border-b border-foreground/6 bg-white">
         <div className="mx-auto grid h-full w-full max-w-6xl grid-cols-1 px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
 
           {/* Left — photo collage */}

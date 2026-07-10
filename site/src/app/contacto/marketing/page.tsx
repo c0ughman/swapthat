@@ -83,13 +83,13 @@ export default function ContactoMarketingPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-white">
+    <div className="relative min-h-[100dvh] overflow-x-clip bg-white">
 
       {/* ════════════════════════════════════════════════════════════════════
           HERO — 100vh
       ════════════════════════════════════════════════════════════════════ */}
       <section
-        className="relative flex h-screen min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8"
+        className="relative flex h-[100dvh] min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8"
         style={{ background: "radial-gradient(ellipse 65% 55% at 80% 0%, rgba(232,93,117,0.09), transparent 60%), radial-gradient(ellipse 40% 45% at 5% 95%, rgba(232,93,117,0.06), transparent 55%), #ffffff" }}
       >
         {/* Top coral line */}
@@ -147,7 +147,7 @@ export default function ContactoMarketingPage() {
       {/* ════════════════════════════════════════════════════════════════════
           MIDDLE — 100vh: photos + benefits + social proof
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-screen min-h-[640px] items-center overflow-hidden border-y border-foreground/6" style={{ background: "#fdf9f9" }}>
+      <section className="relative flex h-[100dvh] min-h-[640px] items-center overflow-hidden border-y border-foreground/6" style={{ background: "#fdf9f9" }}>
         <div className="mx-auto grid h-full w-full max-w-6xl grid-cols-1 px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
 
           {/* Left — benefits + social proof */}

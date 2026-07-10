@@ -83,12 +83,12 @@ export default function ContactoEquiposPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-background">
+    <div className="relative min-h-[100dvh] overflow-x-clip bg-background">
 
       {/* ════════════════════════════════════════════════════════════════════
           HERO — 100vh
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-screen min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8">
+      <section className="relative flex h-[100dvh] min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8">
         <BlobShape color="var(--blue)" size={560} className="-top-48 -right-48 opacity-[0.05]" blur />
         <BlobShape color="var(--blue-light)" size={360} className="-bottom-24 -left-24 opacity-[0.04]" blur />
 
@@ -136,7 +136,7 @@ export default function ContactoEquiposPage() {
       {/* ════════════════════════════════════════════════════════════════════
           MIDDLE — 100vh: photos + benefits + social proof
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-screen min-h-[640px] items-center overflow-hidden border-y border-foreground/6 bg-white">
+      <section className="relative flex h-[100dvh] min-h-[640px] items-center overflow-hidden border-y border-foreground/6 bg-white">
         <div className="mx-auto grid h-full w-full max-w-6xl grid-cols-1 px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
 
           {/* Left — photo collage */}
