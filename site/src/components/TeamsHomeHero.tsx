@@ -1181,7 +1181,7 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 translate-y-[10px] md:-translate-y-[40px]"
+              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[40px] md:-translate-y-[90px]"
               style={{ zIndex: SISTEMA_HERO_FLANK_Z }}
             >
               <div className="flex w-full max-w-[min(100%,1180px)] items-end justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
