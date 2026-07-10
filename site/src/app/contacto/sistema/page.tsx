@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import BlobShape from "@/components/BlobShape";
+import { submitNetlifyForm } from "@/lib/submitNetlifyForm";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -63,7 +64,7 @@ const selectBase = "w-full rounded-xl border border-foreground/12 bg-white px-4 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 export default function ContactoSistemaPage() {
   const [form, setForm] = useState({ nombre: "", email: "", whatsapp: "", situacion: "", mensaje: "" });
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -73,8 +74,12 @@ export default function ContactoSistemaPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus("success");
+    try {
+      await submitNetlifyForm("sistema", form);
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -374,6 +379,11 @@ export default function ContactoSistemaPage() {
                     <>Quiero empezar hoy<span className="transition-transform group-hover:translate-x-1"><ArrowRight /></span></>
                   )}
                 </button>
+                {status === "error" && (
+                  <p className="text-center text-xs font-medium text-red-500">
+                    Algo salió mal al enviar. Intentá de nuevo o escribinos a hola@mueveteconandrea.com.
+                  </p>
+                )}
                 <p className="text-center text-xs text-foreground/35">Sin spam. Solo una conversación honesta sobre si esto es para vos.</p>
               </motion.form>
             )}

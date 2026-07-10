@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  Hidden static forms for Netlify Forms detection.
+
+  Next.js renders the real contact forms client-side, so Netlify's build-time
+  scanner can't see them. Netlify only registers forms it finds in static HTML
+  at deploy time — so we declare each form here. The live React forms POST to
+  "/" with a matching `form-name` field, and Netlify routes the submission to
+  the form declared below.
+
+  Keep the `name` attribute of every field in sync with the React forms in
+  site/src/app/contacto/*/page.tsx. Adding/removing a field there means editing
+  it here too, or that field won't be captured.
+
+  Email notifications are configured per-form in the Netlify dashboard:
+  Site → Forms → (form) → Settings & usage → Form notifications → add email.
+-->
+<html>
+  <head><meta charset="utf-8" /></head>
+  <body>
+    <form name="sistema" data-netlify="true" hidden>
+      <input type="text" name="nombre" />
+      <input type="email" name="email" />
+      <input type="tel" name="whatsapp" />
+      <input type="text" name="situacion" />
+      <textarea name="mensaje"></textarea>
+    </form>
+
+    <form name="equipos" data-netlify="true" hidden>
+      <input type="text" name="nombre" />
+      <input type="email" name="email" />
+      <input type="text" name="empresa" />
+      <input type="text" name="tamano" />
+      <input type="text" name="modalidad" />
+      <textarea name="mensaje"></textarea>
+    </form>
+
+    <form name="marketing" data-netlify="true" hidden>
+      <input type="text" name="nombre" />
+      <input type="email" name="email" />
+      <input type="text" name="marca" />
+      <input type="text" name="sector" />
+      <input type="text" name="problema" />
+      <textarea name="mensaje"></textarea>
+    </form>
+  </body>
+</html>
