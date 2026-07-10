@@ -83,7 +83,7 @@ export default function ContactoMarketingPage() {
   };
 
   return (
-    <div className="relative overflow-x-clip bg-white">
+    <div className="relative min-h-screen overflow-x-clip bg-white">
 
       {/* ════════════════════════════════════════════════════════════════════
           HERO — 100vh

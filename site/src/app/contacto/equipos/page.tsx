@@ -83,7 +83,7 @@ export default function ContactoEquiposPage() {
   };
 
   return (
-    <div className="relative overflow-x-clip bg-background">
+    <div className="relative min-h-screen overflow-x-clip bg-background">
 
       {/* ════════════════════════════════════════════════════════════════════
           HERO — 100vh
