@@ -117,7 +117,7 @@ function ProblemSection() {
                   no para vidas reales. Y cuando tu rutina cambia, el sistema falla… y tú te culpas.
                 </p>
                 <p className="text-foreground font-semibold text-2xl">
-                  Swap That existe para cambiar eso.
+                  Muévete con Andrea existe para cambiar eso.
                 </p>
               </div>
               <div className="mt-8 sm:mt-10">
@@ -241,7 +241,7 @@ function PhilosophySection() {
                   Entrenar no es hacerlo perfecto. Es aprender a regularte, escucharte y volver a tu centro.
                 </p>
                 <p>
-                  En Swap That no trabajamos con rigidez ni con castigo. Trabajamos con estructura flexible.
+                  En Muévete con Andrea no trabajamos con rigidez ni con castigo. Trabajamos con estructura flexible.
                 </p>
               </div>
             </AnimatedSection>
@@ -383,7 +383,7 @@ function WhatIsSection() {
               El sistema
             </span>
             <h2 className="text-3xl font-bold leading-[1.05] tracking-tight sm:text-4xl md:text-5xl lg:text-[2.85rem]">
-              Qué es <span className="italic font-light">Swap That</span>
+              Qué es <span className="italic font-light">Muévete con Andrea</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-gray sm:mt-5 sm:text-lg">
               Un sistema sostenible para crecer como persona a través del movimiento.
@@ -538,7 +538,7 @@ function ForWhomSection() {
                   <div className="w-10 h-10 rounded-full bg-foreground/10 flex items-center justify-center font-bold text-foreground">
                     ✓
                   </div>
-                  <h3 className="text-xl font-bold">Swap That es para ti si:</h3>
+                  <h3 className="text-xl font-bold">Muévete con Andrea es para ti si:</h3>
                 </div>
                 <ul className="space-y-4">
                   {[
@@ -888,7 +888,7 @@ function HowItWorksSection() {
   const steps = [
     {
       num: "01",
-      title: "Te unes a Swap That",
+      title: "Te unes a Muévete con Andrea",
       desc: "Accedes al sistema completo dentro de la app.",
       bg: "#ffffff",
     },
@@ -1112,7 +1112,7 @@ function CTASection() {
         <AnimatedSection delay={0.05} light>
           <p className="text-lg md:text-xl text-gray max-w-2xl mx-auto leading-relaxed mb-10">
             Entrenar no debería ser otra fuente de estrés. Debería ser el espacio donde sueltas y vuelves a ti.
-            En Swap That te ayudo a crear ese espacio.
+            En Muévete con Andrea te ayudo a crear ese espacio.
           </p>
         </AnimatedSection>
 

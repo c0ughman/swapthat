@@ -59,7 +59,7 @@ export default function Footer() {
           <Link href="/" className="block -rotate-90">
             <Image
               src="/logo-horizontal-real.webp"
-              alt="Swap That"
+              alt="Muévete con Andrea"
               width={160}
               height={42}
               className="h-10 xl:h-12 w-auto object-contain"
@@ -320,7 +320,7 @@ export default function Footer() {
             </div>
 
             <p className="text-foreground/35 text-[0.7rem] mt-4 leading-snug md:mt-8 md:text-xs">
-              © {new Date().getFullYear()} Swap That — Andrea Vasquez. Todos los derechos reservados.
+              © {new Date().getFullYear()} Muévete con Andrea — Andrea Vasquez. Todos los derechos reservados.
             </p>
           </div>
 
@@ -341,7 +341,7 @@ export default function Footer() {
               </Link>
             </nav>
             <nav className="flex flex-col gap-2">
-              <span className="text-foreground/50 text-xs font-medium">hola@swapthat.com</span>
+              <span className="text-foreground/50 text-xs font-medium">hola@mueveteconandrea.com</span>
               <Link href="#" className="text-foreground/40 text-xs font-bold uppercase tracking-wide hover:text-foreground/70 transition-colors">
                 Privacidad
               </Link>

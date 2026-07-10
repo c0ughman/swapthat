@@ -97,7 +97,7 @@ export default function ContactoSistemaPage() {
           <FadeUp delay={0.05}>
             <div className="mb-7 flex items-center justify-center gap-3">
               <span className="h-px w-8 bg-white/18" />
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/45">Swap That System</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/45">Muévete con Andrea</span>
               <span className="h-px w-8 bg-white/18" />
             </div>
           </FadeUp>
@@ -164,7 +164,7 @@ export default function ContactoSistemaPage() {
               <div className="absolute left-0 top-[3%] h-[60%] w-[74%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_rgba(26,26,26,0.12)]">
                 <Image
                   src="/philosophy/1.webp"
-                  alt="Swap That System — movimiento a tu ritmo"
+                  alt="Muévete con Andrea — movimiento a tu ritmo"
                   fill
                   className="object-cover"
                   sizes="380px"
@@ -384,9 +384,9 @@ export default function ContactoSistemaPage() {
       {/* ── Footer — black ────────────────────────────────────────────────── */}
       <footer className="py-8 text-center" style={{ background: "var(--foreground)" }}>
         <p className="text-xs text-white/40">
-          © {new Date().getFullYear()} Swap That · Andrea Vásquez ·{" "}
-          <a href="mailto:hola@swapthat.com" className="hover:text-white/70 transition-colors underline underline-offset-2">
-            hola@swapthat.com
+          © {new Date().getFullYear()} Muévete con Andrea · Andrea Vásquez ·{" "}
+          <a href="mailto:hola@mueveteconandrea.com" className="hover:text-white/70 transition-colors underline underline-offset-2">
+            hola@mueveteconandrea.com
           </a>
         </p>
       </footer>

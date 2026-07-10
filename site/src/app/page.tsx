@@ -401,7 +401,7 @@ function ExperienceSection() {
               </span>
               <h2 className="mb-3 text-2xl font-bold leading-[1.08] tracking-tight md:mb-4 md:text-5xl lg:text-6xl">
                 Cómo se siente una charla{" "}
-                <span className="italic font-light text-blue">Swap That</span>
+                <span className="italic font-light text-blue">Muévete con Andrea</span>
               </h2>
               <FiveStars className="mb-3 md:mb-5" />
             </AnimatedSection>
@@ -447,7 +447,7 @@ function ExperienceSection() {
               <div className="aspect-[4/3] max-h-[32vh] w-full max-w-md rounded-[1.15rem] overflow-hidden md:aspect-square md:max-h-[55vh] md:max-w-none md:rounded-[1.5rem]">
                 <Image
                   src="/experience/charla.webp"
-                  alt="Charla Swap That en acción"
+                  alt="Charla Muévete con Andrea en acción"
                   width={480}
                   height={480}
                   className="object-cover w-full h-full"
@@ -647,10 +647,10 @@ function TrustedByLogoCloudSection() {
             </p>
             <p className="max-w-md text-sm leading-snug text-foreground/60 md:text-base md:leading-relaxed md:text-lg">
               <span className="md:hidden">
-                Charlas y talleres con la filosofía Swap That: hábitos y regulación que sí aplican en el trabajo.
+                Charlas y talleres con la filosofía Muévete con Andrea: hábitos y regulación que sí aplican en el trabajo.
               </span>
               <span className="hidden md:inline">
-                Swap That for Teams son charlas y talleres que llevan la filosofía Swap That a tu empresa: movimiento,
+                Muévete con Andrea son charlas y talleres que llevan la filosofía Muévete con Andrea a tu empresa: movimiento,
                 regulación, estrés y hábitos concretos—para equipos que quieren algo real, no otro tick de RR.HH.
               </span>
             </p>
@@ -728,7 +728,7 @@ function ForWhomSection() {
                   <span className="italic font-light text-blue">equipos</span> es
                 </h2>
                 <p className="max-w-md text-lg leading-relaxed text-foreground/65">
-                  Swap That for Teams es para equipos que buscan algo real, no un beneficio más en la lista.
+                  Muévete con Andrea es para equipos que buscan algo real, no un beneficio más en la lista.
                 </p>
               </div>
             </AnimatedSection>
@@ -768,7 +768,7 @@ function ForWhomSection() {
 
 const TEAMS_FAQ = [
   {
-    q: "¿Qué es una charla Swap That for Teams y cómo se distingue de otras charlas de bienestar?",
+    q: "¿Qué es una charla Muévete con Andrea y cómo se distingue de otras charlas de bienestar?",
     a: "Es un espacio vivo de conversación y práctica sobre hábitos, ritmo y regulación en el trabajo —sin motivación vacía ni discurso genérico. Se piensa para equipos reales, con presión real: menos “tenés que”, más comprensión y herramientas que se pueden usar el lunes.",
   },
   {
@@ -929,7 +929,7 @@ function CTASection() {
             <AnimatedSection delay={0.1}>
               <div className="mx-auto mb-8 h-px w-16 bg-blue/30" />
               <p className="mx-auto mb-12 max-w-2xl text-xl leading-relaxed text-foreground/65">
-                Personas cuidadas toman mejores decisiones. Lleva la filosofía Swap That a tu equipo.
+                Personas cuidadas toman mejores decisiones. Lleva la filosofía Muévete con Andrea a tu equipo.
               </p>
             </AnimatedSection>
 
@@ -1021,7 +1021,7 @@ function ServicesPreview() {
                 </div>
 
                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue/70 mb-3 block">Para personas</span>
-                <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">Swap That System</h3>
+                <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">Muévete con Andrea</h3>
                 <p className="text-gray leading-relaxed mb-8">Entrenamiento, hábitos y mindset para mujeres activas. A tu ritmo, sin presión.</p>
                 <span className="inline-flex items-center gap-2 text-blue font-semibold text-sm group-hover:gap-3 transition-all">
                   Explorar

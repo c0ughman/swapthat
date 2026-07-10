@@ -368,9 +368,9 @@ export default function ContactoMarketingPage() {
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer className="bg-coral py-8 text-center">
         <p className="text-xs text-white/55">
-          © {new Date().getFullYear()} Swap That · Andrea Vásquez ·{" "}
-          <a href="mailto:hola@swapthat.com" className="hover:text-white/80 transition-colors underline underline-offset-2">
-            hola@swapthat.com
+          © {new Date().getFullYear()} Muévete con Andrea · Andrea Vásquez ·{" "}
+          <a href="mailto:hola@mueveteconandrea.com" className="hover:text-white/80 transition-colors underline underline-offset-2">
+            hola@mueveteconandrea.com
           </a>
         </p>
       </footer>

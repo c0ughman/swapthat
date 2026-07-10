@@ -85,7 +85,7 @@ export default function Navigation() {
   const navLinks = [
     { href: "/", label: "Teams & Charlas", hoverColor: "blue" as const },
     { href: "/marketing", label: "Marketing & Performance", hoverColor: "coral" as const },
-    { href: "/sistema", label: "Swap That System", hoverColor: "foreground" as const },
+    { href: "/sistema", label: "Muévete con Andrea", hoverColor: "foreground" as const },
   ];
 
   // The nav uses plain <a> (custom router.push), so Next's automatic <Link>

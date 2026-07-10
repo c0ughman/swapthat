@@ -1015,7 +1015,7 @@ export function TeamsHomeHero({
                     : "text-[0.8125rem]"
                 } font-semibold uppercase tracking-[0.2em] ${eyebrowLabelClass} ${HERO_TEXT_GLOW}`}
               >
-                Swap That System
+                Muévete con Andrea
               </span>
             </motion.div>
           </div>
@@ -1181,7 +1181,7 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[40px] md:-translate-y-[90px]"
+              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 translate-y-[10px] md:-translate-y-[40px]"
               style={{ zIndex: SISTEMA_HERO_FLANK_Z }}
             >
               <div className="flex w-full max-w-[min(100%,1180px)] items-end justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
@@ -1205,8 +1205,8 @@ export function TeamsHomeHero({
                     rotate: { delay: 0.7, duration: 0.55, ease: "easeOut" },
                   }}
                 >
-                  <div className="relative rounded-[0.5rem] bg-white p-3 pb-[3.5rem] shadow-[0_28px_70px_-20px_rgba(26,26,26,0.4)] sm:p-4 sm:pb-[4.5rem] md:p-5 md:pb-[5.5rem]">
-                    <div className="relative aspect-[3/4] w-[16rem] overflow-hidden bg-neutral-100 sm:w-[20rem] md:w-[24rem] lg:w-[28rem]">
+                  <div className="relative rounded-[0.5rem] shadow-[0_28px_70px_-20px_rgba(26,26,26,0.4)]">
+                    <div className="relative aspect-[3/4] w-[16rem] overflow-hidden rounded-[0.5rem] bg-neutral-100 sm:w-[20rem] md:w-[24rem] lg:w-[28rem]">
                       <Image
                         src="/movement.webp"
                         alt="Andrea entrenando"
@@ -1218,9 +1218,6 @@ export function TeamsHomeHero({
                         draggable={false}
                       />
                     </div>
-                    <p className="absolute inset-x-0 bottom-4 text-center font-serif text-[17px] italic tracking-wide text-foreground/70 sm:bottom-6 sm:text-[19px] md:bottom-8 md:text-[22px]">
-                      volver a ti
-                    </p>
                   </div>
                 </motion.div>
                 {SHOW_PLACEHOLDER_CONTENT ? (

@@ -124,7 +124,7 @@ export function TeamsAltHero() {
                 </span>
               </div>
               <h1 className="text-[2.4rem] font-bold leading-[0.95] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-[4.5rem]">
-                Swap that
+                Muévete con Andrea
                 <br />
                 <span className="italic font-light text-blue">for Teams</span>
               </h1>

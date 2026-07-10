@@ -169,7 +169,7 @@ export default function ContactoEquiposPage() {
               {/* Accent badge */}
               <div className="absolute bottom-[41%] left-[47%] z-10 max-w-[11rem] -translate-x-1 rounded-2xl border border-blue/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
                 <p className="text-xs font-bold text-foreground">+40 empresas</p>
-                <p className="text-[11px] text-foreground/45">confían en Swap That</p>
+                <p className="text-[11px] text-foreground/45">confían en Muévete con Andrea</p>
               </div>
             </div>
           </motion.div>
@@ -368,9 +368,9 @@ export default function ContactoEquiposPage() {
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer className="bg-blue py-8 text-center">
         <p className="text-xs text-white/50">
-          © {new Date().getFullYear()} Swap That · Andrea Vásquez ·{" "}
-          <a href="mailto:hola@swapthat.com" className="hover:text-white/80 transition-colors underline underline-offset-2">
-            hola@swapthat.com
+          © {new Date().getFullYear()} Muévete con Andrea · Andrea Vásquez ·{" "}
+          <a href="mailto:hola@mueveteconandrea.com" className="hover:text-white/80 transition-colors underline underline-offset-2">
+            hola@mueveteconandrea.com
           </a>
         </p>
       </footer>

@@ -194,7 +194,7 @@ export function SistemaLandingHero() {
               transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
               className="mb-5 text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl xl:text-8xl"
             >
-              Swap that
+              Muévete con Andrea
               <br />
               <span className="italic font-light text-blue">for Teams</span>
             </motion.h1>

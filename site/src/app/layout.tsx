@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Swap That — Andrea Vasquez",
+  title: "Muévete con Andrea — Andrea Vasquez",
   description: "Diseño sistemas sostenibles para crecer — en marcas y en personas.",
 };
 

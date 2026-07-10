@@ -47,7 +47,7 @@ function PhilosophyOrbitHub({ sistemaVariant }: { sistemaVariant: boolean }) {
       <div className="h-auto w-[176px] shrink-0 leading-none md:w-[218px]">
         <Image
           src="/logo-stacked-blue.webp"
-          alt="Swap That"
+          alt="Muévete con Andrea"
           width={272}
           height={272}
           className="h-auto w-full object-contain"
@@ -172,13 +172,13 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
                 <p className="relative z-10 max-w-2xl pb-6 pl-0 pr-2 text-lg leading-relaxed text-white/60 sm:pb-32 sm:pr-4 md:text-xl">
                   Entrenar no es hacerlo perfecto. Es aprender a{" "}
                   <strong className="font-semibold text-white/90">regularte, escucharte</strong> y volver a tu centro.
-                  En Swap That no trabajamos con rigidez ni con castigo.{" "}
+                  En Muévete con Andrea no trabajamos con rigidez ni con castigo.{" "}
                   Trabajamos con <strong className="font-semibold text-white/90">estructura flexible</strong> —porque
                   la vida no funciona en modo ideal, y entrenar tampoco debería.
                 </p>
               ) : (
                 <p className="relative z-10 max-w-2xl pb-6 pl-0 pr-2 text-lg leading-relaxed text-gray sm:pb-32 sm:pr-4 md:text-xl">
-                  Swap That for Teams es la misma filosofía en formato{" "}
+                  Muévete con Andrea es la misma filosofía en formato{" "}
                   <strong className="font-semibold text-foreground/90">charlas y talleres</strong> para empresas: hábitos y
                   herramientas prácticas—movimiento como regulación, manejo del estrés, foco y energía—para equipos con
                   jornadas exigentes que buscan <strong className="font-semibold text-foreground/90">algo real</strong>, no
