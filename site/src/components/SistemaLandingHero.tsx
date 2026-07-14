@@ -136,7 +136,7 @@ export function SistemaLandingHero() {
             className="absolute inset-0 z-[3] hidden md:block"
             style={{
               background:
-                "linear-gradient(65deg, var(--chocolatito) 0%, var(--chocolatito) 36%, color-mix(in srgb, var(--chocolatito) 0%, transparent) calc(58% - 10px))",
+                "linear-gradient(65deg, var(--chocolatito) 0%, var(--chocolatito) calc(36% - 70px), color-mix(in srgb, var(--chocolatito) 0%, transparent) calc(58% - 10px))",
               backgroundSize: "120% 120%",
               backgroundPosition: "20px center",
             }}

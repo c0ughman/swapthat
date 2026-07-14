@@ -324,7 +324,7 @@ function HeroSection() {
                 initial={skippedInitialAnimation ? false : { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight pr-0 md:pr-[17rem] md:pl-1 lg:pr-[21rem] lg:pl-2 xl:pr-[22rem]"
+                className="text-coral text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight pr-0 md:pr-[17rem] md:pl-1 lg:pr-[21rem] lg:pl-2 xl:pr-[22rem]"
               >
                 Marketing &{" "}
                 <span className="relative inline-block">

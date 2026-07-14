@@ -157,7 +157,7 @@ export default function Footer() {
             href="/"
             className="w-full h-full bg-blue rounded-[2rem] flex items-center justify-center hover:bg-blue-dark transition-colors"
           >
-            <span className="text-black text-lg lg:text-2xl xl:text-3xl font-bold tracking-tight">
+            <span className="text-foreground text-lg lg:text-2xl xl:text-3xl font-bold tracking-tight">
               Teams &amp; Charlas
             </span>
           </Link>
@@ -173,7 +173,7 @@ export default function Footer() {
             href="/marketing"
             className="w-full h-full bg-coral rounded-[2rem] flex items-center justify-center hover:bg-coral-dark transition-colors"
           >
-            <span className="text-black text-lg lg:text-2xl xl:text-3xl font-bold tracking-tight">
+            <span className="text-foreground text-lg lg:text-2xl xl:text-3xl font-bold tracking-tight">
               Marketing and Performance
             </span>
           </Link>
@@ -228,7 +228,7 @@ export default function Footer() {
           className="col-span-2"
         >
           <Link href="/" className="w-full h-full bg-blue rounded-[1.2rem] flex items-center justify-center hover:bg-blue-dark transition-colors py-5">
-            <span className="text-black text-sm font-bold tracking-tight">Teams &amp; Charlas</span>
+            <span className="text-foreground text-sm font-bold tracking-tight">Teams &amp; Charlas</span>
           </Link>
         </motion.div>
 
@@ -263,7 +263,7 @@ export default function Footer() {
           className="col-span-3"
         >
           <Link href="/marketing" className="w-full h-full bg-coral rounded-[1.2rem] flex items-center justify-center hover:bg-coral-dark transition-colors py-5">
-            <span className="text-black text-sm font-bold tracking-tight">Marketing and Performance</span>
+            <span className="text-foreground text-sm font-bold tracking-tight">Marketing and Performance</span>
           </Link>
         </motion.div>
       </div>
