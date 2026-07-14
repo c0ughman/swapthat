@@ -118,7 +118,7 @@ export function SistemaLandingHero() {
         className="relative mx-5 flex-1 overflow-hidden rounded-[2.5rem] border border-white/25 shadow-[0_28px_90px_-20px_rgba(0,0,0,0.28)] md:mx-8 md:rounded-[3rem] lg:mx-10"
       >
         {/* Cycling background — same photos as before, full-bleed in the panel */}
-        <div className="absolute inset-0 bg-neutral-800" aria-hidden>
+        <div className="absolute inset-0 bg-chocolatito" aria-hidden>
           {SISTEMA_HERO_SLIDES.map((slide, i) => (
             <SlideLayer
               key={slide.src}
@@ -130,13 +130,13 @@ export function SistemaLandingHero() {
           ))}
           {/* 20px strip — fills the gap left of the shifted gradient only.
               z-[3] so it stays ABOVE the wiping slide layers (which use z 1–2). Desktop only. */}
-          <div className="absolute inset-y-0 left-0 z-[3] hidden w-[25px] bg-white md:block" aria-hidden />
+          <div className="absolute inset-y-0 left-0 z-[3] hidden w-[25px] bg-chocolatito md:block" aria-hidden />
           {/* Desktop: two plateaus, tilted 25° up, shifted 20px right via background-position */}
           <div
             className="absolute inset-0 z-[3] hidden md:block"
             style={{
               background:
-                "linear-gradient(65deg, #ffffff 0%, #ffffff 18%, rgba(255, 255, 255, 0) calc(56% - 10px))",
+                "linear-gradient(65deg, var(--chocolatito) 0%, var(--chocolatito) 18%, color-mix(in srgb, var(--chocolatito) 0%, transparent) calc(56% - 10px))",
               backgroundSize: "120% 120%",
               backgroundPosition: "20px center",
             }}
@@ -148,7 +148,7 @@ export function SistemaLandingHero() {
             className="absolute inset-0 z-[3] md:hidden"
             style={{
               background:
-                "linear-gradient(to top, #ffffff 0%, #ffffff 44%, rgba(255,255,255,0.85) 58%, rgba(255,255,255,0) 84%)",
+                "linear-gradient(to top, var(--chocolatito) 0%, var(--chocolatito) 44%, color-mix(in srgb, var(--chocolatito) 85%, transparent) 58%, transparent 84%)",
             }}
             aria-hidden
           />
@@ -175,15 +175,15 @@ export function SistemaLandingHero() {
         </div>
 
         <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-end px-6 py-8 max-md:pb-6 sm:px-8 md:items-center md:min-h-0 md:px-14 lg:px-16">
-          <div className="w-full max-w-2xl text-foreground">
+          <div className="w-full max-w-2xl text-white">
             <motion.div
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-5 flex items-center gap-3"
             >
-              <span className="h-0.5 w-8 bg-blue" />
-              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-blue">
+              <span className="h-1 w-8 rounded-full bg-amarillo" />
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--amarillo)_58%,var(--chocolatito))]">
                 Para equipos corporativos
               </span>
             </motion.div>
@@ -210,7 +210,7 @@ export function SistemaLandingHero() {
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="mb-2 text-base leading-relaxed text-foreground/88 md:text-lg"
+              className="mb-2 text-base leading-relaxed text-white/90 md:text-lg"
             >
               Hábitos saludables para equipos corporativos.
             </motion.p>
@@ -218,7 +218,7 @@ export function SistemaLandingHero() {
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className="mb-8 text-sm leading-relaxed text-foreground/70 md:text-base"
+              className="mb-8 text-sm leading-relaxed text-white/75 md:text-base"
             >
               Charlas, workshops y sesiones de bienestar que se quedan. Menos exigencia, más estructura consciente.
             </motion.p>
