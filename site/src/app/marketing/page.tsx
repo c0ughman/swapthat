@@ -373,7 +373,7 @@ function HeroSection() {
             >
               <Link
                 href="/contacto/marketing#formulario"
-                className="group inline-flex items-center justify-center gap-2 bg-coral text-white px-8 py-5 sm:py-4 rounded-full text-base font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
+                className="group inline-flex items-center justify-center gap-2 terracotta-grad terracotta-grad-hover text-white px-8 py-5 sm:py-4 rounded-full text-base font-medium transition-all duration-300 shadow-lg shadow-coral/20"
               >
                 Hablemos de tu marca
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:translate-x-1 transition-transform">
@@ -474,7 +474,7 @@ function ProblemSection() {
     <div className="relative w-full pb-32 sm:pb-36 md:pb-40 lg:pb-44 xl:pb-48 2xl:pb-52">
       <section
         ref={sectionRef}
-        className="relative overflow-hidden bg-coral py-28 sm:py-32 md:py-36 lg:py-40 xl:py-44 2xl:py-48"
+        className="relative overflow-hidden terracotta-grad py-28 sm:py-32 md:py-36 lg:py-40 xl:py-44 2xl:py-48"
         style={{
           /* Bottom-right quadrant: single corner arc (not full-height right semicircle) */
           borderRadius: "0 0 9999px 0",
@@ -715,7 +715,7 @@ function PerformanceWithStructureStackingSection() {
         </p>
         <Link
           href="/contacto/marketing"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-coral px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-coral/20 transition-colors hover:bg-coral-dark"
+          className="inline-flex items-center justify-center gap-2 rounded-full terracotta-grad terracotta-grad-hover px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-coral/20 transition-colors"
         >
           Hablemos de tu marca
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
@@ -1305,7 +1305,7 @@ function ProcessSteps({ steps }: { steps: string[] }) {
             >
               {/* Node — solid coral circle */}
               <div
-                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-coral transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_22px_color-mix(in srgb,var(--coral) 45%,transparent)]"
+                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full terracotta-grad transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_22px_color-mix(in srgb,var(--coral) 45%,transparent)]"
                 style={{ boxShadow: "0 4px 18px color-mix(in srgb,var(--coral) 28%,transparent)" }}
               >
                 <span className="relative z-10 text-base font-bold tabular-nums text-white md:text-lg">
@@ -1331,7 +1331,7 @@ function ProcessSteps({ steps }: { steps: string[] }) {
       >
         <Link
           href="/contacto/marketing#formulario"
-          className="group inline-flex items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-medium text-white shadow-lg shadow-coral/20 transition-all duration-300 hover:bg-coral-dark"
+          className="group inline-flex items-center justify-center gap-2 rounded-full terracotta-grad terracotta-grad-hover px-8 py-4 text-base font-medium text-white shadow-lg shadow-coral/20 transition-all duration-300"
         >
           Hablemos de tu marca
           <svg
@@ -1572,7 +1572,7 @@ function CTASection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contacto/marketing"
-              className="group inline-flex items-center justify-center gap-3 bg-coral text-white px-10 py-5 rounded-full text-lg font-medium hover:bg-coral-dark transition-all duration-300 shadow-lg shadow-coral/20"
+              className="group inline-flex items-center justify-center gap-3 terracotta-grad terracotta-grad-hover text-white px-10 py-5 rounded-full text-lg font-medium transition-all duration-300 shadow-lg shadow-coral/20"
             >
               Trabajemos tu marca
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:translate-x-1 transition-transform">
@@ -1601,7 +1601,7 @@ function CTASection() {
 
 function MarqueeBanner() {
   return (
-    <div className="py-6 bg-coral text-white overflow-hidden">
+    <div className="py-6 terracotta-grad text-white overflow-hidden">
       <Marquee
         items={[
           "Estrategia",

@@ -15,6 +15,7 @@
   --verde:       #c2b742; /* yellow-green — accent, use sparingly */
   --crema:       #fcf2e1; /* warm cream — backgrounds */
   --naranjita:   #9c3e23; /* red-orange — primary "warm" */
+  --naranja-calido: #c15a2a; /* warmer/brighter orange — bottom of terracotta gradient */
   --amarillito:  #f8e09d; /* soft yellow — stars / highlights */
 
   /* ── Semantic tokens (names kept stable so existing utilities keep working) ── */
@@ -84,6 +85,7 @@
   --color-chocolatito: var(--chocolatito);
   --color-celestito: var(--celestito);
   --color-naranjita: var(--naranjita);
+  --color-naranja-calido: var(--naranja-calido);
   --color-crema: var(--crema);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -247,6 +249,21 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Terracotta → warm-orange gradient, rising from the bottom.
+ * Use on sizeable solid-terracotta fills (buttons, terracotta bands/backgrounds)
+ * on the marketing page. Not for tiny accents or white surfaces. */
+.terracotta-grad {
+  background-image: linear-gradient(to top, var(--naranja-calido) 0%, var(--coral) 62%);
+}
+/* Hover: nudge the whole ramp slightly darker/deeper. */
+.terracotta-grad-hover:hover {
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--naranja-calido) 88%, var(--chocolatito)) 0%,
+    var(--coral-dark) 62%
+  );
 }
 
 /* Irregular card shapes */
