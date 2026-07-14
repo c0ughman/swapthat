@@ -561,14 +561,21 @@ function ProblemSection() {
   );
 }
 
-// ─── Stacking cards — bg ramp: light → … → coral (#e85d75); last card = coral, steps interpolated before it ───
-const MKT_STACK_BG = ["#f1c6cf", "#efacb9", "#ec91a2", "#ea778c", "#e85d75"];
+// ─── Stacking cards — bg ramp: light → … → warm primary (--coral / naranjita).
+// Ramp is derived from the brand token in globals.css (single source of truth). ───
+const MKT_STACK_BG = [
+  "color-mix(in srgb, var(--coral) 32%, white)",
+  "color-mix(in srgb, var(--coral) 50%, white)",
+  "color-mix(in srgb, var(--coral) 68%, white)",
+  "color-mix(in srgb, var(--coral) 84%, white)",
+  "var(--coral)",
+];
 const MKT_STACK_GLOW = [
-  "rgba(205, 110, 120, 0.2)",
-  "rgba(212, 102, 115, 0.26)",
-  "rgba(218, 96, 110, 0.31)",
-  "rgba(225, 92, 108, 0.36)",
-  "rgba(232, 93, 117, 0.42)",
+  "color-mix(in srgb, var(--coral) 20%, transparent)",
+  "color-mix(in srgb, var(--coral) 26%, transparent)",
+  "color-mix(in srgb, var(--coral) 31%, transparent)",
+  "color-mix(in srgb, var(--coral) 36%, transparent)",
+  "color-mix(in srgb, var(--coral) 42%, transparent)",
 ];
 const MKT_STACK_TEXT = "#ffffff";
 /** Very light shadows — backgrounds carry contrast now */
@@ -858,7 +865,7 @@ function ResultsSection() {
             <div className="shrink-0 flex flex-col items-start md:items-end gap-2">
               <div className="flex gap-1.5">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} width="28" height="28" viewBox="0 0 24 24" fill="#FBBF24">
+                  <svg key={i} width="28" height="28" viewBox="0 0 24 24" fill="var(--amarillo)">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 ))}
@@ -909,7 +916,7 @@ function ResultsSection() {
               <div className="bg-white border border-gray-light rounded-[1.75rem] p-8 flex flex-col gap-5 h-full shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, s) => (
-                    <svg key={s} width="16" height="16" viewBox="0 0 24 24" fill="#FBBF24">
+                    <svg key={s} width="16" height="16" viewBox="0 0 24 24" fill="var(--amarillo)">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                   ))}

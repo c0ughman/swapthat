@@ -83,26 +83,26 @@ export default function WorkoutPersonSVG({ className = "" }: { className?: strin
 
       {/* ─── FACE ─── */}
       {/* Eyes */}
-      <ellipse cx="158" cy="130" rx="12" ry="14" fill="#4f46e5" />
-      <ellipse cx="202" cy="130" rx="12" ry="14" fill="#4f46e5" />
+      <ellipse cx="158" cy="130" rx="12" ry="14" fill="var(--blue-dark)" />
+      <ellipse cx="202" cy="130" rx="12" ry="14" fill="var(--blue-dark)" />
       {/* Eye shine */}
       <ellipse cx="163" cy="125" rx="4.5" ry="5" fill="white" />
       <ellipse cx="207" cy="125" rx="4.5" ry="5" fill="white" />
       {/* Eyelashes hint */}
-      <path d="M147 122 Q158 115 169 122" stroke="#4f46e5" strokeWidth="3" strokeLinecap="round" fill="none" />
-      <path d="M191 122 Q202 115 213 122" stroke="#4f46e5" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M147 122 Q158 115 169 122" stroke="var(--blue-dark)" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M191 122 Q202 115 213 122" stroke="var(--blue-dark)" strokeWidth="3" strokeLinecap="round" fill="none" />
 
       {/* Nose */}
       <path d="M176 148 Q180 155 184 148" stroke="rgba(79,70,229,0.35)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
 
       {/* Big smile */}
-      <path d="M154 163 Q180 190 206 163" stroke="#4f46e5" strokeWidth="5" strokeLinecap="round" fill="none" />
+      <path d="M154 163 Q180 190 206 163" stroke="var(--blue-dark)" strokeWidth="5" strokeLinecap="round" fill="none" />
       {/* Smile inner shadow */}
       <path d="M157 165 Q180 187 203 165 Q203 178 180 182 Q157 178 157 165Z" fill="rgba(79,70,229,0.08)" />
 
       {/* Rosy cheeks */}
-      <ellipse cx="138" cy="158" rx="20" ry="13" fill="#e85d75" opacity="0.18" />
-      <ellipse cx="222" cy="158" rx="20" ry="13" fill="#e85d75" opacity="0.18" />
+      <ellipse cx="138" cy="158" rx="20" ry="13" fill="var(--coral)" opacity="0.18" />
+      <ellipse cx="222" cy="158" rx="20" ry="13" fill="var(--coral)" opacity="0.18" />
 
       {/* ─── LEGS ─── */}
       {/* Left leg */}

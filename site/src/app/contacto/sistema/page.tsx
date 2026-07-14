@@ -284,7 +284,7 @@ export default function ContactoSistemaPage() {
       ════════════════════════════════════════════════════════════════════ */}
       <section id="formulario" className="relative py-24 md:py-32" style={{ background: "var(--background)" }}>
         <BlobShape color="var(--foreground)" size={380} className="-top-20 right-0 opacity-[0.03]" blur />
-        <BlobShape color="#b8e986" size={280} className="-bottom-20 -left-10 opacity-[0.12]" blur />
+        <BlobShape color="var(--verde)" size={280} className="-bottom-20 -left-10 opacity-[0.12]" blur />
 
         <div className="mx-auto max-w-2xl px-6 lg:px-8">
           <motion.div

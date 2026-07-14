@@ -18,8 +18,9 @@ import { getSwapThatAppHref } from "@/lib/swapThatAppUrl";
 import { SHOW_PLACEHOLDER_CONTENT } from "@/lib/placeholderContent";
 
 /** Three-card block only — orange / lime / black (rest of page is monochrome). */
-const CARD_ORANGE = "#f5a623";
-const CARD_LIME = "#b8e986";
+// Reference brand tokens in globals.css — single source of truth.
+const CARD_ORANGE = "var(--amarillo)";
+const CARD_LIME = "var(--verde)";
 
 /** Match horizontal-scroll + bottom-of-page CTA scale (Sistema). */
 const SISTEMA_CTA_ON_LIGHT = `group inline-flex items-center justify-center gap-3 bg-foreground text-background px-8 py-4 sm:px-10 sm:py-5 rounded-full text-base sm:text-lg font-medium transition-all duration-300 hover:bg-foreground/90 shadow-lg shadow-black/10`;
@@ -160,10 +161,10 @@ function ProblemSection() {
             {
               text: "Entrenar no es hacerlo perfecto.",
               sub: "Es aprender a regularte.",
-              bg: "#000000",
+              bg: "var(--chocolatito)",
               border: "rgba(255,255,255,0.15)",
               iconWrap: "rgba(255,255,255,0.12)",
-              star: "#ffffff",
+              star: "var(--amarillo)",
               titleClass: "text-white",
               subClass: "text-white/75",
             },
@@ -181,11 +182,11 @@ function ProblemSection() {
               text: "Aquí no empiezas de cero.",
               sub: "Aquí retomas.",
               bg: CARD_LIME,
-              border: "rgba(0,0,0,0.12)",
-              iconWrap: "rgba(0,0,0,0.12)",
-              star: "var(--foreground)",
-              titleClass: "text-foreground",
-              subClass: "text-foreground/80",
+              border: "rgba(255,255,255,0.15)",
+              iconWrap: "rgba(255,255,255,0.15)",
+              star: "var(--amarillo)",
+              titleClass: "text-white",
+              subClass: "text-white/80",
             },
           ].map((card, i) => (
             <AnimatedSection key={i} delay={0.08 * i} light>

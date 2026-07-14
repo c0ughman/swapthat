@@ -1,29 +1,59 @@
 @import "tailwindcss";
 
+/*
+ * ─────────────────────────────────────────────────────────────────────────
+ * BRAND PALETTE — single source of truth
+ * ─────────────────────────────────────────────────────────────────────────
+ * Six raw brand colors. Everything else (backgrounds, shades, rgba glows)
+ * is derived from these via color-mix so the whole site re-skins by editing
+ * only this block. Do not hardcode hex in components — reference these tokens
+ * (Tailwind: bg-blue / text-coral / bg-cream …) or the vars directly.
+ */
 :root {
-  --background: #f8f7f4;
-  --foreground: #1a1a1a;
-  --blue: #6366f1;
-  --blue-light: #818cf8;
-  --blue-dark: #4f46e5;
-  --coral: #e85d75;
-  --coral-light: #f472b6;
-  --coral-dark: #dc2626;
-  --cream: #f5f1e8;
+  --chocolatito: #582d1b; /* dark warm brown — replaces near-black text */
+  --celestito:   #87aabb; /* dusty blue — primary "cool" */
+  --verde:       #807e0f; /* olive green — accent, use sparingly */
+  --crema:       #fcf2e1; /* warm cream — backgrounds */
+  --naranjita:   #9c3e23; /* red-orange — primary "warm" */
+  --amarillito:  #f8e09d; /* soft yellow — stars / highlights */
+
+  /* ── Semantic tokens (names kept stable so existing utilities keep working) ── */
+  --background: var(--crema);
+  --foreground: var(--chocolatito);
+
+  /* Primary "cool" = celestito (was blue) */
+  --blue: var(--celestito);
+  --blue-light: color-mix(in srgb, var(--celestito) 70%, white);
+  --blue-dark: color-mix(in srgb, var(--celestito) 78%, var(--chocolatito));
+
+  /* Primary "warm" = naranjita (was coral) */
+  --coral: var(--naranjita);
+  --coral-light: color-mix(in srgb, var(--naranjita) 65%, white);
+  --coral-dark: color-mix(in srgb, var(--naranjita) 82%, var(--chocolatito));
+
+  /* Accent green (use sparingly) */
+  --verde-light: color-mix(in srgb, var(--verde) 60%, white);
+  --verde-dark: color-mix(in srgb, var(--verde) 82%, var(--chocolatito));
+
+  /* Cream / neutral family */
+  --cream: color-mix(in srgb, var(--crema) 88%, var(--chocolatito) 4%);
   /** Warm frame behind squircle panels — cream-leaning, between white and --cream. */
-  --frame-outer: #f7f4ed;
+  --frame-outer: color-mix(in srgb, var(--crema) 92%, white);
   /** Marketing band — same warm beige as footer “Coaching 1-on-1” (`--background`). */
   --marketing-band: var(--background);
   /** Lighter tint for cards on the marketing band. */
   --marketing-band-light: color-mix(in srgb, var(--marketing-band) 58%, white);
-  --wave-gray: #e8e8e8;
-  --gray: #6b7280;
-  --gray-light: #e5e5e5;
-  --beige-dark: #e8e3d6;
-  --ivory: #e8dec5;
-  --cream-light: #faf3df;
-  --peach: #fff6f1;
-  --blue-soft: #dfdfff;
+  --wave-gray: color-mix(in srgb, var(--chocolatito) 10%, white);
+  --gray: color-mix(in srgb, var(--chocolatito) 55%, white);
+  --gray-light: color-mix(in srgb, var(--chocolatito) 12%, white);
+  --beige-dark: color-mix(in srgb, var(--crema) 80%, var(--chocolatito) 8%);
+  --ivory: color-mix(in srgb, var(--crema) 82%, var(--verde) 6%);
+  --cream-light: color-mix(in srgb, var(--crema) 96%, white);
+  --peach: color-mix(in srgb, var(--crema) 85%, var(--naranjita) 5%);
+  --blue-soft: color-mix(in srgb, var(--celestito) 30%, white);
+
+  /* Highlight yellow (star ratings, small accents) */
+  --amarillo: var(--amarillito);
 }
 
 @theme inline {
@@ -47,6 +77,14 @@
   --color-cream-light: var(--cream-light);
   --color-peach: var(--peach);
   --color-blue-soft: var(--blue-soft);
+  --color-verde: var(--verde);
+  --color-verde-light: var(--verde-light);
+  --color-verde-dark: var(--verde-dark);
+  --color-amarillo: var(--amarillo);
+  --color-chocolatito: var(--chocolatito);
+  --color-celestito: var(--celestito);
+  --color-naranjita: var(--naranjita);
+  --color-crema: var(--crema);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

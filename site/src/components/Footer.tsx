@@ -78,7 +78,7 @@ export default function Footer() {
             href={swapThatAppHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full h-full bg-[#f5a623] rounded-full flex flex-col items-center justify-center px-1.5 text-center hover:brightness-[0.96] transition-colors"
+            className="w-full h-full bg-amarillo rounded-full flex flex-col items-center justify-center px-1.5 text-center hover:brightness-[0.96] transition-colors"
           >
             <span className="text-foreground text-[11px] sm:text-sm lg:text-base font-bold leading-tight">Swap That App</span>
           </Link>
@@ -107,7 +107,7 @@ export default function Footer() {
         >
           <Link
             href={contactHref}
-            className="w-full h-full bg-[#b8e986] rounded-full flex flex-col items-center justify-center gap-0.5 pt-0.5 pb-1 px-1 hover:brightness-[0.96] transition-colors"
+            className="w-full h-full bg-verde-light rounded-full flex flex-col items-center justify-center gap-0.5 pt-0.5 pb-1 px-1 hover:brightness-[0.96] transition-colors"
           >
             <svg className="h-7 w-7 shrink-0 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden>
               <path d="M7 17L17 7M17 7H7M17 7V17" strokeLinecap="round" strokeLinejoin="round" />
@@ -191,7 +191,7 @@ export default function Footer() {
             href={swapThatAppHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full h-full bg-[#f5a623] rounded-full flex flex-col items-center justify-center hover:brightness-[0.96] transition-colors aspect-square px-0.5"
+            className="w-full h-full bg-amarillo rounded-full flex flex-col items-center justify-center hover:brightness-[0.96] transition-colors aspect-square px-0.5"
           >
             <span className="text-foreground text-[10px] font-bold text-center leading-tight">Swap That App</span>
           </Link>
@@ -212,7 +212,7 @@ export default function Footer() {
         >
           <Link
             href={contactHref}
-            className="w-full h-full bg-[#b8e986] rounded-full flex flex-col items-center justify-center gap-0.5 pt-0.5 pb-1 px-0.5 hover:brightness-[0.96] transition-colors aspect-square"
+            className="w-full h-full bg-verde-light rounded-full flex flex-col items-center justify-center gap-0.5 pt-0.5 pb-1 px-0.5 hover:brightness-[0.96] transition-colors aspect-square"
           >
             <svg className="h-6 w-6 shrink-0 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden>
               <path d="M7 17L17 7M17 7H7M17 7V17" strokeLinecap="round" strokeLinejoin="round" />

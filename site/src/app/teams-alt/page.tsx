@@ -117,42 +117,37 @@ function MarqueeBanner() {
 // ─────────────────────────────────────────────────────────────────────────────
 // STACKING CARDS — left copy, right arc-animated stacking cards
 // ─────────────────────────────────────────────────────────────────────────────
+// Colors reference brand tokens in globals.css — single source of truth.
 const CARD_COLORS = [
-  "#6366f1", // blue
-  "#e85d75", // coral
-  "#eae6df", // off-white beige (lighter)
-  "#b8e986", // tennis ball green
-  "#f5a623", // orange yellow
+  "var(--blue)",   // celestito
+  "var(--coral)",  // naranjita
+  "var(--beige-dark)",
+  "var(--verde)",  // green accent
+  "var(--amarillo)",
 ];
 
-const CARD_IS_DARK = ["#6366f1", "#e85d75"];
+const CARD_IS_DARK = ["var(--blue)", "var(--coral)", "var(--verde)"];
 
 /** Darker versions for bottom gradient (over cartoon, under text) */
 const CARD_COLORS_DARK = [
-  "#4a4dc7", // blue
-  "#b84d62", // coral
-  "#c4c0b8", // beige
-  "#8fbe5a", // green
-  "#c4851c", // orange
+  "var(--blue-dark)",
+  "var(--coral-dark)",
+  "var(--beige-dark)",
+  "var(--verde-dark)",
+  "color-mix(in srgb, var(--amarillo) 80%, var(--chocolatito))",
 ];
 
 /** Drop glow (replaces shadow) — strong, each card's color */
 const CARD_GLOW_RGBA = [
-  "rgba(99, 102, 241, 0.45)",   // blue
-  "rgba(232, 93, 117, 0.45)",   // coral
-  "rgba(234, 230, 223, 0.4)",   // beige
-  "rgba(184, 233, 134, 0.45)",  // green
-  "rgba(245, 166, 35, 0.45)",   // orange
+  "color-mix(in srgb, var(--blue) 45%, transparent)",
+  "color-mix(in srgb, var(--coral) 45%, transparent)",
+  "color-mix(in srgb, var(--beige-dark) 40%, transparent)",
+  "color-mix(in srgb, var(--verde) 45%, transparent)",
+  "color-mix(in srgb, var(--amarillo) 45%, transparent)",
 ];
 
 /** Text overlay background — fully transparent */
-const CARD_COLORS_OVERLAY = [
-  "rgba(99, 102, 241, 0)",
-  "rgba(232, 93, 117, 0)",
-  "rgba(234, 230, 223, 0)",
-  "rgba(184, 233, 134, 0)",
-  "rgba(245, 166, 35, 0)",
-];
+const CARD_COLORS_OVERLAY = ["transparent", "transparent", "transparent", "transparent", "transparent"];
 
 const CARD_TOPICS = [
   { title: "Hábitos saludables",         desc: "En jornadas laborales exigentes", image: "" },
