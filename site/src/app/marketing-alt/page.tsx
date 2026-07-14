@@ -380,7 +380,7 @@ function ProblemSection() {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-7 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
           <div>
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-verde mb-4 block">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70 mb-4 block">
               El problema
             </span>
             {prefersReducedMotion ? (
@@ -1265,7 +1265,7 @@ function ProcessAndWhySection() {
 
         <AnimatedSection light>
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-12 h-0.5 bg-verde" aria-hidden />
+            <span className="w-12 h-0.5 bg-coral" aria-hidden />
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
               Proceso &amp; Diferencia
             </span>

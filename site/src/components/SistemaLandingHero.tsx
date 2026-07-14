@@ -136,7 +136,7 @@ export function SistemaLandingHero() {
             className="absolute inset-0 z-[3] hidden md:block"
             style={{
               background:
-                "linear-gradient(65deg, var(--chocolatito) 0%, var(--chocolatito) 18%, color-mix(in srgb, var(--chocolatito) 0%, transparent) calc(56% - 10px))",
+                "linear-gradient(65deg, var(--chocolatito) 0%, var(--chocolatito) 36%, color-mix(in srgb, var(--chocolatito) 0%, transparent) calc(58% - 10px))",
               backgroundSize: "120% 120%",
               backgroundPosition: "20px center",
             }}
@@ -148,7 +148,7 @@ export function SistemaLandingHero() {
             className="absolute inset-0 z-[3] md:hidden"
             style={{
               background:
-                "linear-gradient(to top, var(--chocolatito) 0%, var(--chocolatito) 44%, color-mix(in srgb, var(--chocolatito) 85%, transparent) 58%, transparent 84%)",
+                "linear-gradient(to top, var(--chocolatito) 0%, var(--chocolatito) 60%, color-mix(in srgb, var(--chocolatito) 88%, transparent) 72%, transparent 90%)",
             }}
             aria-hidden
           />

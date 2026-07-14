@@ -188,7 +188,7 @@ function HeroSection() {
       className="relative min-h-screen flex items-center overflow-hidden pt-[calc(5rem+10px)]"
       style={{
         background:
-          "radial-gradient(ellipse 45% 35% at calc(85% - 600px) 15%, color-mix(in srgb,var(--verde) 16%,transparent), transparent 60%), white",
+          "radial-gradient(ellipse 45% 35% at calc(85% - 600px) 15%, color-mix(in srgb,var(--coral) 14%,transparent), transparent 60%), white",
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
@@ -230,8 +230,8 @@ function HeroSection() {
               transition={{ duration: 0.5, delay: 0.15 }}
               className="flex items-center gap-3 mb-6"
             >
-              <span className="w-12 h-0.5 bg-verde" />
-              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-verde">
+              <span className="w-12 h-0.5 bg-coral" />
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
                 Para marcas
               </span>
             </motion.div>
@@ -398,7 +398,7 @@ function HeroSection() {
             >
               {HERO_TRUST_BADGES.map((badge) => (
                 <li key={badge.label} className="flex items-center gap-2.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-verde/10 text-verde">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral/8 text-coral">
                     {badge.icon}
                   </span>
                   <span className="flex flex-col leading-tight">
@@ -483,7 +483,7 @@ function ProblemSection() {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-7 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
           <div className="lg:-translate-y-[100px]">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-verde mb-4 block">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70 mb-4 block">
               El problema
             </span>
             {prefersReducedMotion ? (
@@ -1146,7 +1146,7 @@ function ServicesSection() {
                   <div className="lg:col-span-2">
                     <div className="mb-4 flex items-center gap-3">
                       <span className="text-sm font-bold text-coral">{service.num}</span>
-                      <span className="h-0.5 w-8 bg-verde" />
+                      <span className="h-0.5 w-8 bg-coral" />
                     </div>
                     <h3 className="mb-3 text-2xl font-bold text-foreground">{service.title}</h3>
                     <p className="mb-2 font-medium text-coral">{service.subtitle}</p>
@@ -1401,7 +1401,7 @@ function ProcessAndWhySection() {
         {/* Hero-style label + editorial headline */}
         <AnimatedSection light>
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-12 h-0.5 bg-verde" aria-hidden />
+            <span className="w-12 h-0.5 bg-coral" aria-hidden />
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
               Proceso &amp; Diferencia
             </span>
