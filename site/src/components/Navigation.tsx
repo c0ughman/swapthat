@@ -154,10 +154,10 @@ export default function Navigation() {
       );
     }
     if (pathname === "/marketing") {
-      return <LogoMaskSpan fill="var(--coral)" />;
+      return <LogoMaskSpan fill="#000000" />;
     }
     if (pathname === "/" && scrolled) {
-      return <LogoMaskSpan fill="var(--blue)" />;
+      return <LogoMaskSpan fill="#000000" />;
     }
     return (
       <Image
@@ -173,13 +173,13 @@ export default function Navigation() {
 
   const explorarClass =
     isOnSistema
-      ? "px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-300 bg-white text-foreground border border-black/15 shadow-sm hover:bg-white/95 cursor-pointer"
-      : "px-5 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 bg-black text-white hover:bg-black/88 cursor-pointer";
+      ? "px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-300 bg-white text-foreground border border-foreground/15 shadow-sm hover:bg-white/95 cursor-pointer"
+      : "px-5 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 bg-foreground text-white hover:bg-foreground/88 cursor-pointer";
 
   const explorarMobileClass =
     isOnSistema
-      ? "inline-block bg-white text-foreground border border-black/15 shadow-sm px-8 py-4 rounded-full text-lg font-semibold mt-4 hover:bg-white/95 cursor-pointer"
-      : "inline-block bg-black text-white px-8 py-4 rounded-full text-lg font-medium mt-4 hover:bg-black/88 cursor-pointer";
+      ? "inline-block bg-white text-foreground border border-foreground/15 shadow-sm px-8 py-4 rounded-full text-lg font-semibold mt-4 hover:bg-white/95 cursor-pointer"
+      : "inline-block bg-foreground text-white px-8 py-4 rounded-full text-lg font-medium mt-4 hover:bg-foreground/88 cursor-pointer";
 
   const isTeamsAlt = pathname === "/teams-alt";
   const navPosition = isTeamsAlt ? "absolute" : "fixed";
