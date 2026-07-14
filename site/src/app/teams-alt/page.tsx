@@ -36,12 +36,12 @@ function HeroCTASection() {
             <div>
               <div className="mb-4 flex items-center gap-1.5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <svg key={i} viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-amber-400" fill="currentColor" aria-hidden>
+                  <svg key={i} viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-amarillo" fill="currentColor" aria-hidden>
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 ))}
               </div>
-              <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+              <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-amarillo">
                 Bienestar corporativo
               </span>
               <h2 className="text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-5xl">
@@ -400,7 +400,7 @@ function FiveStars({ className = "" }: { className?: string }) {
         <svg
           key={i}
           viewBox="0 0 24 24"
-          className="h-5 w-5 shrink-0 text-amber-400 md:h-6 md:w-6"
+          className="h-5 w-5 shrink-0 text-amarillo md:h-6 md:w-6"
           fill="currentColor"
           aria-hidden
         >
@@ -666,7 +666,7 @@ function TrustedByLogoCloudSection() {
             </p>
             <Link
               href="/contacto/equipos"
-              className="mt-1 inline-flex w-fit items-center justify-center gap-2 self-center rounded-full bg-blue px-5 py-3 text-xs font-semibold text-white shadow-[0_10px_40px_rgba(99,102,241,0.25)] transition-colors hover:bg-blue-dark active:scale-[0.98] md:self-end md:px-8 md:py-4 md:text-base"
+              className="mt-1 inline-flex w-fit items-center justify-center gap-2 self-center rounded-full bg-blue px-5 py-3 text-xs font-semibold text-white shadow-[0_10px_40px_color-mix(in_srgb,var(--blue)_25%,transparent)] transition-colors hover:bg-blue-dark active:scale-[0.98] md:self-end md:px-8 md:py-4 md:text-base"
             >
               Quiero una charla para mi equipo
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
@@ -954,7 +954,7 @@ function CTASection({ sectionRef }: { sectionRef?: RefObject<HTMLElement | null>
             <AnimatedSection delay={0.2}>
               <Link
                 href="/contacto/equipos"
-                className="group inline-flex items-center justify-center gap-3 bg-blue text-white px-10 py-5 rounded-full text-lg font-medium hover:bg-blue-dark transition-all duration-300 shadow-[0_10px_40px_rgba(99,102,241,0.25)]"
+                className="group inline-flex items-center justify-center gap-3 bg-blue text-white px-10 py-5 rounded-full text-lg font-medium hover:bg-blue-dark transition-all duration-300 shadow-[0_10px_40px_color-mix(in_srgb,var(--blue)_25%,transparent)]"
               >
                 Quiero una charla para mi equipo
                 <svg

@@ -24,7 +24,7 @@ const CARD_LIME = "var(--verde)";
 
 /** Match horizontal-scroll + bottom-of-page CTA scale (Sistema). */
 const SISTEMA_CTA_ON_LIGHT = `group inline-flex items-center justify-center gap-3 bg-foreground text-background px-8 py-4 sm:px-10 sm:py-5 rounded-full text-base sm:text-lg font-medium transition-all duration-300 hover:bg-foreground/90 shadow-lg shadow-black/10`;
-const SISTEMA_CTA_ON_DARK = `group inline-flex items-center justify-center gap-3 bg-white text-black px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30`;
+const SISTEMA_CTA_ON_DARK = `group inline-flex items-center justify-center gap-3 bg-white text-foreground px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30`;
 
 /** "Descarga la app" + footer — default FitBudd pack; override with `NEXT_PUBLIC_APP_DOWNLOAD_URL`. */
 const SISTEMA_APP_DOWNLOAD_HREF = getSwapThatAppHref();
@@ -69,7 +69,7 @@ function SistemaFilosofiaToProblemFade() {
       aria-hidden
       style={{
         background:
-          "linear-gradient(to bottom, var(--foreground) 0%, var(--foreground) 14%, #2a2a2a 32%, #525252 50%, #8a8a8a 68%, #c4c4c4 84%, #ebebeb 94%, #ffffff 100%)",
+          "linear-gradient(to bottom, var(--chocolatito) 0%, var(--chocolatito) 14%, color-mix(in srgb, var(--chocolatito) 82%, white) 32%, color-mix(in srgb, var(--chocolatito) 58%, white) 50%, color-mix(in srgb, var(--chocolatito) 36%, white) 68%, color-mix(in srgb, var(--chocolatito) 18%, white) 84%, color-mix(in srgb, var(--chocolatito) 7%, white) 94%, #ffffff 100%)",
       }}
     />
   );
@@ -425,7 +425,7 @@ function WhatIsSection() {
               }}
             >
               <div className={`h-full ${noTilt ? "" : floatYClass[i] ?? ""}`}>
-                <div className="group relative flex min-h-0 w-full flex-row items-start gap-3.5 rounded-2xl border border-white/10 bg-neutral-900 px-5 py-5 shadow-lg transition-all duration-300 hover:z-[1] hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl sm:gap-5 sm:px-6 sm:py-6 md:rounded-3xl md:gap-6 md:px-7 md:py-6">
+                <div className="group relative flex min-h-0 w-full flex-row items-start gap-3.5 rounded-2xl border border-white/10 bg-chocolatito px-5 py-5 shadow-lg transition-all duration-300 hover:z-[1] hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl sm:gap-5 sm:px-6 sm:py-6 md:rounded-3xl md:gap-6 md:px-7 md:py-6">
                   <Image
                     src={feature.iconSrc}
                     alt=""
@@ -1022,7 +1022,7 @@ function HowItWorksSection() {
         {/* ── CTA Panel — full viewport width, dark background + run cartoon (right) ── */}
         <div
           className="relative h-full flex-shrink-0 flex flex-col items-center justify-start overflow-x-clip overflow-y-auto gap-6 px-8 pt-10 max-md:pt-[146px] max-md:pb-10 max-md:gap-8 pb-8 text-center md:px-12 md:gap-10 md:pt-16 md:pb-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-14 lg:py-12 lg:text-left lg:overflow-hidden"
-          style={{ width: "100vw", backgroundColor: "#000000" }}
+          style={{ width: "100vw", backgroundColor: "var(--chocolatito)" }}
         >
           <BlobShape color="#ffffff" size={400} className="-top-20 -right-20" opacity={0.06} />
           <BlobShape color="#ffffff" size={300} className="bottom-0 -left-20" opacity={0.05} />
@@ -1044,7 +1044,7 @@ function HowItWorksSection() {
 
             <Link
               href="/contacto/sistema"
-              className="group inline-flex items-center justify-center gap-3 bg-white text-black px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30"
+              className="group inline-flex items-center justify-center gap-3 bg-white text-foreground px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30"
             >
               Quiero empezar hoy
               <svg

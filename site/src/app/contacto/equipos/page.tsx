@@ -149,7 +149,7 @@ export default function ContactoEquiposPage() {
           >
             <div className="relative h-full w-full max-h-[72vh]">
               {/* Main photo */}
-              <div className="absolute left-0 top-[5%] h-[58%] w-[72%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_rgba(99,102,241,0.12)]">
+              <div className="absolute left-0 top-[5%] h-[58%] w-[72%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_color-mix(in_srgb,var(--blue)_12%,transparent)]">
                 <Image
                   src="/experience/charla.webp"
                   alt="Andrea dando una charla para equipos"
@@ -355,7 +355,7 @@ export default function ContactoEquiposPage() {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-blue px-10 py-5 text-base font-semibold text-white shadow-[0_10px_40px_rgba(99,102,241,0.28)] transition-all duration-300 hover:bg-blue-dark disabled:opacity-60"
+                  className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-blue px-10 py-5 text-base font-semibold text-white shadow-[0_10px_40px_color-mix(in_srgb,var(--blue)_28%,transparent)] transition-all duration-300 hover:bg-blue-dark disabled:opacity-60"
                 >
                   {status === "submitting" ? (
                     <><svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden><circle cx="12" cy="12" r="10" className="opacity-25" /><path d="M12 2a10 10 0 0110 10" className="opacity-75" /></svg>Enviando...</>

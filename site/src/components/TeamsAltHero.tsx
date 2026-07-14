@@ -118,7 +118,7 @@ export function TeamsAltHero() {
               transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mb-4 flex items-center gap-3">
-                <span className="h-0.5 w-12 bg-blue" />
+                <span className="h-1 w-12 rounded-full bg-amarillo" />
                 <span className="text-sm font-semibold uppercase tracking-[0.2em] text-blue">
                   Para equipos corporativos
                 </span>
@@ -164,7 +164,7 @@ export function TeamsAltHero() {
                 </Link>
                 <Link
                   href="/sistema"
-                  className="inline-flex items-center justify-center rounded-full border border-foreground/20 bg-white px-5 py-3 text-sm font-bold text-foreground transition-colors hover:bg-foreground/5 md:text-base"
+                  className="inline-flex items-center justify-center rounded-full border-2 border-amarillo bg-white px-5 py-3 text-sm font-bold text-foreground transition-colors hover:bg-amarillo/15 md:text-base"
                 >
                   Coaching 1-on-1
                 </Link>

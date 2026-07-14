@@ -230,7 +230,7 @@ function HeroSection() {
               transition={{ duration: 0.5, delay: 0.15 }}
               className="flex items-center gap-3 mb-6"
             >
-              <span className="w-12 h-0.5 bg-coral" />
+              <span className="w-12 h-0.5 bg-verde" />
               <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
                 Para marcas
               </span>
@@ -251,7 +251,7 @@ function HeroSection() {
                   <div className="flex w-full items-end justify-between gap-[1.575rem] lg:gap-[1.925rem]">
                     <div className="translate-x-[22px] -translate-y-[14px]">
                       <div className="inline-block origin-center scale-[0.855]">
-                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5">
+                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                           <svg
                             viewBox="0 0 24 24"
                             fill="none"
@@ -274,7 +274,7 @@ function HeroSection() {
                       </div>
                     </div>
                     <div className="inline-block origin-center scale-[0.855]">
-                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5">
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -297,7 +297,7 @@ function HeroSection() {
                   </div>
                   <div className="flex w-full justify-end pr-1 pt-0.5 lg:pr-2">
                     <div className="inline-block origin-center scale-[0.855]">
-                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_rgba(232,93,117,0.11),0_0_18px_rgba(232,93,117,0.05)] lg:gap-2.5 lg:px-6 lg:py-5">
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -483,7 +483,7 @@ function ProblemSection() {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-7 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
           <div className="lg:-translate-y-[100px]">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70 mb-4 block">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-verde mb-4 block">
               El problema
             </span>
             {prefersReducedMotion ? (
@@ -1146,7 +1146,7 @@ function ServicesSection() {
                   <div className="lg:col-span-2">
                     <div className="mb-4 flex items-center gap-3">
                       <span className="text-sm font-bold text-coral">{service.num}</span>
-                      <span className="h-0.5 w-8 bg-coral" />
+                      <span className="h-0.5 w-8 bg-verde" />
                     </div>
                     <h3 className="mb-3 text-2xl font-bold text-foreground">{service.title}</h3>
                     <p className="mb-2 font-medium text-coral">{service.subtitle}</p>
@@ -1300,13 +1300,13 @@ function ProcessSteps({ steps }: { steps: string[] }) {
             transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
           >
             <div
-              className="flex w-full items-center gap-5 rounded-2xl border border-coral/8 px-5 py-4 transition-all duration-300 ease-out group-hover:translate-x-5 group-hover:border-coral/25 group-hover:bg-coral/[0.06] group-hover:shadow-[0_10px_30px_-12px_rgba(232,93,117,0.3)] md:gap-6 md:px-6 md:py-5"
+              className="flex w-full items-center gap-5 rounded-2xl border border-coral/8 px-5 py-4 transition-all duration-300 ease-out group-hover:translate-x-5 group-hover:border-coral/25 group-hover:bg-coral/[0.06] group-hover:shadow-[0_10px_30px_-12px_color-mix(in srgb,var(--coral) 30%,transparent)] md:gap-6 md:px-6 md:py-5"
               style={{ backgroundColor: MARKETING_BAND_LIGHT }}
             >
               {/* Node — solid coral circle */}
               <div
-                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-coral transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_22px_rgba(232,93,117,0.45)]"
-                style={{ boxShadow: "0 4px 18px rgba(232,93,117,0.28)" }}
+                className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-coral transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_22px_color-mix(in srgb,var(--coral) 45%,transparent)]"
+                style={{ boxShadow: "0 4px 18px color-mix(in srgb,var(--coral) 28%,transparent)" }}
               >
                 <span className="relative z-10 text-base font-bold tabular-nums text-white md:text-lg">
                   {i + 1}
@@ -1391,7 +1391,7 @@ function ProcessAndWhySection() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 45% 45% at 90% 5%, rgba(232,93,117,0.07), transparent 60%)",
+            "radial-gradient(ellipse 45% 45% at 90% 5%, color-mix(in srgb,var(--coral) 7%,transparent), transparent 60%)",
         }}
         aria-hidden
       />
@@ -1401,7 +1401,7 @@ function ProcessAndWhySection() {
         {/* Hero-style label + editorial headline */}
         <AnimatedSection light>
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-12 h-0.5 bg-coral" aria-hidden />
+            <span className="w-12 h-0.5 bg-verde" aria-hidden />
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
               Proceso &amp; Diferencia
             </span>
@@ -1456,7 +1456,7 @@ function ProcessAndWhySection() {
                   className="pointer-events-none absolute -inset-8 rounded-[3rem]"
                   style={{
                     background:
-                      "radial-gradient(ellipse 75% 80% at 50% 50%, rgba(232,93,117,0.11), transparent 70%)",
+                      "radial-gradient(ellipse 75% 80% at 50% 50%, color-mix(in srgb,var(--coral) 11%,transparent), transparent 70%)",
                   }}
                   aria-hidden
                 />
@@ -1473,7 +1473,7 @@ function ProcessAndWhySection() {
                   <div
                     className="absolute bottom-0 left-0 right-0 h-1/2 pointer-events-none"
                     style={{
-                      background: "linear-gradient(to top, rgba(232,93,117,0.82) 0%, rgba(232,93,117,0.38) 45%, transparent 100%)",
+                      background: "linear-gradient(to top, color-mix(in srgb,var(--coral) 82%,transparent) 0%, color-mix(in srgb,var(--coral) 38%,transparent) 45%, transparent 100%)",
                     }}
                   />
                   <div className="absolute bottom-0 left-0 right-0 px-7 pb-7">
@@ -1503,7 +1503,7 @@ function ProcessAndWhySection() {
                   {pillItems.map((item, i) => (
                     <motion.div
                       key={i}
-                      className="inline-flex items-center gap-2.5 rounded-full bg-white px-[1.15rem] py-2.5 text-coral shadow-[0_3.5px_12px_-2px_rgba(232,93,117,0.12),0_0_14px_rgba(232,93,117,0.06)] border border-coral/10"
+                      className="inline-flex items-center gap-2.5 rounded-full bg-white px-[1.15rem] py-2.5 text-coral shadow-[0_3.5px_12px_-2px_color-mix(in srgb,var(--coral) 12%,transparent),0_0_14px_color-mix(in srgb,var(--coral) 6%,transparent)] border border-coral/10"
                       animate={{ y: [0, -FLOAT_AMOUNTS[i % 4] * 0.805, 0] }}
                       transition={{
                         duration: FLOAT_DURATIONS[i % 4],

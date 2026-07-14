@@ -1,6 +1,8 @@
 import { useMemo, type RefObject } from "react";
 
-/** Hex required — CSS vars break in SVG `fill`. */
+/** CSS vars DON'T resolve in the SVG `fill` presentation attribute — they only
+ *  work via inline `style`/CSS. So `fill` gets a literal color and the token is
+ *  applied through `style={{ fill: … }}` on the back path (see below). */
 const WAVE_FILL = "#ffffff";
 const WAVE_FILL_BACK = "var(--blue)";
 
@@ -115,7 +117,7 @@ export default function HorizontalScrollBottomWaves({
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
           preserveAspectRatio="none"
         >
-          <path d={waveBack} fill={WAVE_FILL_BACK} />
+          <path d={waveBack} style={{ fill: WAVE_FILL_BACK }} />
         </svg>
       </div>
       <div

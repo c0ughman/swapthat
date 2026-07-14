@@ -798,20 +798,20 @@ export function TeamsHomeHero({
   const sistemaHeadlineSizeClass =
     "text-[clamp(2.6rem,9.5vw,3.6rem)] sm:text-[clamp(2.15rem,7.2vw,3.15rem)] md:text-[clamp(2.55rem,5.8vw,4.65rem)]";
 
-  const eyebrowLineClass = swapThatSystemHero ? "bg-black" : "bg-blue";
-  const eyebrowLabelClass = swapThatSystemHero ? "text-black" : "text-blue";
-  const paraAccentClass = swapThatSystemHero ? "italic font-light text-black" : "italic font-light text-blue";
+  const eyebrowLineClass = swapThatSystemHero ? "bg-foreground" : "bg-amarillo";
+  const eyebrowLabelClass = swapThatSystemHero ? "text-foreground" : "text-blue";
+  const paraAccentClass = swapThatSystemHero ? "italic font-light text-foreground" : "italic font-light text-blue";
   const subDividerClass = swapThatSystemHero
-    ? "h-0.5 w-[9rem] mx-auto origin-center shrink-0 bg-gradient-to-r from-black/35 to-black/15"
+    ? "h-0.5 w-[9rem] mx-auto origin-center shrink-0 bg-gradient-to-r from-foreground/35 to-foreground/15"
     : "h-0.5 w-[9rem] shrink-0 bg-gradient-to-r from-blue/45 to-coral/35";
   const primaryCtaClass = swapThatSystemHero
-    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-black px-[1.65rem] py-[0.95rem] text-[0.9625rem] font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-neutral-900 sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:gap-2 md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
+    ? `group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-foreground px-[1.65rem] py-[0.95rem] text-[0.9625rem] font-semibold text-white shadow-md shadow-black/15 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-foreground/90 sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:gap-2 md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
     : `group inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-blue px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-md shadow-blue/22 ${HERO_BTN_HALO} transition-all duration-300 hover:bg-blue-dark sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const secondaryCtaClass = swapThatSystemHero
-    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-black/25 bg-white/85 px-[1.65rem] py-[0.95rem] text-[0.9625rem] font-semibold text-black ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-black/[0.06] sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
+    ? `inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-foreground/25 bg-white/85 px-[1.65rem] py-[0.95rem] text-[0.9625rem] font-semibold text-foreground ${HERO_BODY_GLOW} ${HERO_BTN_HALO} shadow-sm backdrop-blur-[2px] transition-all duration-300 hover:bg-foreground/[0.06] sm:w-auto sm:px-[1.925rem] sm:py-[0.55rem] sm:text-[0.9625rem] md:px-[2.2rem] md:py-[0.6875rem] md:text-[0.9625rem]`
     : `inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-foreground/18 bg-white/75 px-5 py-2.5 text-[0.75rem] font-bold text-foreground ${HERO_BODY_GLOW} ${HERO_BTN_HALO} backdrop-blur-[2px] transition-all duration-300 hover:bg-foreground/[0.06] sm:w-auto sm:px-6 sm:py-3 sm:text-[0.8125rem]`;
   const pillClass = swapThatSystemHero
-    ? `flex items-center gap-1 rounded-full border border-black/20 bg-white/75 px-2.5 py-1 text-[0.6875rem] leading-tight text-foreground/90 backdrop-blur-sm sm:text-[0.75rem] ${HERO_BODY_GLOW} shadow-[0_2px_10px_rgba(255,255,255,0.55)]`
+    ? `flex items-center gap-1 rounded-full border border-foreground/20 bg-white/75 px-2.5 py-1 text-[0.6875rem] leading-tight text-foreground/90 backdrop-blur-sm sm:text-[0.75rem] ${HERO_BODY_GLOW} shadow-[0_2px_10px_rgba(255,255,255,0.55)]`
     : `flex items-center gap-1 rounded-full border border-blue/22 bg-white/75 px-2.5 py-1 text-[0.6875rem] leading-tight text-foreground/90 backdrop-blur-sm sm:text-[0.75rem] ${HERO_BODY_GLOW} shadow-[0_2px_10px_rgba(255,255,255,0.55)]`;
   const pillIconColor = swapThatSystemHero ? "#171717" : "var(--blue)";
 
@@ -916,14 +916,14 @@ export function TeamsHomeHero({
       <div
         className={
           swapThatSystemHero
-            ? "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-black/[0.08] blur-2xl"
+            ? "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-foreground/[0.08] blur-2xl"
             : "pointer-events-none absolute -top-20 -right-24 h-72 w-72 rounded-full bg-blue/15 blur-2xl"
         }
       />
       <div
         className={
           swapThatSystemHero
-            ? "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-black/[0.06] blur-2xl"
+            ? "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-foreground/[0.06] blur-2xl"
             : "pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-coral/10 blur-2xl"
         }
       />
@@ -941,14 +941,14 @@ export function TeamsHomeHero({
         <div
           className={
             swapThatSystemHero
-              ? "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-black/[0.07] blur-2xl"
+              ? "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-foreground/[0.07] blur-2xl"
               : "pointer-events-none absolute -top-24 -right-24 z-0 h-96 w-96 rounded-full bg-blue/[0.14] blur-2xl"
           }
         />
         <div
           className={
             swapThatSystemHero
-              ? "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-black/[0.05] blur-2xl"
+              ? "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-foreground/[0.05] blur-2xl"
               : "pointer-events-none absolute -bottom-20 -left-20 z-0 h-72 w-72 rounded-full bg-coral/[0.12] blur-2xl"
           }
         />

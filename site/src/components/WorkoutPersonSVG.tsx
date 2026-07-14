@@ -43,9 +43,9 @@ export default function WorkoutPersonSVG({ className = "" }: { className?: strin
       {/* Thumb */}
       <ellipse cx="289" cy="130" rx="8" ry="12" fill="white" transform="rotate(20 289 130)" />
       {/* Mini dumbbell in right hand */}
-      <rect x="262" y="124" width="7" height="7" rx="3.5" fill="rgba(79,70,229,0.45)" />
-      <rect x="264" y="131" width="3" height="14" fill="rgba(79,70,229,0.3)" />
-      <rect x="262" y="145" width="7" height="7" rx="3.5" fill="rgba(79,70,229,0.45)" />
+      <rect x="262" y="124" width="7" height="7" rx="3.5" style={{ fill: "color-mix(in srgb, var(--blue-dark) 45%, transparent)" }} />
+      <rect x="264" y="131" width="3" height="14" style={{ fill: "color-mix(in srgb, var(--blue-dark) 30%, transparent)" }} />
+      <rect x="262" y="145" width="7" height="7" rx="3.5" style={{ fill: "color-mix(in srgb, var(--blue-dark) 45%, transparent)" }} />
 
       {/* ─── BODY / Workout outfit ─── */}
       <path
@@ -55,11 +55,11 @@ export default function WorkoutPersonSVG({ className = "" }: { className?: strin
       {/* Sports bra / crop top detail */}
       <path
         d="M162 242 C172 254 208 254 218 242 C215 265 207 272 180 273 C153 272 145 265 162 242Z"
-        fill="rgba(99,102,241,0.12)"
+        style={{ fill: "color-mix(in srgb, var(--blue) 12%, transparent)" }}
       />
       {/* Side accent stripes */}
-      <path d="M121 290 Q118 270 122 255" stroke="rgba(99,102,241,0.12)" strokeWidth="6" strokeLinecap="round" />
-      <path d="M239 290 Q242 270 238 255" stroke="rgba(99,102,241,0.12)" strokeWidth="6" strokeLinecap="round" />
+      <path d="M121 290 Q118 270 122 255" style={{ stroke: "color-mix(in srgb, var(--blue) 12%, transparent)" }} strokeWidth="6" strokeLinecap="round" />
+      <path d="M239 290 Q242 270 238 255" style={{ stroke: "color-mix(in srgb, var(--blue) 12%, transparent)" }} strokeWidth="6" strokeLinecap="round" />
 
       {/* ─── NECK ─── */}
       <ellipse cx="180" cy="208" rx="18" ry="26" fill="white" />
@@ -83,26 +83,26 @@ export default function WorkoutPersonSVG({ className = "" }: { className?: strin
 
       {/* ─── FACE ─── */}
       {/* Eyes */}
-      <ellipse cx="158" cy="130" rx="12" ry="14" fill="var(--blue-dark)" />
-      <ellipse cx="202" cy="130" rx="12" ry="14" fill="var(--blue-dark)" />
+      <ellipse cx="158" cy="130" rx="12" ry="14" style={{ fill: "var(--blue-dark)" }} />
+      <ellipse cx="202" cy="130" rx="12" ry="14" style={{ fill: "var(--blue-dark)" }} />
       {/* Eye shine */}
       <ellipse cx="163" cy="125" rx="4.5" ry="5" fill="white" />
       <ellipse cx="207" cy="125" rx="4.5" ry="5" fill="white" />
       {/* Eyelashes hint */}
-      <path d="M147 122 Q158 115 169 122" stroke="var(--blue-dark)" strokeWidth="3" strokeLinecap="round" fill="none" />
-      <path d="M191 122 Q202 115 213 122" stroke="var(--blue-dark)" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M147 122 Q158 115 169 122" style={{ stroke: "var(--blue-dark)" }} strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M191 122 Q202 115 213 122" style={{ stroke: "var(--blue-dark)" }} strokeWidth="3" strokeLinecap="round" fill="none" />
 
       {/* Nose */}
-      <path d="M176 148 Q180 155 184 148" stroke="rgba(79,70,229,0.35)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      <path d="M176 148 Q180 155 184 148" style={{ stroke: "color-mix(in srgb, var(--blue-dark) 35%, transparent)" }} strokeWidth="2.5" strokeLinecap="round" fill="none" />
 
       {/* Big smile */}
-      <path d="M154 163 Q180 190 206 163" stroke="var(--blue-dark)" strokeWidth="5" strokeLinecap="round" fill="none" />
+      <path d="M154 163 Q180 190 206 163" style={{ stroke: "var(--blue-dark)" }} strokeWidth="5" strokeLinecap="round" fill="none" />
       {/* Smile inner shadow */}
-      <path d="M157 165 Q180 187 203 165 Q203 178 180 182 Q157 178 157 165Z" fill="rgba(79,70,229,0.08)" />
+      <path d="M157 165 Q180 187 203 165 Q203 178 180 182 Q157 178 157 165Z" style={{ fill: "color-mix(in srgb, var(--blue-dark) 8%, transparent)" }} />
 
       {/* Rosy cheeks */}
-      <ellipse cx="138" cy="158" rx="20" ry="13" fill="var(--coral)" opacity="0.18" />
-      <ellipse cx="222" cy="158" rx="20" ry="13" fill="var(--coral)" opacity="0.18" />
+      <ellipse cx="138" cy="158" rx="20" ry="13" style={{ fill: "var(--coral)" }} opacity="0.18" />
+      <ellipse cx="222" cy="158" rx="20" ry="13" style={{ fill: "var(--coral)" }} opacity="0.18" />
 
       {/* ─── LEGS ─── */}
       {/* Left leg */}
@@ -122,11 +122,11 @@ export default function WorkoutPersonSVG({ className = "" }: { className?: strin
       {/* Right shoe */}
       <path d="M188 455 C188 445 193 440 208 442 C224 444 240 455 240 465 C240 472 192 472 188 465Z" fill="white" />
       {/* Sole lines */}
-      <path d="M122 465 L170 465" stroke="rgba(99,102,241,0.2)" strokeWidth="2" strokeLinecap="round" />
-      <path d="M190 465 L238 465" stroke="rgba(99,102,241,0.2)" strokeWidth="2" strokeLinecap="round" />
+      <path d="M122 465 L170 465" style={{ stroke: "color-mix(in srgb, var(--blue) 20%, transparent)" }} strokeWidth="2" strokeLinecap="round" />
+      <path d="M190 465 L238 465" style={{ stroke: "color-mix(in srgb, var(--blue) 20%, transparent)" }} strokeWidth="2" strokeLinecap="round" />
       {/* Shoe accent color */}
-      <path d="M124 457 C128 452 138 449 148 451" stroke="rgba(99,102,241,0.25)" strokeWidth="3" strokeLinecap="round" />
-      <path d="M192 457 C196 452 206 449 216 451" stroke="rgba(99,102,241,0.25)" strokeWidth="3" strokeLinecap="round" />
+      <path d="M124 457 C128 452 138 449 148 451" style={{ stroke: "color-mix(in srgb, var(--blue) 25%, transparent)" }} strokeWidth="3" strokeLinecap="round" />
+      <path d="M192 457 C196 452 206 449 216 451" style={{ stroke: "color-mix(in srgb, var(--blue) 25%, transparent)" }} strokeWidth="3" strokeLinecap="round" />
 
       {/* ─── Ground shadow ─── */}
       <ellipse cx="180" cy="488" rx="100" ry="14" fill="rgba(0,0,0,0.07)" />
