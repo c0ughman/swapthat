@@ -119,7 +119,7 @@ export function TeamsAltHero() {
             >
               <div className="mb-4 flex items-center gap-3">
                 <span className="h-1 w-12 rounded-full bg-amarillo" />
-                <span className="text-sm font-semibold uppercase tracking-[0.2em] text-blue">
+                <span className="text-sm font-semibold uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--amarillo)_58%,var(--chocolatito))]">
                   Para equipos corporativos
                 </span>
               </div>

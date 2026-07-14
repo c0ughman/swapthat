@@ -188,7 +188,7 @@ function HeroSection() {
       className="relative min-h-screen flex items-center overflow-hidden pt-[calc(5rem+10px)]"
       style={{
         background:
-          "radial-gradient(ellipse 45% 35% at calc(85% - 600px) 15%, rgba(232, 93, 117, 0.14), transparent 60%), white",
+          "radial-gradient(ellipse 45% 35% at calc(85% - 600px) 15%, color-mix(in srgb,var(--verde) 16%,transparent), transparent 60%), white",
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
@@ -231,7 +231,7 @@ function HeroSection() {
               className="flex items-center gap-3 mb-6"
             >
               <span className="w-12 h-0.5 bg-verde" />
-              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-coral">
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-verde">
                 Para marcas
               </span>
             </motion.div>
@@ -398,7 +398,7 @@ function HeroSection() {
             >
               {HERO_TRUST_BADGES.map((badge) => (
                 <li key={badge.label} className="flex items-center gap-2.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral/8 text-coral">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-verde/10 text-verde">
                     {badge.icon}
                   </span>
                   <span className="flex flex-col leading-tight">
