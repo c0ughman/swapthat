@@ -896,11 +896,11 @@ export function TeamsHomeHero({
       style={{ transform: sistemaHeadlineTranslate }}
     >
       <span className="block">
-        <span className="font-bold">Entrena</span> para
+        <span className="font-bold">Deja</span> de
       </span>
       <span className="block" style={{ fontSize: "1.05em" }}>
-        <span className={`font-normal ${paraAccentClass}`}>volver a </span>
-        <span className="font-bold not-italic">ti.</span>
+        <span className={`font-normal ${paraAccentClass}`}>empezar de </span>
+        <span className="font-bold not-italic">cero.</span>
       </span>
     </motion.h1>
   );

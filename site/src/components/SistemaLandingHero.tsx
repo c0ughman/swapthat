@@ -131,27 +131,34 @@ export function SistemaLandingHero() {
           {/* 20px strip — fills the gap left of the shifted gradient only.
               z-[3] so it stays ABOVE the wiping slide layers (which use z 1–2). Desktop only. */}
           <div className="absolute inset-y-0 left-0 z-[3] hidden w-[25px] bg-chocolatito md:block" aria-hidden />
-          {/* Desktop: two plateaus, tilted 25° up, shifted 20px right via background-position */}
-          <div
-            className="absolute inset-0 z-[3] hidden md:block"
-            style={{
-              background:
-                "linear-gradient(65deg, var(--chocolatito) 0%, var(--chocolatito) calc(36% - 157px), color-mix(in srgb, var(--chocolatito) 0%, transparent) calc(58% - 10px))",
-              backgroundSize: "120% 120%",
-              backgroundPosition: "20px center",
-            }}
+          {/* Desktop: solid chocolatito backing the copy, cut off by a crisp curved
+              edge instead of a gradient fade. The clip-path curve sweeps from the top
+              edge down to the bottom-left, so the H1/CTA column keeps a fully opaque
+              backing while the photo reads cleanly to the right of the curve. */}
+          <svg
+            className="absolute inset-0 z-[3] hidden h-full w-full md:block"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
             aria-hidden
-          />
-          {/* Mobile: strong bottom-up white gradient — image reads at the top (and
-              faintly mid), lower portion fades to solid white where the copy sits. */}
-          <div
-            className="absolute inset-0 z-[3] md:hidden"
-            style={{
-              background:
-                "linear-gradient(to top, var(--chocolatito) 0%, var(--chocolatito) 60%, color-mix(in srgb, var(--chocolatito) 88%, transparent) 72%, transparent 90%)",
-            }}
+          >
+            <path
+              d="M 0,0 L 46,0 C 40,34 34,62 12,100 L 0,100 Z"
+              fill="var(--chocolatito)"
+            />
+          </svg>
+          {/* Mobile: same crisp curved edge, running horizontally — the photo reads
+              across the top, and the copy below sits on solid chocolatito. */}
+          <svg
+            className="absolute inset-0 z-[3] h-full w-full md:hidden"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
             aria-hidden
-          />
+          >
+            <path
+              d="M 0,52 C 26,44 62,40 100,46 L 100,100 L 0,100 Z"
+              fill="var(--chocolatito)"
+            />
+          </svg>
           <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-white/10 via-transparent to-transparent" />
           {/* Vignette — darkens corners subtly so the image reads richer, more cinematic */}
           <div
@@ -194,9 +201,9 @@ export function SistemaLandingHero() {
               transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
               className="mb-5 text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl xl:text-8xl"
             >
-              Muévete con Andrea
+              Un equipo que
               <br />
-              <span className="italic font-light text-blue">for Teams</span>
+              <span className="italic font-light text-blue">se sostiene.</span>
             </motion.h1>
 
             <motion.div
