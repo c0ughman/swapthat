@@ -51,7 +51,7 @@ export function BrandLockupStacked({
 }) {
   return (
     <p
-      className={`font-brand font-semibold uppercase leading-[1.05] tracking-[0.04em] ${textClassName} ${className}`}
+      className={`font-brand leading-[1.05] tracking-[0.02em] ${textClassName} ${className}`}
       style={{ color: fill }}
     >
       Muévete con
@@ -68,8 +68,9 @@ export function BrandLockupStacked({
 export default function BrandLockup({
   fill,
   flipped = false,
-  iconClassName = "h-[2.45rem] w-[2.45rem]",
-  textClassName = "text-[1.5rem]",
+  /** `em`-based so the icon always matches the wordmark's height exactly. */
+  iconClassName = "h-[1em] w-[1em]",
+  textClassName = "text-[1.15rem]",
   className = "",
 }: {
   /** Any CSS color — tints the icon and the wordmark together. */
@@ -80,13 +81,19 @@ export default function BrandLockup({
   textClassName?: string;
   className?: string;
 }) {
-  const icon = <BrandIcon fill={fill} className={iconClassName} />;
   const word = (
     <span
-      className={`font-brand uppercase leading-none tracking-[0.08em] whitespace-nowrap ${textClassName}`}
-      style={{ color: fill, fontWeight: 600 }}
+      className={`font-brand leading-none tracking-[0.04em] whitespace-nowrap ${textClassName}`}
+      style={{ color: fill }}
     >
       Muévete con Andrea
+    </span>
+  );
+  // Icon sits inside a wrapper carrying the wordmark's font-size, so `1em`
+  // resolves against the text — keeping both exactly the same height.
+  const icon = (
+    <span className={`inline-flex ${textClassName}`}>
+      <BrandIcon fill={fill} className={iconClassName} />
     </span>
   );
 

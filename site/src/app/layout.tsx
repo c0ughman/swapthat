@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import { Geist, Geist_Mono, Marcellus } from "next/font/google";
 import "./globals.css";
 import ClientProviders from "@/components/ClientProviders";
 
@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 /** Brand wordmark face — "Muévete con Andrea" lockup only, never body copy. */
-const fraunces = Fraunces({
+const marcellus = Marcellus({
   variable: "--font-brand",
   subsets: ["latin"],
-  axes: ["SOFT", "WONK", "opsz"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${marcellus.variable} antialiased`}
       >
         <ClientProviders>{children}</ClientProviders>
       </body>
