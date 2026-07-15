@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Marcellus } from "next/font/google";
 import "./globals.css";
 import ClientProviders from "@/components/ClientProviders";
@@ -23,6 +23,13 @@ const marcellus = Marcellus({
 export const metadata: Metadata = {
   title: "Muévete con Andrea — Andrea Vasquez",
   description: "Diseño sistemas sostenibles para crecer — en marcas y en personas.",
+  // favicon.ico / icon.png / apple-icon.png in src/app are picked up automatically.
+  manifest: "/site.webmanifest",
+};
+
+/** Brown tile behind the cream sun — matches the favicon and the brand bands. */
+export const viewport: Viewport = {
+  themeColor: "#582d1b",
 };
 
 export default function RootLayout({
