@@ -659,16 +659,16 @@ function GrowthSection() {
           </AnimatedSection>
 
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            {/* Polaroid — muevete-cereal.webp, portrait, white frame with thick bottom */}
+            {/* muevete-cereal.webp, portrait */}
             <AnimatedSection direction="right" light>
               <div className="relative mx-auto w-fit">
                 <motion.div
                   initial={{ rotate: -3 }}
                   whileHover={{ rotate: 0, y: -6 }}
                   transition={{ type: "spring", stiffness: 120, damping: 14 }}
-                  className="relative rounded-[0.4rem] bg-white p-3 pb-16 shadow-[0_22px_55px_-18px_rgba(26,26,26,0.35)] sm:p-3.5 sm:pb-[4.5rem]"
+                  className="relative rounded-lg overflow-hidden"
                 >
-                  <div className="relative aspect-[3/4] w-[16rem] overflow-hidden bg-neutral-100 sm:w-[18rem] lg:w-[20rem]">
+                  <div className="relative aspect-[3/4] w-[16rem] sm:w-[18rem] lg:w-[20rem]">
                     <Image
                       src="/muevete-cereal.webp"
                       alt="Andrea con una cuchara de cereal que deletrea «muévete»"
@@ -680,10 +680,6 @@ function GrowthSection() {
                       fetchPriority="high"
                     />
                   </div>
-                  {/* Handwritten-style caption on the thick bottom border */}
-                  <p className="absolute inset-x-0 bottom-5 text-center font-serif text-[15px] italic tracking-wide text-foreground/70 sm:bottom-6">
-                    volver a ti
-                  </p>
                 </motion.div>
                 <DotGrid className="absolute -bottom-6 -right-6 hidden lg:block" cols={5} rows={5} />
               </div>
