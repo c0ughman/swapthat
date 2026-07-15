@@ -45,12 +45,10 @@ function PhilosophyOrbitHub({ sistemaVariant }: { sistemaVariant: boolean }) {
         sistemaVariant ? "translate-y-[50px]" : "-translate-y-[3.3px]"
       }`}
     >
-      {/* Wordmark wraps to stacked lines with the sun icon trailing the last
-          word as a period — a single line would overflow the orbit ring. */}
       {/* Width tracks the wordmark's font-size — sized so "Muévete con" fits on
           one line and only the intended break falls before "Andrea". */}
-      <div className="w-[264px] shrink-0 md:w-[327px]">
-        <BrandLockupStacked fill={sistemaVariant ? "#ffffff" : "var(--blue)"} />
+      <div className="w-[220px] shrink-0 md:w-[273px]">
+        <BrandLockupStacked fill={sistemaVariant ? "var(--crema)" : "var(--blue)"} />
       </div>
       {!sistemaVariant && (
         <div className="mt-4 flex flex-col items-center gap-4">
@@ -92,7 +90,7 @@ const PHILOSOPHY_CORNER_STICKERS: { src: string; className: string }[] = [
 ];
 
 type TeamsPhilosophyOrbitSectionProps = {
-  /** `/sistema`: black / white typography instead of blue gradient. */
+  /** `/sistema`: brown band with cream typography instead of the blue treatment. */
   sistemaVariant?: boolean;
 };
 
@@ -139,14 +137,14 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
   return (
     <div
       ref={containerRef}
-      className={`relative min-h-screen ${sistemaVariant ? "bg-foreground text-white" : ""}`}
+      className={`relative min-h-screen ${sistemaVariant ? "bg-foreground text-crema" : ""}`}
     >
       <div className="flex min-h-screen items-center overflow-hidden">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
           <div className="relative z-20 p-8">
             <span
               className={`mb-2 block text-sm font-semibold uppercase tracking-[0.2em] ${
-                sistemaVariant ? "text-white/50" : "text-blue"
+                sistemaVariant ? "text-crema/50" : "text-blue"
               }`}
             >
               Filosofía
@@ -154,19 +152,19 @@ export function TeamsPhilosophyOrbitSection({ sistemaVariant = false }: TeamsPhi
             <FiveStars variant="section" className="-translate-x-[3px]" />
             <h2
               className={`mb-8 text-4xl font-bold leading-[1] tracking-tight md:text-5xl lg:text-6xl ${
-                sistemaVariant ? "text-white" : "text-foreground"
+                sistemaVariant ? "text-crema" : "text-foreground"
               }`}
             >
               Menos exigencia.{" "}
               <span
-                className={`italic font-light ${sistemaVariant ? "text-white" : "text-blue"}`}
+                className={`italic font-light ${sistemaVariant ? "text-crema" : "text-blue"}`}
               >
                 Más estructura consciente.
               </span>
             </h2>
             <div className="relative">
               {sistemaVariant ? (
-                <p className="relative z-10 max-w-2xl pb-6 pl-0 pr-2 text-lg leading-relaxed text-white/60 sm:pb-32 sm:pr-4 md:text-xl">
+                <p className="relative z-10 max-w-2xl pb-6 pl-0 pr-2 text-lg leading-relaxed text-crema/60 sm:pb-32 sm:pr-4 md:text-xl">
                   Entrenar no es hacerlo perfecto. Es aprender a{" "}
                   <strong className="font-semibold text-white/90">regularte, escucharte</strong> y volver a tu centro.
                   En Muévete con Andrea no trabajamos con rigidez ni con castigo.{" "}

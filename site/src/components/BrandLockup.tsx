@@ -36,34 +36,34 @@ export function BrandIcon({
 }
 
 /**
- * Stacked wordmark: "Muévete con" / "Andrea ☀" — the icon trails the last word
- * inline, reading as a period. Sized in `em` so it always tracks the font size.
+ * Stacked lockup — three lines, centred: the sun icon, then "Muévete con",
+ * then "Andrea". Everything is sized in `em` off the wordmark, so passing a
+ * different `textClassName` scales the whole mark proportionally.
  * Used where a single line would be too wide (footer, philosophy orbits).
  */
 export function BrandLockupStacked({
   fill,
   className = "",
-  textClassName = "text-[2.4rem] md:text-[3rem]",
+  textClassName = "text-[2rem] md:text-[2.5rem]",
 }: {
   fill: string;
   className?: string;
   textClassName?: string;
 }) {
   return (
-    <p
-      className={`font-brand leading-[1.05] tracking-[0.02em] ${textClassName} ${className}`}
+    <div
+      className={`font-brand flex flex-col items-center leading-[1.05] tracking-[0.02em] ${textClassName} ${className}`}
       style={{ color: fill }}
     >
-      Muévete con
-      <br />
-      Andrea
-      {/* Icon runs a touch larger than the cap-height so it reads as a mark,
-          not a period — scales with the wordmark via `em`. */}
-      <BrandIcon
-        fill={fill}
-        className="ml-2 inline-block h-[0.78em] w-[0.78em] align-baseline"
-      />
-    </p>
+      {/* Icon leads on its own line, sized a touch above the cap-height so it
+          anchors the mark rather than reading as punctuation. */}
+      <BrandIcon fill={fill} className="mb-[0.18em] h-[1.15em] w-[1.15em]" />
+      <p>
+        Muévete con
+        <br />
+        Andrea
+      </p>
+    </div>
   );
 }
 
@@ -72,7 +72,7 @@ export default function BrandLockup({
   flipped = false,
   /** `em`-based so the icon always matches the wordmark's height exactly. */
   iconClassName = "h-[1em] w-[1em]",
-  textClassName = "text-[1.725rem]",
+  textClassName = "text-[1.4375rem]",
   className = "",
 }: {
   /** Any CSS color — tints the icon and the wordmark together. */
