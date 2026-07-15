@@ -222,7 +222,7 @@ function HeroSection() {
           </motion.div>
 
           {/* Text — below video on mobile, right column on desktop */}
-          <div className="order-last lg:order-2 translate-y-0 lg:-translate-y-[80px] px-1 sm:px-2 lg:pl-2 lg:pr-1">
+          <div className="order-last lg:order-2 translate-y-0 lg:-translate-y-[30px] px-1 sm:px-2 lg:pl-2 lg:pr-1">
             <motion.div
               layout={false}
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}

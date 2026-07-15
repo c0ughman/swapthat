@@ -47,7 +47,9 @@ function PhilosophyOrbitHub({ sistemaVariant }: { sistemaVariant: boolean }) {
     >
       {/* Wordmark wraps to stacked lines with the sun icon trailing the last
           word as a period — a single line would overflow the orbit ring. */}
-      <div className="w-[176px] shrink-0 md:w-[218px]">
+      {/* Width tracks the wordmark's font-size — sized so "Muévete con" fits on
+          one line and only the intended break falls before "Andrea". */}
+      <div className="w-[264px] shrink-0 md:w-[327px]">
         <BrandLockupStacked fill={sistemaVariant ? "#ffffff" : "var(--blue)"} />
       </div>
       {!sistemaVariant && (

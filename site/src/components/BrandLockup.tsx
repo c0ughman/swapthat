@@ -43,7 +43,7 @@ export function BrandIcon({
 export function BrandLockupStacked({
   fill,
   className = "",
-  textClassName = "text-[1.6rem] md:text-[2rem]",
+  textClassName = "text-[2.4rem] md:text-[3rem]",
 }: {
   fill: string;
   className?: string;
@@ -57,9 +57,11 @@ export function BrandLockupStacked({
       Muévete con
       <br />
       Andrea
+      {/* Icon runs a touch larger than the cap-height so it reads as a mark,
+          not a period — scales with the wordmark via `em`. */}
       <BrandIcon
         fill={fill}
-        className="ml-1.5 inline-block h-[0.62em] w-[0.62em] align-baseline"
+        className="ml-2 inline-block h-[0.78em] w-[0.78em] align-baseline"
       />
     </p>
   );
@@ -70,7 +72,7 @@ export default function BrandLockup({
   flipped = false,
   /** `em`-based so the icon always matches the wordmark's height exactly. */
   iconClassName = "h-[1em] w-[1em]",
-  textClassName = "text-[1.15rem]",
+  textClassName = "text-[1.725rem]",
   className = "",
 }: {
   /** Any CSS color — tints the icon and the wordmark together. */
