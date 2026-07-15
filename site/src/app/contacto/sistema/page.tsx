@@ -90,27 +90,27 @@ export default function ContactoSistemaPage() {
       ════════════════════════════════════════════════════════════════════ */}
       <section
         className="relative flex h-[100dvh] min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8"
-        style={{ background: "var(--foreground)" }}
+        style={{ background: "#fcf2e1" }}
       >
-        {/* Subtle glow blobs on dark */}
+        {/* Subtle glow blobs on cream */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-48 -right-48 h-[500px] w-[500px] rounded-full blur-3xl" style={{ background: "rgba(184,233,134,0.045)" }} />
-          <div className="absolute -bottom-32 -left-24 h-[380px] w-[380px] rounded-full blur-3xl" style={{ background: "rgba(245,166,35,0.05)" }} />
+          <div className="absolute -top-48 -right-48 h-[500px] w-[500px] rounded-full blur-3xl" style={{ background: "rgba(194,183,66,0.08)" }} />
+          <div className="absolute -bottom-32 -left-24 h-[380px] w-[380px] rounded-full blur-3xl" style={{ background: "rgba(194,183,66,0.06)" }} />
         </div>
 
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <FadeUp delay={0.05}>
             <div className="mb-7 flex items-center justify-center gap-3">
-              <span className="h-px w-8 bg-white/18" />
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/45">Muévete con Andrea</span>
-              <span className="h-px w-8 bg-white/18" />
+              <span className="h-px w-8 bg-[#c2b742]/25" />
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#c2b742]">Muévete con Andrea</span>
+              <span className="h-px w-8 bg-[#c2b742]/25" />
             </div>
           </FadeUp>
 
           <FadeUp delay={0.15}>
-            <h1 className="mb-7 text-[clamp(2.5rem,7vw,5rem)] font-bold leading-[1] tracking-tight text-white">
+            <h1 className="mb-7 text-[clamp(2.5rem,7vw,5rem)] font-bold leading-[1] tracking-tight text-[#c2b742]">
               Llevas años{" "}
-              <span className="italic font-light text-white/55">empezando</span>{" "}
+              <span className="italic font-light text-[#c2b742]/65">empezando</span>{" "}
               de cero.
               <br />
               Hoy cambia eso.
@@ -118,17 +118,17 @@ export default function ContactoSistemaPage() {
           </FadeUp>
 
           <FadeUp delay={0.26}>
-            <p className="mx-auto mb-10 max-w-lg text-lg leading-relaxed text-white/50 md:text-xl">
+            <p className="mx-auto mb-10 max-w-lg text-lg leading-relaxed text-foreground/65 md:text-xl">
               No es otro programa de fitness. Es un sistema diseñado para la vida real
               — con sus imprevistos, su cansancio y sus días que no salen como planeados.
             </p>
           </FadeUp>
 
           <FadeUp delay={0.34}>
-            <div className="flex flex-wrap items-center justify-center gap-5 text-sm font-medium text-white/38">
+            <div className="flex flex-wrap items-center justify-center gap-5 text-sm font-medium text-foreground/50">
               {["Para mujeres activas", "Sin presión", "A tu ritmo", "Constancia real"].map((tag) => (
                 <span key={tag} className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-white/25" />
+                  <span className="h-1 w-1 rounded-full bg-foreground/25" />
                   {tag}
                 </span>
               ))}
@@ -137,8 +137,8 @@ export default function ContactoSistemaPage() {
 
           <FadeUp delay={0.42}>
             <div className="mt-12 flex flex-col items-center gap-2">
-              <span className="text-xs font-medium uppercase tracking-[0.18em] text-white/22">Cuéntanos tu situación</span>
-              <div className="animate-scroll-bounce h-6 w-[1px] bg-gradient-to-b from-white/28 to-transparent" />
+              <span className="text-xs font-medium uppercase tracking-[0.18em] text-foreground/35">Cuéntanos tu situación</span>
+              <div className="animate-scroll-bounce h-6 w-[1px] bg-gradient-to-b from-foreground/25 to-transparent" />
             </div>
           </FadeUp>
         </div>
