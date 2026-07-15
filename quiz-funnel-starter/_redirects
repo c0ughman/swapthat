@@ -1,0 +1,6 @@
+/css/*          /css/:splat          200
+/js/*           /js/:splat           200
+/media/*        /media/:splat        200
+/case-studies/* /case-studies/:splat 200
+/pages/*        /pages/:splat        200
+/*              /pages/:splat        200

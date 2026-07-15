@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Diagnosis | Briefed</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/quiz.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <img src="../media/briefed-logo-full.png" alt="Briefed" class="progress-logo">
+                <div class="progress-text" id="progressText">Question 1 of 15</div>
+            </div>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Content -->
+        <div class="quiz-content" id="quizContent">
+            <!-- Question Card (dynamically rendered) -->
+            <div class="question-card" id="questionCard">
+                <h1 class="question-number" id="questionNumber">Question 1</h1>
+                <h2 class="question-text" id="questionText"></h2>
+
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options dynamically rendered here -->
+                </div>
+
+                <button class="btn-next" id="nextButton" disabled>
+                    Continue
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Progress Message Card (shown between sections) -->
+            <div class="progress-message-card hidden" id="progressMessageCard">
+                <img class="progress-message-image" id="progressMessageImage" src="" alt="" />
+                <p class="progress-message-text" id="progressMessageText"></p>
+                <button class="btn-continue" id="continueButton">
+                    Continue Quiz
+                </button>
+            </div>
+
+            <!-- Minimized Results Preview -->
+            <div class="results-preview hidden" id="resultsPreview">
+                <div class="preview-content">
+                    <div class="preview-badge" id="previewBadge"></div>
+                    <h2 class="preview-title" id="previewTitle"></h2>
+                    <p class="preview-tagline" id="previewTagline"></p>
+                    <div class="preview-diagnosis" id="previewDiagnosis"></div>
+                    <div class="preview-help">
+                        <p><strong>Good news:</strong> We've built the exact system to help you overcome this.</p>
+                    </div>
+                    <button class="btn-continue" id="continueToLoading">
+                        Continue
+                    </button>
+                </div>
+            </div>
+
+            <!-- Yes/No Modal -->
+            <div class="yes-no-modal hidden" id="yesNoModal">
+                <div class="modal-content">
+                    <h3 class="modal-question" id="modalQuestion"></h3>
+                    <div class="modal-buttons">
+                        <button class="btn-modal btn-yes" id="btnYes">Yes</button>
+                        <button class="btn-modal btn-no" id="btnNo">No</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Screen -->
+            <div class="loading-screen hidden" id="loadingScreen">
+                <div class="loading-content">
+                    <h2 class="loading-title">Analyzing Your Responses...</h2>
+                    <div class="loading-checks" id="loadingChecks">
+                        <!-- Loading checks dynamically rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture hidden" id="emailCapture">
+                <div class="email-content">
+                    <div class="success-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="30" fill="#0FD7D7" opacity="0.1"/>
+                            <circle cx="32" cy="32" r="24" stroke="#0FD7D7" stroke-width="3"/>
+                            <path d="M22 32L28 38L42 24" stroke="#0FD7D7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 class="email-title">Your Diagnosis Is Ready</h2>
+                    <p class="email-subtitle">We've identified your specific information blind spots and decision bottlenecks. Enter your email to receive your full analysis — plus early access to the system that fixes them.</p>
+
+                    <form class="email-form" id="emailForm">
+                        <div class="form-group">
+                            <input
+                                type="email"
+                                id="emailInput"
+                                placeholder="Enter your email address"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <input
+                                type="text"
+                                id="nameInput"
+                                placeholder="Enter your name"
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            Get My Diagnosis
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <p class="privacy-note">We respect your privacy. No spam, ever.</p>
+                </div>
+            </div>
+
+            <!-- Results Screen (after email submission) -->
+            <div class="results-screen hidden" id="resultsScreen">
+                <!-- Results content dynamically rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Exclusive Offer - Briefed</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/offer.css">
+</head>
+<body>
+    <div class="offer-app">
+        <div class="urgency-bar">
+            <div class="timer-container">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span class="timer-label">Offer expires in:</span>
+                <span class="timer-value" id="timerValue">2:00</span>
+            </div>
+            <div class="prize-reminder">
+                <span class="prize-badge" id="prizeBadge">30 Days Free</span>
+                <span class="prize-label">locked in</span>
+            </div>
+        </div>
+
+        <main class="offer-main">
+            <div class="offer-container">
+                <header class="offer-header">
+                    <img src="../media/briefed-logo.png" alt="Briefed" class="offer-logo">
+                    <div class="profile-tag" id="profileTag">
+                        <span class="profile-dot"></span>
+                        <span class="profile-name">The Frazzled Firefighter</span>
+                    </div>
+                </header>
+
+                <section class="hero-offer">
+                    <h1 class="offer-headline" id="offerHeadline">
+                        Stop Fighting Fires.<br>
+                        <span class="highlight">Start Seeing Them Coming.</span>
+                    </h1>
+                    <p class="offer-subheadline" id="offerSubheadline">
+                        Your diagnosis revealed exactly why you're always behind. Now here's the tool built specifically to fix it.
+                    </p>
+                </section>
+
+                <section class="discount-code-section">
+                    <div class="discount-code-container">
+                        <h3 class="discount-code-title">Your Exclusive Discount Code</h3>
+                        <div class="discount-code-content">
+                            <p class="discount-code-description">
+                                This offer expires in <strong id="discountTimer">10:00</strong>.
+                            </p>
+                            <input type="text" id="discountCodeInput" readonly value="" class="discount-code-input">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="profile-insights" id="profileInsights">
+                    <div class="problem-row">
+                        <div class="problem-copy">
+                            <h2 class="insights-title">Your Diagnosis</h2>
+                            <div class="insight-label">The Problem</div>
+                            <p class="insight-text" id="profileProblem"></p>
+                        </div>
+                        <div class="persona-image-placeholder" id="personaImage">
+                            <span class="placeholder-text">Persona Image</span>
+                        </div>
+                    </div>
+                    <div class="secondary-sections">
+                        <div class="insight-item">
+                            <h3 class="insight-label">What You Need</h3>
+                            <p class="insight-text" id="profileSolution"></p>
+                        </div>
+                        <div class="insight-item highlight-item" id="insightsHighlight">
+                            <h3 class="insight-label" id="howWeHelpLabel">How We Help</h3>
+                            <p class="insight-text" id="profileHelp"></p>
+                        </div>
+                    </div>
+                </section>
+
+                <h2 class="section-title-outside">This is what we have for you</h2>
+                
+                <section class="value-stack">
+                    <div class="value-item product-value">
+                        <div class="value-icon product-icon" id="productIcon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="6"></circle>
+                                <circle cx="12" cy="12" r="2"></circle>
+                            </svg>
+                        </div>
+                        <div class="value-content">
+                            <div class="value-header">
+                                <h3 class="value-title" id="productTitle">Briefed Bubbles</h3>
+                                <span class="value-original">$29/month</span>
+                            </div>
+                            <p class="value-description" id="productDescription">
+                                Visual news intelligence that shows you the entire landscape at a glance. Spot patterns before they become problems. See what's developing, not just what's happened.
+                            </p>
+                            <div class="value-prize" id="productPrize">
+                                <span class="prize-text">Your Prize:</span>
+                                <span class="prize-amount">30 Days Free</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="value-divider">
+                        <span>PLUS</span>
+                    </div>
+
+                    <div class="value-item bonus-value">
+                        <div class="value-icon bonus-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                <line x1="12" y1="6" x2="12" y2="12"></line>
+                                <line x1="9" y1="9" x2="15" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="value-content">
+                            <div class="value-header">
+                                <h3 class="value-title">The Decision-Making Guide</h3>
+                                <span class="value-original">$49 value</span>
+                            </div>
+                            <p class="value-description" id="bookDescription">
+                                "The Modern Firefighter's Guide to Proactive Decision-Making" — A comprehensive playbook for professionals who are done reacting and ready to start anticipating. Learn to leverage AI-powered intelligence tools to stay three steps ahead.
+                            </p>
+                            <div class="book-preview">
+                                <div class="book-image-placeholder" id="bookImagePlaceholder">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                    </svg>
+                                    <span>Guidebook</span>
+                                </div>
+                                <ul class="book-benefits">
+                                    <li>Framework for proactive intelligence gathering</li>
+                                    <li>Templates for daily decision workflows</li>
+                                    <li>Case studies from industry leaders</li>
+                                    <li>30-day implementation roadmap</li>
+                                </ul>
+                            </div>
+                            <div class="bonus-badge">
+                                <span>INCLUDED FREE</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <h2 class="section-title-outside">Your Exclusive Offer</h2>
+                <p class="section-subtitle-outside">This limited-time offer expires soon. Don't miss your chance to get started.</p>
+                
+                <section class="pricing-section">
+                    <div class="pricing-breakdown">
+                        <div class="pricing-item">
+                            <div class="pricing-item-header">
+                                <span class="pricing-item-name">The Decision-Making Guide</span>
+                                <span class="pricing-item-original strikethrough">$49</span>
+                            </div>
+                            <div class="pricing-item-discount">
+                                <span class="discount-label">90% Off</span>
+                                <span class="discount-price">$0.99</span>
+                            </div>
+                        </div>
+                        
+                        <div class="pricing-item">
+                            <div class="pricing-item-header">
+                                <span class="pricing-item-name">Briefed Suite - 14 Day Free Trial</span>
+                                <span class="pricing-item-original strikethrough">$49/month</span>
+                            </div>
+                            <div class="briefed-suite-breakdown">
+                                <div class="suite-products">
+                                    <div class="suite-product" id="suiteProductBubbles">
+                                        <span class="product-name">Bubbles</span>
+                                        <span class="included-badge">Included</span>
+                                        <span class="recommended-badge-overlay" id="recommendedBadgeBubbles" style="display: none;">Recommended For You</span>
+                                    </div>
+                                    <div class="suite-product" id="suiteProductGenie">
+                                        <span class="product-name">Genie</span>
+                                        <span class="included-badge">Included</span>
+                                        <span class="recommended-badge-overlay" id="recommendedBadgeGenie" style="display: none;">Recommended For You</span>
+                                    </div>
+                                    <div class="suite-product" id="suiteProductChat">
+                                        <span class="product-name">Chat</span>
+                                        <span class="included-badge">Included</span>
+                                        <span class="recommended-badge-overlay" id="recommendedBadgeChat" style="display: none;">Recommended For You</span>
+                                    </div>
+                                    <div class="suite-product" id="suiteProductBites">
+                                        <span class="product-name">Bites</span>
+                                        <span class="included-badge">Included</span>
+                                        <span class="recommended-badge-overlay" id="recommendedBadgeBites" style="display: none;">Recommended For You</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-item-trial">
+                                <span class="trial-label">14 Days Free</span>
+                                <span class="trial-note">Then $49/month</span>
+                            </div>
+                        </div>
+
+                        <div class="price-row total-value">
+                            <span class="price-label">Total Value</span>
+                            <span class="price-amount strikethrough">$98</span>
+                        </div>
+                        <div class="price-row today-price">
+                            <span class="price-label">Today's Price</span>
+                            <div class="price-final">
+                                <span class="currency">$</span>
+                                <span class="amount">0</span>
+                                <span class="cents">.99</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="pricing-note">
+                        Just $0.99 unlocks your 14-day free trial + instant access to the guidebook.
+                        <span id="afterTrialNote">After your 14-day trial, continue for just $49/month. Cancel anytime.</span>
+                    </p>
+                </section>
+
+                <section class="cta-section">
+                    <button class="cta-button" id="ctaButton">
+                        <span class="cta-text">Claim My Offer Now</span>
+                        <span class="cta-price">$0.99</span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span>Secure Checkout</span>
+                        </div>
+                        <div class="trust-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <polyline points="9 12 11 14 15 10"></polyline>
+                            </svg>
+                            <span>256-bit Encryption</span>
+                        </div>
+                        <div class="trust-badge stripe-badge">
+                            <span class="stripe-text">Powered by</span>
+                            <span class="stripe-logo">stripe</span>
+                        </div>
+                    </div>
+
+                    <p class="guarantee-text">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        100% satisfaction guarantee. Not right for you? Cancel within 7 days for a full refund.
+                    </p>
+                </section>
+
+                <section class="social-proof-section">
+                    <h2 class="section-title">What Decision-Makers Are Saying</h2>
+                    <p class="section-subtitle">Join thousands of professionals who've stopped drowning in information and started making confident decisions.</p>
+                    
+                    <div class="reviews-slideshow">
+                        <div class="review-card active">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"I went from spending 2 hours every morning scanning headlines to 10 minutes with Briefed. The difference? I actually know what matters now."</p>
+                            <div class="review-author">
+                                <div class="author-avatar">SM</div>
+                                <div class="author-info">
+                                    <div class="author-name">Sarah Mitchell</div>
+                                    <div class="author-title">VP of Strategy, Tech Startup</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"Finally, a tool that understands what 'too much information' feels like. Briefed cuts through the noise so I can focus on leading my team."</p>
+                            <div class="review-author">
+                                <div class="author-avatar">JC</div>
+                                <div class="author-info">
+                                    <div class="author-name">James Chen</div>
+                                    <div class="author-title">CEO, Marketing Agency</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"The pattern recognition alone is worth it. I'm seeing connections between events that I would have missed reading article by article."</p>
+                            <div class="review-author">
+                                <div class="author-avatar">RP</div>
+                                <div class="author-info">
+                                    <div class="author-name">Rachel Parker</div>
+                                    <div class="author-title">Investment Director</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"Briefed doesn't just tell me what happened—it shows me what's developing. That's the difference between reacting and anticipating."</p>
+                            <div class="review-author">
+                                <div class="author-avatar">MR</div>
+                                <div class="author-info">
+                                    <div class="author-name">Marcus Rivera</div>
+                                    <div class="author-title">Operations Director</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"I was skeptical about another 'news tool.' But Briefed isn't news—it's intelligence. There's a massive difference."</p>
+                            <div class="review-author">
+                                <div class="author-avatar">LW</div>
+                                <div class="author-info">
+                                    <div class="author-name">Lisa Wong</div>
+                                    <div class="author-title">Product Lead, Fortune 500</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"My team makes faster, smarter decisions now. We're not second-guessing ourselves because we finally have the full picture."</p>
+                            <div class="review-author">
+                                <div class="author-avatar">DK</div>
+                                <div class="author-info">
+                                    <div class="author-name">David Kim</div>
+                                    <div class="author-title">Founder & CEO</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slideshow-dots">
+                            <span class="dot active" data-slide="0"></span>
+                            <span class="dot" data-slide="1"></span>
+                            <span class="dot" data-slide="2"></span>
+                            <span class="dot" data-slide="3"></span>
+                            <span class="dot" data-slide="4"></span>
+                            <span class="dot" data-slide="5"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <h2 class="section-title comparison-title">Traditional News vs. Briefed Intelligence</h2>
+                <p class="section-subtitle comparison-subtitle">Stop consuming information. Start leveraging intelligence.</p>
+                
+                <div class="comparison-header-standalone">
+                    <div class="comparison-column traditional">
+                        <h3>Traditional News</h3>
+                        <p>What you're using now</p>
+                    </div>
+                    <div class="comparison-column briefed">
+                        <h3>Briefed</h3>
+                        <p>What you could be using</p>
+                    </div>
+                </div>
+
+                <section class="comparison-section">
+                    <div class="comparison-table">
+                        <div class="comparison-row">
+                            <div class="comparison-value">
+                                2-3 hours daily scanning headlines
+                            </div>
+                            <div class="comparison-value highlight">
+                                10 minutes to see the full landscape
+                            </div>
+                        </div>
+
+                        <div class="comparison-row">
+                            <div class="comparison-value">
+                                Isolated articles, no connections
+                            </div>
+                            <div class="comparison-value highlight">
+                                Visual patterns showing relationships
+                            </div>
+                        </div>
+
+                        <div class="comparison-row">
+                            <div class="comparison-value">
+                                You analyze everything yourself
+                            </div>
+                            <div class="comparison-value highlight">
+                                AI-powered analysis on demand
+                            </div>
+                        </div>
+
+                        <div class="comparison-row">
+                            <div class="comparison-value">
+                                80% noise, 20% signal
+                            </div>
+                            <div class="comparison-value highlight">
+                                100% signal, zero noise
+                            </div>
+                        </div>
+
+                        <div class="comparison-row">
+                            <div class="comparison-value">
+                                Whatever you remember to check
+                            </div>
+                            <div class="comparison-value highlight">
+                                Comprehensive, nothing falls through
+                            </div>
+                        </div>
+
+                        <div class="comparison-row">
+                            <div class="comparison-value">
+                                Reactive, always catching up
+                            </div>
+                            <div class="comparison-value highlight">
+                                Proactive, staying ahead
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cta-section">
+                    <button class="cta-button" id="ctaButton2">
+                        <span class="cta-text">Claim My Offer Now</span>
+                        <span class="cta-price">$0.99</span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span>Secure Checkout</span>
+                        </div>
+                        <div class="trust-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <polyline points="9 12 11 14 15 10"></polyline>
+                            </svg>
+                            <span>256-bit Encryption</span>
+                        </div>
+                        <div class="trust-badge stripe-badge">
+                            <span class="stripe-text">Powered by</span>
+                            <span class="stripe-logo">stripe</span>
+                        </div>
+                    </div>
+
+                    <p class="guarantee-text">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        100% satisfaction guarantee. Not right for you? Cancel within 7 days for a full refund.
+                    </p>
+
+                    <div class="urgency-message-inline">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <span><strong>This offer won't last.</strong> Reserved for the next <span id="urgencyTimer2">10:00</span>.</span>
+                    </div>
+                </section>
+
+                <section class="social-proof-section">
+
+                <section class="final-message" id="finalMessage">
+                    <h2>You've Already Taken the First Step</h2>
+                    <p>
+                        Most people stay stuck in reactive mode forever. They keep fighting the same fires,
+                        missing the same signals, wondering why they're always a step behind.
+                    </p>
+                    <p>
+                        You took the quiz. You got your diagnosis. You know exactly what's holding you back.
+                    </p>
+                    <p>
+                        <strong>Now you have a choice:</strong> close this page and go back to the chaos...
+                        or invest 99 cents to finally get ahead of it.
+                    </p>
+                    <p class="final-cta-text">
+                        The tool is ready. The guidebook is ready. Your free trial is locked in.
+                        <br><strong>Are you ready?</strong>
+                    </p>
+                </section>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="../js/offer.js"></script>
+</body>
+</html>
