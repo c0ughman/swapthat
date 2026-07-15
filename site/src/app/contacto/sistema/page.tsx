@@ -52,14 +52,14 @@ function CheckIcon() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold uppercase tracking-[0.15em] text-[#c2b742]">{label}</label>
+      <label className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/50">{label}</label>
       {children}
     </div>
   );
 }
 
-const inputBase = "w-full rounded-xl border border-[#c2b742]/20 bg-white px-4 py-3.5 text-[15px] text-[#c2b742] placeholder:text-[#c2b742]/40 outline-none transition-all duration-200 focus:border-[#c2b742]/40 focus:ring-2 focus:ring-[#c2b742]/8";
-const selectBase = "w-full rounded-xl border border-[#c2b742]/20 bg-white px-4 py-3.5 text-[15px] text-[#c2b742] outline-none transition-all duration-200 focus:border-[#c2b742]/40 focus:ring-2 focus:ring-[#c2b742]/8 appearance-none cursor-pointer";
+const inputBase = "w-full rounded-xl border border-foreground/12 bg-white px-4 py-3.5 text-[15px] text-foreground placeholder:text-foreground/30 outline-none transition-all duration-200 focus:border-foreground/40 focus:ring-2 focus:ring-foreground/8";
+const selectBase = "w-full rounded-xl border border-foreground/12 bg-white px-4 py-3.5 text-[15px] text-foreground outline-none transition-all duration-200 focus:border-foreground/40 focus:ring-2 focus:ring-foreground/8 appearance-none cursor-pointer";
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 export default function ContactoSistemaPage() {
@@ -282,7 +282,7 @@ export default function ContactoSistemaPage() {
       {/* ════════════════════════════════════════════════════════════════════
           FORM — cream background
       ════════════════════════════════════════════════════════════════════ */}
-      <section id="formulario" className="relative py-24 md:py-32" style={{ background: "#fcf2e1" }}>
+      <section id="formulario" className="relative py-24 md:py-32" style={{ background: "var(--background)" }}>
         <BlobShape color="var(--foreground)" size={380} className="-top-20 right-0 opacity-[0.03]" blur />
         <BlobShape color="var(--verde)" size={280} className="-bottom-20 -left-10 opacity-[0.12]" blur />
 
@@ -293,13 +293,13 @@ export default function ContactoSistemaPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-[#c2b742]">
+            <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-foreground/45">
               Quiero empezar hoy
             </span>
-            <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-[#c2b742] md:text-4xl">
+            <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl">
               Cuéntanos un poco sobre ti.
             </h2>
-            <p className="mb-10 text-lg leading-relaxed text-[#c2b742]/85">
+            <p className="mb-10 text-lg leading-relaxed text-gray">
               Te respondemos para ver si el sistema encaja con lo que necesitás. Sin presión, sin promesas vacías.
             </p>
           </motion.div>
@@ -345,7 +345,7 @@ export default function ContactoSistemaPage() {
                       <option>Estuve activa y quiero retomar</option>
                       <option>Otra situación</option>
                     </select>
-                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#c2b742]/60">
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-foreground/40">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6" strokeLinecap="round" /></svg>
                     </div>
                   </div>
@@ -359,9 +359,9 @@ export default function ContactoSistemaPage() {
                 </Field>
 
                 {/* Trust strip */}
-                <div className="flex flex-wrap gap-4 rounded-xl border border-[#c2b742]/15 bg-white px-5 py-4">
+                <div className="flex flex-wrap gap-4 rounded-xl border border-foreground/8 bg-white px-5 py-4">
                   {["Sin compromiso", "Respuesta en 48h", "Solo si es para vos"].map((tag) => (
-                    <span key={tag} className="flex items-center gap-2 text-xs font-semibold text-[#c2b742]/70">
+                    <span key={tag} className="flex items-center gap-2 text-xs font-semibold text-foreground/45">
                       <CheckIcon />
                       {tag}
                     </span>
@@ -371,7 +371,7 @@ export default function ContactoSistemaPage() {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-[#c2b742] px-10 py-5 text-base font-semibold text-white shadow-[0_10px_40px_rgba(194,183,66,0.20)] transition-all duration-300 hover:bg-[#c2b742]/90 disabled:opacity-60"
+                  className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-foreground px-10 py-5 text-base font-semibold text-white shadow-[0_10px_40px_rgba(26,26,26,0.20)] transition-all duration-300 hover:bg-foreground/85 disabled:opacity-60"
                 >
                   {status === "submitting" ? (
                     <><svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden><circle cx="12" cy="12" r="10" className="opacity-25" /><path d="M12 2a10 10 0 0110 10" className="opacity-75" /></svg>Enviando...</>
@@ -384,7 +384,7 @@ export default function ContactoSistemaPage() {
                     Algo salió mal al enviar. Intentá de nuevo o escribinos a hola@mueveteconandrea.com.
                   </p>
                 )}
-                <p className="text-center text-xs text-[#c2b742]/50">Sin spam. Solo una conversación honesta sobre si esto es para vos.</p>
+                <p className="text-center text-xs text-foreground/35">Sin spam. Solo una conversación honesta sobre si esto es para vos.</p>
               </motion.form>
             )}
           </AnimatePresence>
