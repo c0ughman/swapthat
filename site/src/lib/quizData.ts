@@ -6,7 +6,7 @@
  * `profileWeight` map, interstitials fire after a given question id, a fake
  * analysis screen runs, then email capture gates the full result.
  *
- * Voice: neutral Latin American Spanish (tú). No voseo, no vosotras.
+ * Voice: neutral Panamanian Spanish (tú). Clean, direct, no voseo.
  *
  * Unlike the original — which hardcoded its four bucket names across three
  * separate functions — profiles are keyed off PROFILE_IDS, so adding a fifth
@@ -61,7 +61,7 @@ export interface Profile {
 export const quizQuestions: QuizQuestion[] = [
   {
     id: 1,
-    text: "Sé honesta: ¿cuántas veces has «empezado de nuevo»?",
+    text: "Sé honesta: ¿cuántas veces has empezado de cero?",
     emoji: "🔁",
     options: [
       { id: "A", text: "Van como tres", emoji: "🤏", weight: { nomada: 1 } },
@@ -72,7 +72,7 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: 2,
-    text: "Faltaste 3 días. ¿Qué te dices?",
+    text: "Faltaste 3 días. ¿Qué te dices?",  // already neutral
     emoji: "🧠",
     options: [
       { id: "A", text: "«Ya qué, empiezo el lunes»", emoji: "📅", weight: { reiniciadora: 4 } },

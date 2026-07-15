@@ -125,7 +125,7 @@ export default function SistemaQuiz() {
     setScreen("question");
   };
 
-  // Fake analysis. Sequential checks, then the email gate.
+  // Fake analysis. Sequential checks, then show the result.
   useEffect(() => {
     if (screen !== "analyzing") return;
     setChecksDone(0);
@@ -135,11 +135,15 @@ export default function SistemaQuiz() {
       timers.push(setTimeout(() => setChecksDone(i + 1), (i + 1) * (reduceMotion ? 200 : 850)));
     });
     timers.push(
-      setTimeout(() => setScreen("email"), loadingChecks.length * (reduceMotion ? 200 : 850) + 700),
+      setTimeout(() => setScreen("result"), loadingChecks.length * (reduceMotion ? 200 : 850) + 700),
     );
 
     return () => timers.forEach(clearTimeout);
   }, [screen, reduceMotion]);
+
+  const handleShowResult = () => {
+    setScreen("result");
+  };
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,7 +166,8 @@ export default function SistemaQuiz() {
         situacion: `${profile.name} — ${profile.tagline}`,
         mensaje: respuestas,
       });
-      setScreen("result");
+      // Stay on result, but show success note
+      setStatus("success" as any);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       setStatus("error");
@@ -314,27 +319,18 @@ export default function SistemaQuiz() {
             </motion.div>
           )}
 
-          {/* ── EMAIL GATE ──────────────────────────────────────────────── */}
+          {/* ── EMAIL GATE (mini form) ──────────────────────────────────────────────── */}
           {screen === "email" && (
             <motion.div key="email" {...screenMotion}>
               <div className="rounded-3xl border border-foreground/10 bg-white p-7 shadow-[0_16px_50px_rgba(88,45,27,0.10)] sm:p-9">
-                <motion.div
-                  className="mb-5 text-5xl"
-                  initial={{ scale: 0.5, rotate: -10, opacity: 0 }}
-                  animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                >
-                  {profile.emoji}
-                </motion.div>
-
                 <span className="mb-3 block text-[11px] font-bold uppercase tracking-[0.2em] text-verde-dark">
                   Tu resultado está listo
                 </span>
                 <h2 className="mb-3 text-[clamp(1.6rem,5vw,2.2rem)] font-bold leading-[1.1] tracking-tight text-foreground">
-                  Ya sabemos qué te está pasando.
+                  Ya sabemos quién eres.
                 </h2>
                 <p className="mb-7 text-[15px] leading-relaxed text-gray">
-                  Déjanos dónde escribirte y te mostramos tu perfil completo — más lo que Andrea haría en tu caso.
+                  Déjanos dónde escribirte para ver tu perfil completo — y lo que Andrea haría en tu caso.
                 </p>
 
                 <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3.5">
@@ -379,7 +375,7 @@ export default function SistemaQuiz() {
                     </p>
                   )}
                   <p className="text-center text-xs text-foreground/35">
-                    Sin spam. Sin presión. Solo una conversación honesta.
+                    Sin spam. Sin presión. Una conversación honesta.
                   </p>
                 </form>
               </div>
@@ -459,23 +455,33 @@ export default function SistemaQuiz() {
                 </p>
               </div>
 
-              <div className="rounded-3xl border border-foreground/10 bg-white p-7 text-center shadow-[0_16px_50px_rgba(88,45,27,0.08)]">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "var(--verde)" }}>
-                  <span className="text-white"><CheckIcon size={20} /></span>
+              {status === "success" ? (
+                <div className="rounded-3xl border border-foreground/10 bg-white p-7 text-center shadow-[0_16px_50px_rgba(88,45,27,0.08)]">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "var(--verde)" }}>
+                    <span className="text-white"><CheckIcon size={20} /></span>
+                  </div>
+                  <h3 className="mb-2 text-xl font-bold text-foreground">Ya estás en la lista, {form.nombre.split(" ")[0]}.</h3>
+                  <p className="mb-6 text-[15px] leading-relaxed text-gray">
+                    Andrea revisa tu resultado y te escribe en las próximas 48 horas. Sin plantillas: ya sabe qué te está pasando.
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-3">
+                    {["Sin compromiso", "Respuesta en 48h", "Solo si es para ti"].map((tag) => (
+                      <span key={tag} className="flex items-center gap-1.5 rounded-full bg-crema px-3 py-1.5 text-[11px] font-bold text-foreground/55">
+                        <CheckIcon size={11} />
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-foreground">Ya estás en la lista, {form.nombre.split(" ")[0]}.</h3>
-                <p className="mb-6 text-[15px] leading-relaxed text-gray">
-                  Andrea revisa tu resultado y te escribe en las próximas 48 horas. Sin plantillas: ya sabe qué te está pasando.
-                </p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  {["Sin compromiso", "Respuesta en 48h", "Solo si es para ti"].map((tag) => (
-                    <span key={tag} className="flex items-center gap-1.5 rounded-full bg-crema px-3 py-1.5 text-[11px] font-bold text-foreground/55">
-                      <CheckIcon size={11} />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              ) : (
+                <button
+                  onClick={() => setScreen("email")}
+                  className="group mx-auto inline-flex items-center justify-center gap-3 rounded-full bg-foreground px-8 py-4.5 text-base font-semibold text-crema shadow-[0_10px_34px_rgba(88,45,27,0.22)] transition-all hover:bg-foreground/88 active:scale-[0.98]"
+                >
+                  Quiero verlo
+                  <span className="transition-transform group-hover:translate-x-1"><ArrowRight /></span>
+                </button>
+              )}
             </motion.div>
           )}
 
