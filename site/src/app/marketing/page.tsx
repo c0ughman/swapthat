@@ -251,7 +251,7 @@ function HeroSection() {
                   <div className="flex w-full items-end justify-between gap-[1.575rem] lg:gap-[1.925rem]">
                     <div className="translate-x-[22px] -translate-y-[14px]">
                       <div className="inline-block origin-center scale-[0.855]">
-                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-crema px-5 py-4 text-naranja-vivo shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
+                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-naranja-calido shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                           <svg
                             viewBox="0 0 24 24"
                             fill="none"
@@ -274,7 +274,7 @@ function HeroSection() {
                       </div>
                     </div>
                     <div className="inline-block origin-center scale-[0.855]">
-                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-crema px-5 py-4 text-naranja-vivo shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-naranja-calido shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -297,7 +297,7 @@ function HeroSection() {
                   </div>
                   <div className="flex w-full justify-end pr-1 pt-0.5 lg:pr-2">
                     <div className="inline-block origin-center scale-[0.855]">
-                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-crema px-5 py-4 text-naranja-vivo shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-naranja-calido shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -326,9 +326,9 @@ function HeroSection() {
                 transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                 className="text-coral text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight pr-0 md:pr-[17rem] md:pl-1 lg:pr-[21rem] lg:pl-2 xl:pr-[22rem]"
               >
-                Crece sin{" "}
+                Marketing &{" "}
                 <span className="relative inline-block">
-                  <span className="gradient-text-coral italic font-light">improvisar</span>
+                  <span className="gradient-text-coral italic font-light">Performance</span>
                   <svg className="absolute -bottom-2 left-0 w-full" height="8" viewBox="0 0 100 8" fill="none" preserveAspectRatio="none">
                     <motion.path
                       d="M0 4C15 1 35 7 50 4C65 1 85 7 100 4"
@@ -398,7 +398,7 @@ function HeroSection() {
             >
               {HERO_TRUST_BADGES.map((badge) => (
                 <li key={badge.label} className="flex items-center gap-2.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-naranja-vivo/10 text-naranja-vivo">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-naranja-calido/10 text-naranja-calido">
                     {badge.icon}
                   </span>
                   <span className="flex flex-col leading-tight">
@@ -1116,7 +1116,8 @@ function ServicesSection() {
   return (
     <section
       id="servicios"
-      className="terracotta-grad relative overflow-hidden pb-12 pt-0 md:pb-16"
+      className="relative overflow-hidden pb-12 pt-0 md:pb-16"
+      style={{ backgroundColor: MARKETING_BAND }}
     >
       <MarketingBandTopCurve fill="var(--coral)" />
       <BlobShape color="#ffffff" size={400} className="-top-40 right-0" opacity={0.06} />
@@ -1124,10 +1125,10 @@ function ServicesSection() {
       <div className="relative z-[1] mx-auto max-w-7xl px-6 lg:px-8 pt-24 md:pt-32">
         <AnimatedSection light>
           <div className="mb-16 text-center">
-            <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+            <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-coral">
               Servicios
             </span>
-            <h2 className="text-4xl font-bold leading-[1] tracking-tight text-white md:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
               ¿Qué hago?
             </h2>
           </div>
@@ -1137,27 +1138,28 @@ function ServicesSection() {
           {services.map((service, i) => (
             <AnimatedSection key={i} delay={i * 0.08} light>
               <div
-                className="group relative overflow-visible rounded-3xl border border-white/20 bg-white/10 p-8 shadow-sm backdrop-blur-sm transition-all duration-500 hover:bg-white/15 hover:shadow-md md:p-10"
+                className="group relative overflow-visible rounded-3xl border border-coral/10 p-8 shadow-sm transition-all duration-500 hover:shadow-md hover:shadow-coral/[0.08] md:p-10"
+                style={{ backgroundColor: MARKETING_BAND_LIGHT }}
               >
                 <ServiceCardScreenshotOverlay serviceIndex={i} />
                 <ServiceCardCornerOverlays serviceIndex={i} />
 
-                <span className="pointer-events-none absolute -right-4 -top-4 z-0 select-none text-[10rem] font-bold leading-none text-white/15">
+                <span className="pointer-events-none absolute -right-4 -top-4 z-0 select-none text-[10rem] font-bold leading-none text-coral/10">
                   {service.num}
                 </span>
 
                 <div className="relative z-10 grid gap-8 lg:grid-cols-5">
                   <div className="lg:col-span-2">
                     <div className="mb-4 flex items-center gap-3">
-                      <span className="text-sm font-bold text-white">{service.num}</span>
-                      <span className="h-0.5 w-8 bg-white/60" />
+                      <span className="text-sm font-bold text-coral">{service.num}</span>
+                      <span className="h-0.5 w-8 bg-coral" />
                     </div>
-                    <h3 className="mb-3 text-2xl font-bold text-white">{service.title}</h3>
-                    <p className="mb-2 font-medium text-white/85">{service.subtitle}</p>
-                    <p className="text-sm text-white/70">{service.desc}</p>
+                    <h3 className="mb-3 text-2xl font-bold text-foreground">{service.title}</h3>
+                    <p className="mb-2 font-medium text-coral">{service.subtitle}</p>
+                    <p className="text-sm text-foreground/70">{service.desc}</p>
                     <Link
                       href="/contacto/marketing"
-                      className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white underline-offset-4 transition-colors hover:text-white/80 hover:underline md:text-base"
+                      className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-coral underline-offset-4 transition-colors hover:text-coral-dark hover:underline md:text-base"
                     >
                       Hablemos de tu marca
                       <svg
@@ -1180,7 +1182,7 @@ function ServicesSection() {
                       {service.items.map((item, j) => (
                         <li
                           key={j}
-                          className="flex items-start gap-3 rounded-xl p-3 text-white/85 transition-colors hover:bg-white/[0.08]"
+                          className="flex items-start gap-3 rounded-xl p-3 text-foreground/85 transition-colors hover:bg-coral/[0.04]"
                         >
                           <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-coral" />
                           <span>{item}</span>
