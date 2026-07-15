@@ -1188,7 +1188,7 @@ function ServicesSection() {
                         </li>
                       ))}
                     </ul>
-                    <p className="border-t border-coral/10 pt-4 text-sm italic text-foreground/55">
+                    <p className="border-t border-coral/10 pt-4 text-sm italic text-white">
                       {service.tagline}
                     </p>
                   </div>

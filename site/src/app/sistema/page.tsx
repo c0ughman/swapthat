@@ -165,8 +165,8 @@ function ProblemSection() {
               border: "rgba(255,255,255,0.15)",
               iconWrap: "rgba(255,255,255,0.12)",
               star: "var(--amarillo)",
-              titleClass: "text-white",
-              subClass: "text-white/75",
+              titleClass: "text-crema",
+              subClass: "text-crema/75",
             },
             {
               text: "Aquí no se trata de exigirte más.",
@@ -185,8 +185,8 @@ function ProblemSection() {
               border: "rgba(255,255,255,0.15)",
               iconWrap: "rgba(255,255,255,0.15)",
               star: "var(--amarillo)",
-              titleClass: "text-white",
-              subClass: "text-white/80",
+              titleClass: "text-crema",
+              subClass: "text-crema/80",
             },
           ].map((card, i) => (
             <AnimatedSection key={i} delay={0.08 * i} light>
@@ -255,26 +255,26 @@ function PhilosophySection() {
                 <h4 className="text-sm font-semibold text-background mb-4 uppercase tracking-wider">Evitamos</h4>
                 <ul className="space-y-3">
                   {['"debes"', '"toca"', '"no falles"', '"no te saltes"'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-white/40">
+                    <li key={i} className="flex items-center gap-2 text-crema/40">
                       <span className="w-1.5 h-1.5 rounded-full bg-white/35 shrink-0" />
                       {item}
                     </li>
                   ))}
                 </ul>
-                <p className="text-xs text-white/30 mt-4">Porque la vida no funciona así.</p>
+                <p className="text-xs text-crema/30 mt-4">Porque la vida no funciona así.</p>
               </div>
 
               <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-4 sm:p-6 border border-white/10">
                 <h4 className="text-sm font-semibold text-background mb-4 uppercase tracking-wider">Usamos</h4>
                 <ul className="space-y-3">
                   {['"elige"', '"prueba"', '"si hoy puedes"', '"esto también cuenta"'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-white/80">
+                    <li key={i} className="flex items-center gap-2 text-crema/80">
                       <span className="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0" />
                       {item}
                     </li>
                   ))}
                 </ul>
-                <p className="text-xs text-white/50 mt-4">Porque entrenar no es cumplir. Es volver a ti.</p>
+                <p className="text-xs text-crema/50 mt-4">Porque entrenar no es cumplir. Es volver a ti.</p>
               </div>
             </div>
 
@@ -436,10 +436,10 @@ function WhatIsSection() {
                     sizes="(max-width: 640px) 56px, 68px"
                   />
                   <div className="min-w-0 flex-1 pt-0.5">
-                    <h3 className="mb-2 text-[0.96875rem] font-bold leading-[1.28] tracking-tight text-zinc-50 sm:text-[1.0625rem] md:text-[1.125rem]">
+                    <h3 className="mb-2 text-[0.96875rem] font-bold leading-[1.28] tracking-tight text-crema sm:text-[1.0625rem] md:text-[1.125rem]">
                       {feature.title}
                     </h3>
-                    <p className="text-[0.71875rem] leading-relaxed text-zinc-500 sm:text-[0.8125rem] md:text-[0.875rem] md:leading-relaxed">
+                    <p className="text-[0.71875rem] leading-relaxed text-crema/60 sm:text-[0.8125rem] md:text-[0.875rem] md:leading-relaxed">
                       {feature.desc}
                     </p>
                   </div>
@@ -1028,17 +1028,17 @@ function HowItWorksSection() {
           <BlobShape color="#ffffff" size={300} className="bottom-0 -left-20" opacity={0.05} />
 
           <div className="relative z-10 w-full max-w-lg shrink-0 lg:mx-0">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-4 block md:mb-6">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-crema/50 mb-4 block md:mb-6">
               Ahora ya sabes cómo funciona
             </span>
 
-            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-4 md:mb-6 text-white">
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-4 md:mb-6 text-crema">
               Tu siguiente paso{" "}
               <br />
-              <span className="italic font-light text-white">es el primero.</span>
+              <span className="italic font-light text-crema">es el primero.</span>
             </h3>
 
-            <p className="text-base md:text-lg text-white/55 leading-relaxed mb-6 md:mb-10 max-w-sm mx-auto lg:mx-0">
+            <p className="text-base md:text-lg text-crema/55 leading-relaxed mb-6 md:mb-10 max-w-sm mx-auto lg:mx-0">
               No hay momento perfecto para empezar. Solo hay el momento en que decides — o retomas.
             </p>
 
@@ -1057,7 +1057,7 @@ function HowItWorksSection() {
               </svg>
             </Link>
 
-            <p className="text-white/30 text-sm mt-6 md:mt-8 leading-relaxed">
+            <p className="text-crema/30 text-sm mt-6 md:mt-8 leading-relaxed">
               Sin compromisos forzados. Sin horarios rígidos. Sin presión.
             </p>
           </div>
