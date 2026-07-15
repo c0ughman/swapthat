@@ -282,7 +282,7 @@ export default function ContactoSistemaPage() {
       {/* ════════════════════════════════════════════════════════════════════
           FORM — cream background
       ════════════════════════════════════════════════════════════════════ */}
-      <section id="formulario" className="relative py-24 md:py-32" style={{ background: "var(--background)" }}>
+      <section id="formulario" className="relative py-24 md:py-32" style={{ background: "#fcf2e1" }}>
         <BlobShape color="var(--foreground)" size={380} className="-top-20 right-0 opacity-[0.03]" blur />
         <BlobShape color="var(--verde)" size={280} className="-bottom-20 -left-10 opacity-[0.12]" blur />
 
@@ -293,10 +293,10 @@ export default function ContactoSistemaPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-foreground/45">
+            <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-[#c2b742]">
               Quiero empezar hoy
             </span>
-            <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl">
+            <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-[#c2b742] md:text-4xl">
               Cuéntanos un poco sobre ti.
             </h2>
             <p className="mb-10 text-lg leading-relaxed text-gray">
