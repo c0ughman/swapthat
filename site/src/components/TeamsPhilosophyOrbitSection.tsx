@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import { FiveStars } from "@/components/FiveStars";
-import { BrandIcon } from "@/components/BrandLockup";
+import { BrandLockupStacked } from "@/components/BrandLockup";
 
 // Pixel values scaled ×0.8 to compensate for font-size:80% replacing zoom:0.8
 const CIRCLE_RADIUS = 288; // was 360
@@ -45,24 +45,11 @@ function PhilosophyOrbitHub({ sistemaVariant }: { sistemaVariant: boolean }) {
         sistemaVariant ? "translate-y-[50px]" : "-translate-y-[3.3px]"
       }`}
     >
-      {sistemaVariant ? (
-        // Sistema: icon alone — the section header already says the brand name.
-        <BrandIcon fill="#ffffff" className="w-[132px] md:w-[164px]" />
-      ) : (
-        // Teams: wordmark wraps to stacked lines with the sun icon trailing the
-        // last word as a period — a single line would overflow the orbit ring.
-        <div className="w-[176px] shrink-0 md:w-[218px]">
-          <p className="font-brand text-[1.6rem] font-semibold uppercase leading-[1.05] tracking-[0.04em] text-blue md:text-[2rem]">
-            Muévete con
-            <br />
-            Andrea
-            <BrandIcon
-              fill="var(--blue)"
-              className="ml-1.5 inline-block h-[0.62em] w-[0.62em] align-baseline"
-            />
-          </p>
-        </div>
-      )}
+      {/* Wordmark wraps to stacked lines with the sun icon trailing the last
+          word as a period — a single line would overflow the orbit ring. */}
+      <div className="w-[176px] shrink-0 md:w-[218px]">
+        <BrandLockupStacked fill={sistemaVariant ? "#ffffff" : "var(--blue)"} />
+      </div>
       {!sistemaVariant && (
         <div className="mt-4 flex flex-col items-center gap-4">
           <p className="text-2xl font-bold italic font-light tracking-tight text-blue md:text-3xl">

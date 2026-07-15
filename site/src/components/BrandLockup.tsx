@@ -35,11 +35,41 @@ export function BrandIcon({
   );
 }
 
+/**
+ * Stacked wordmark: "Muévete con" / "Andrea ☀" — the icon trails the last word
+ * inline, reading as a period. Sized in `em` so it always tracks the font size.
+ * Used where a single line would be too wide (footer, philosophy orbits).
+ */
+export function BrandLockupStacked({
+  fill,
+  className = "",
+  textClassName = "text-[1.6rem] md:text-[2rem]",
+}: {
+  fill: string;
+  className?: string;
+  textClassName?: string;
+}) {
+  return (
+    <p
+      className={`font-brand font-semibold uppercase leading-[1.05] tracking-[0.04em] ${textClassName} ${className}`}
+      style={{ color: fill }}
+    >
+      Muévete con
+      <br />
+      Andrea
+      <BrandIcon
+        fill={fill}
+        className="ml-1.5 inline-block h-[0.62em] w-[0.62em] align-baseline"
+      />
+    </p>
+  );
+}
+
 export default function BrandLockup({
   fill,
   flipped = false,
-  iconClassName = "h-[2.1rem] w-[2.1rem]",
-  textClassName = "text-[1.05rem]",
+  iconClassName = "h-[2.45rem] w-[2.45rem]",
+  textClassName = "text-[1.5rem]",
   className = "",
 }: {
   /** Any CSS color — tints the icon and the wordmark together. */

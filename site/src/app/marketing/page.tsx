@@ -941,8 +941,12 @@ function ResultsSection() {
   );
 }
 
-/** Full-width curve between white above and the marketing band below. */
-function MarketingBandTopCurve() {
+/**
+ * Full-width curve between white above and the band below. `fill` must match
+ * the band it sits on — the Servicios band is the terracotta gradient, whose
+ * top edge is `--coral`, not the cream `--marketing-band`.
+ */
+function MarketingBandTopCurve({ fill = MARKETING_BAND }: { fill?: string }) {
   return (
     <div className="w-full shrink-0 leading-none" aria-hidden>
       <svg
@@ -951,7 +955,7 @@ function MarketingBandTopCurve() {
         preserveAspectRatio="none"
         className="block h-14 w-full md:h-[4.25rem]"
       >
-        <path fill={MARKETING_BAND} d="M0 0h1440v28Q720 72 0 28z" />
+        <path fill={fill} d="M0 0h1440v28Q720 72 0 28z" />
       </svg>
     </div>
   );
@@ -1114,7 +1118,7 @@ function ServicesSection() {
       id="servicios"
       className="terracotta-grad relative overflow-hidden pb-12 pt-0 md:pb-16"
     >
-      <MarketingBandTopCurve />
+      <MarketingBandTopCurve fill="var(--coral)" />
       <BlobShape color="#ffffff" size={400} className="-top-40 right-0" opacity={0.06} />
 
       <div className="relative z-[1] mx-auto max-w-7xl px-6 lg:px-8 pt-24 md:pt-32">

@@ -7,7 +7,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
 import { getSwapThatAppHref } from "@/lib/swapThatAppUrl";
-import BrandLockup from "@/components/BrandLockup";
+import { BrandLockupStacked } from "@/components/BrandLockup";
 
 /** Returns the correct contact page based on the current route. */
 function useContactHref() {
@@ -58,11 +58,10 @@ export default function Footer() {
           className="col-span-1 row-span-2 bg-background rounded-[2rem] flex items-center justify-center select-none p-4"
         >
           <Link href="/" className="block -rotate-90">
-            <BrandLockup
+            <BrandLockupStacked
               fill="var(--foreground)"
-              flipped
-              iconClassName="h-[1.9rem] w-[1.9rem]"
-              textClassName="text-[0.95rem] xl:text-[1.1rem]"
+              className="text-center"
+              textClassName="text-[1.15rem] xl:text-[1.35rem]"
             />
           </Link>
         </motion.div>

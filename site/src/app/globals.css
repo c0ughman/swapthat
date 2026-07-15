@@ -16,6 +16,7 @@
   --crema:       #fcf2e1; /* warm cream — backgrounds */
   --naranjita:   #9c3e23; /* red-orange — primary "warm" */
   --naranja-calido: #c15a2a; /* warmer/brighter orange — bottom of terracotta gradient */
+  --naranja-vivo: #d96a24; /* brightest orange — icon accents that need to pop */
   --amarillito:  #f8e09d; /* soft yellow — stars / highlights */
 
   /* ── Semantic tokens (names kept stable so existing utilities keep working) ── */
@@ -86,6 +87,7 @@
   --color-celestito: var(--celestito);
   --color-naranjita: var(--naranjita);
   --color-naranja-calido: var(--naranja-calido);
+  --color-naranja-vivo: var(--naranja-vivo);
   --color-crema: var(--crema);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
