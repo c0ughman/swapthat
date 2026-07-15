@@ -659,7 +659,7 @@ function GrowthSection() {
           </AnimatedSection>
 
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            {/* Polaroid — muevete-cereal.webp, portrait, white frame with thick bottom */}
+            {/* Polaroid — movement.webp, portrait, white frame with thick bottom */}
             <AnimatedSection direction="right" light>
               <div className="relative mx-auto w-fit">
                 <motion.div
@@ -670,10 +670,10 @@ function GrowthSection() {
                 >
                   <div className="relative aspect-[3/4] w-[16rem] overflow-hidden bg-neutral-100 sm:w-[18rem] lg:w-[20rem]">
                     <Image
-                      src="/muevete-cereal.webp"
-                      alt="Andrea con una cuchara de cereal que deletrea «muévete»"
+                      src="/movement.webp"
+                      alt="Andrea entrenando al aire libre"
                       fill
-                      className="object-cover object-[center_30%]"
+                      className="object-cover object-[center_25%]"
                       sizes="(max-width: 1024px) 80vw, 20rem"
                       quality={Q.photo}
                       loading="eager"
