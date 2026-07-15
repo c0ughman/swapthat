@@ -1,40 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCarouselTransition } from "@/components/CarouselTransition";
-
-const MASK = {
-  size: "contain" as const,
-  repeat: "no-repeat" as const,
-  position: "left center" as const,
-};
-
-/** PNG mask + solid fill — reliable across browsers; WebP masks often fail to paint. */
-function LogoMaskSpan({ fill }: { fill: string }) {
-  return (
-    <span
-      // Explicit width (not just aspect-ratio) — mobile Safari fails to derive the
-      // intrinsic width of a masked span from height alone, collapsing it to 0px and
-      // hiding the logo. The 240/67 ratio at h-2.4rem ≈ 8.6rem wide.
-      className="block h-[2.4rem] w-[8.6rem] shrink-0 max-w-[min(100%,15rem)]"
-      style={{
-        backgroundColor: fill,
-        WebkitMaskImage: "url(/av-logo-white.png)",
-        maskImage: "url(/av-logo-white.png)",
-        WebkitMaskSize: MASK.size,
-        maskSize: MASK.size,
-        WebkitMaskRepeat: MASK.repeat,
-        maskRepeat: MASK.repeat,
-        WebkitMaskPosition: MASK.position,
-        maskPosition: MASK.position,
-      }}
-    />
-  );
-}
+import BrandLockup from "@/components/BrandLockup";
 
 /** Contact / CTA: dedicated funnel for each line — used by the Explorar nav button. */
 function explorarHrefForPathname(pathname: string): string {
@@ -139,36 +110,21 @@ export default function Navigation() {
     return "text-gray hover:text-blue";
   }
 
-  /** Logo: Image for B/W; PNG mask only for blue (home scrolled) and coral (marketing). */
-  function renderLogo() {
-    if (navOverDarkHero) {
-      return (
-        <Image
-          src="/av-logo-white.webp"
-          alt="Andrea Vasquez"
-          width={240}
-          height={67}
-          className="h-[2.4rem] w-auto max-w-[min(100%,15rem)] object-contain object-left"
-          priority
-        />
-      );
-    }
-    if (pathname === "/marketing") {
-      return <LogoMaskSpan fill="#000000" />;
-    }
-    if (pathname === "/" && scrolled) {
-      return <LogoMaskSpan fill="#000000" />;
-    }
-    return (
-      <Image
-        src="/av-logo-black.webp"
-        alt="Andrea Vasquez"
-        width={240}
-        height={67}
-        className="h-[2.4rem] w-auto max-w-[min(100%,15rem)] object-contain object-left"
-        priority
-      />
-    );
+  /**
+   * Brand lockup tint per route:
+   *   /            (Teams & Charlas) → yellow
+   *   /teams-alt   (Teams & Charlas) → white
+   *   /marketing   (Marketing & Performance) → terracotta
+   *   /sistema     (Muévete con Andrea) → white
+   * Once scrolled off the hero the nav sits on cream, so fall back to foreground
+   * for the tints that would otherwise disappear against it.
+   */
+  function brandFill(): string {
+    if (pathname === "/") return scrolled ? "var(--foreground)" : "var(--amarillo)";
+    if (pathname === "/teams-alt") return "#ffffff";
+    if (pathname === "/sistema") return scrolled ? "var(--foreground)" : "#ffffff";
+    if (pathname === "/marketing") return "var(--coral)";
+    return "var(--foreground)";
   }
 
   const explorarClass =
@@ -192,8 +148,11 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-[calc(5rem+10px)]">
             <Link href="/" className="relative group flex items-center shrink-0">
-              {renderLogo()}
-              <span className="sr-only">Andrea Vasquez</span>
+              <BrandLockup
+                fill={brandFill()}
+                className="transition-colors duration-300"
+              />
+              <span className="sr-only">Muévete con Andrea</span>
             </Link>
 
             {/* Desktop Nav */}

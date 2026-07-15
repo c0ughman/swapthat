@@ -251,7 +251,7 @@ function HeroSection() {
                   <div className="flex w-full items-end justify-between gap-[1.575rem] lg:gap-[1.925rem]">
                     <div className="translate-x-[22px] -translate-y-[14px]">
                       <div className="inline-block origin-center scale-[0.855]">
-                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
+                        <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-naranja-calido shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                           <svg
                             viewBox="0 0 24 24"
                             fill="none"
@@ -274,7 +274,7 @@ function HeroSection() {
                       </div>
                     </div>
                     <div className="inline-block origin-center scale-[0.855]">
-                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-naranja-calido shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -297,7 +297,7 @@ function HeroSection() {
                   </div>
                   <div className="flex w-full justify-end pr-1 pt-0.5 lg:pr-2">
                     <div className="inline-block origin-center scale-[0.855]">
-                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-coral shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
+                      <div className="inline-flex w-fit flex-col items-center gap-2 rounded-full bg-white px-5 py-4 text-naranja-calido shadow-[0_4px_16px_-2px_color-mix(in srgb,var(--coral) 11%,transparent),0_0_18px_color-mix(in srgb,var(--coral) 5%,transparent)] lg:gap-2.5 lg:px-6 lg:py-5">
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
@@ -398,7 +398,7 @@ function HeroSection() {
             >
               {HERO_TRUST_BADGES.map((badge) => (
                 <li key={badge.label} className="flex items-center gap-2.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral/8 text-coral">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-naranja-calido/10 text-naranja-calido">
                     {badge.icon}
                   </span>
                   <span className="flex flex-col leading-tight">
@@ -563,25 +563,27 @@ function ProblemSection() {
 
 // ─── Stacking cards — bg ramp: light → … → warm primary (--coral / naranjita).
 // Ramp is derived from the brand token in globals.css (single source of truth). ───
+// Ramp: card 1 is full terracotta, each card steps warmer, last card is the
+// warm orange (--naranja-calido). Both ends are brand tokens from globals.css.
 const MKT_STACK_BG = [
-  "color-mix(in srgb, var(--coral) 32%, white)",
-  "color-mix(in srgb, var(--coral) 50%, white)",
-  "color-mix(in srgb, var(--coral) 68%, white)",
-  "color-mix(in srgb, var(--coral) 84%, white)",
   "var(--coral)",
+  "color-mix(in srgb, var(--naranja-calido) 25%, var(--coral))",
+  "color-mix(in srgb, var(--naranja-calido) 50%, var(--coral))",
+  "color-mix(in srgb, var(--naranja-calido) 75%, var(--coral))",
+  "var(--naranja-calido)",
 ];
 const MKT_STACK_GLOW = [
-  "color-mix(in srgb, var(--coral) 20%, transparent)",
   "color-mix(in srgb, var(--coral) 26%, transparent)",
-  "color-mix(in srgb, var(--coral) 31%, transparent)",
-  "color-mix(in srgb, var(--coral) 36%, transparent)",
-  "color-mix(in srgb, var(--coral) 42%, transparent)",
+  "color-mix(in srgb, color-mix(in srgb, var(--naranja-calido) 25%, var(--coral)) 30%, transparent)",
+  "color-mix(in srgb, color-mix(in srgb, var(--naranja-calido) 50%, var(--coral)) 34%, transparent)",
+  "color-mix(in srgb, color-mix(in srgb, var(--naranja-calido) 75%, var(--coral)) 38%, transparent)",
+  "color-mix(in srgb, var(--naranja-calido) 42%, transparent)",
 ];
 const MKT_STACK_TEXT = "#ffffff";
 /** Very light shadows — backgrounds carry contrast now */
 const MKT_STACK_TEXT_SHADOW = [
-  "0 1px 2px rgba(0,0,0,0.06)",
-  "0 1px 1px rgba(0,0,0,0.05)",
+  "none",
+  "none",
   "none",
   "none",
   "none",
@@ -1601,7 +1603,7 @@ function CTASection() {
 
 function MarqueeBanner() {
   return (
-    <div className="py-6 terracotta-grad text-white overflow-hidden">
+    <div className="py-6 bg-coral text-white overflow-hidden">
       <Marquee
         items={[
           "Estrategia",
@@ -1612,7 +1614,7 @@ function MarqueeBanner() {
           "Sistemas",
           "Resultados reales",
         ]}
-        className="text-sm font-medium tracking-wider uppercase opacity-80"
+        className="text-sm font-medium tracking-wider uppercase"
         speed={25}
       />
     </div>
