@@ -1194,7 +1194,7 @@ export function TeamsHomeHero({
                     skippedInitialAnimation={skippedInitialAnimation}
                   />
                 ) : null}
-                {/* Center focal point — polaroid of Andrea training */}
+                {/* Center focal point — polaroid of Andrea with the “muévete” spoon */}
                 <motion.div
                   className="flex shrink-0 items-end justify-center pb-2 md:pb-4"
                   initial={{ y: 260, opacity: 0, rotate: -4 }}
@@ -1208,10 +1208,10 @@ export function TeamsHomeHero({
                   <div className="relative rounded-[0.5rem] shadow-[0_28px_70px_-20px_rgba(26,26,26,0.4)]">
                     <div className="relative aspect-[3/4] w-[16rem] overflow-hidden rounded-[0.5rem] bg-neutral-100 sm:w-[20rem] md:w-[24rem] lg:w-[28rem]">
                       <Image
-                        src="/movement.webp"
-                        alt="Andrea entrenando"
+                        src="/muevete-cereal.webp"
+                        alt="Andrea con una cuchara de cereal que deletrea «muévete»"
                         fill
-                        className="object-cover object-[center_55%] md:object-[center_25%]"
+                        className="object-cover object-[center_30%]"
                         sizes="(min-width: 1024px) 28rem, (min-width: 768px) 24rem, 80vw"
                         quality={Q.hero}
                         priority
