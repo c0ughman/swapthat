@@ -10,10 +10,10 @@ import BrandLockup from "@/components/BrandLockup";
 /** Contact / CTA: dedicated funnel for each line — used by the Explorar nav button. */
 function explorarHrefForPathname(pathname: string): string {
   if (pathname.startsWith("/contacto/marketing")) return "/contacto/marketing#formulario";
-  if (pathname.startsWith("/contacto/sistema")) return "/contacto/sistema#formulario";
+  if (pathname.startsWith("/contacto/sistema")) return "/contacto/sistema";
   if (pathname.startsWith("/contacto/equipos")) return "/contacto/equipos#formulario";
   if (pathname === "/marketing" || pathname.startsWith("/marketing/")) return "/contacto/marketing#formulario";
-  if (pathname === "/sistema" || pathname.startsWith("/sistema/")) return "/contacto/sistema#formulario";
+  if (pathname === "/sistema" || pathname.startsWith("/sistema/")) return "/contacto/sistema";
   if (pathname === "/") return "/contacto/equipos#formulario";
   return "/contacto/equipos#formulario";
 }

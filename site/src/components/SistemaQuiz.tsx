@@ -24,6 +24,7 @@ import {
   OFFER_PRICE,
   profiles,
   quizQuestions,
+  valueAnchor,
   yesNoQuestions,
   type ProfileId,
 } from "@/lib/quizData";
@@ -271,7 +272,7 @@ export default function SistemaQuiz() {
         </div>
       )}
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-84px)] max-w-xl flex-col justify-center px-5 py-8">
+      <div className={`relative z-10 mx-auto flex min-h-[calc(100dvh-84px)] flex-col justify-center ${screen === "result" ? "w-full" : "max-w-xl px-5 py-8"}`}>
         <AnimatePresence mode="wait">
 
           {/* ── QUESTION ─────────────────────────────────────────────────── */}
@@ -411,85 +412,177 @@ export default function SistemaQuiz() {
 
           {/* ── RESULT + OFFER ──────────────────────────────────────────── */}
           {screen === "result" && (
-            <motion.div key="result" {...screenMotion} className="py-6">
-              <div className="relative mb-6 text-center">
-                <StickerFan seed={question.id + 2} />
-                <span className="mb-2 block text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/40">Tu perfil</span>
-                <h1 className="mb-2.5 text-[clamp(2rem,7vw,3rem)] font-bold leading-[1] tracking-tight" style={{ color: profile.color }}>{profile.name}</h1>
-                <p className="text-lg font-medium italic text-foreground/70">{profile.tagline}</p>
+            <motion.div key="result" {...screenMotion} className="w-full">
+
+              {/* Full-bleed color splash hero */}
+              <div className="relative overflow-hidden px-5 pb-20 pt-14 text-center" style={{ background: profile.color }}>
+                <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" aria-hidden />
+                <div className="pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-white/8 blur-3xl" aria-hidden />
+                <motion.div
+                  className="relative mx-auto mb-4 h-52 w-52 sm:h-60 sm:w-60"
+                  initial={{ scale: 0.6, y: 24, opacity: 0 }}
+                  animate={{ scale: 1, y: 0, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 180, damping: 15, delay: 0.1 }}
+                >
+                  <Image src={cartoon3dPath(profile.cartoon)} alt="" fill className="object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.25)]" sizes="240px" priority />
+                </motion.div>
+                <span className="mb-2 block text-[11px] font-bold uppercase tracking-[0.25em] text-white/70">Tu perfil</span>
+                <motion.h1
+                  className="mb-3 text-[clamp(2.3rem,8vw,3.6rem)] font-bold leading-[0.98] tracking-tight text-white"
+                  initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.45, ease: EASE }}
+                >
+                  {profile.name}
+                </motion.h1>
+                <p className="mx-auto max-w-md text-lg font-medium italic text-white/80">{profile.tagline}</p>
+                <div className="absolute bottom-0 left-0 w-full leading-none" aria-hidden>
+                  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" className="block h-8 w-full sm:h-10"><path fill="var(--crema)" d="M0 30 Q720 -30 1440 30 L1440 60 L0 60 Z" /></svg>
+                </div>
               </div>
 
-              <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15, duration: 0.4, ease: EASE }} className="mb-5 rounded-2xl px-6 py-5 text-center" style={{ background: profile.color }}>
-                <p className="text-[17px] font-bold leading-snug text-crema">{profile.hook}</p>
-              </motion.div>
+              <div className="relative z-10 mx-auto max-w-xl px-5 pb-14">
+                {/* Hook chip overlapping the hero curve */}
+                <motion.div
+                  initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.4, ease: EASE }}
+                  className="-mt-9 mb-8 rounded-2xl border-2 bg-white px-6 py-5 text-center shadow-[0_14px_40px_rgba(88,45,27,0.14)]"
+                  style={{ borderColor: profile.color }}
+                >
+                  <p className="text-[17px] font-bold leading-snug text-foreground">{profile.hook}</p>
+                </motion.div>
 
-              <div className="mb-7 px-1 sm:px-2">
-                {profile.description.split("\n\n").map((para) => <p key={para} className="mb-4 text-[15.5px] leading-relaxed text-foreground/75 last:mb-0">{para}</p>)}
-              </div>
+                {/* Story — transparent on cream */}
+                <div className="mb-8 px-1 sm:px-2">
+                  {profile.description.split("\n\n").map((para) => <p key={para} className="mb-4 text-[15.5px] leading-relaxed text-foreground/75 last:mb-0">{para}</p>)}
+                </div>
 
-              <div className="mb-5 rounded-3xl border border-foreground/8 bg-white p-6 sm:p-7">
-                <h3 className="mb-4 text-lg font-bold text-foreground">¿Te suena?</h3>
-                <ul className="space-y-3">
-                  {profile.symptoms.map((s, i) => (
-                    <motion.li key={s} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05, duration: 0.32, ease: EASE }} className="flex items-start gap-3">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: profile.color }} />
-                      <span className="text-[15px] leading-snug text-foreground/75">{s}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mb-5 rounded-3xl p-6 sm:p-7" style={{ background: "var(--foreground)" }}>
-                <h3 className="mb-4 text-lg font-bold text-crema">La verdad</h3>
-                {profile.truth.split("\n\n").map((para) => <p key={para} className="mb-3.5 text-[15px] leading-relaxed text-crema/75 last:mb-0">{para}</p>)}
-              </div>
-
-              {/* ── 90-DAY OFFER ── */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.45, ease: EASE }}
-                className="mb-6 overflow-hidden rounded-3xl text-crema shadow-[0_20px_60px_rgba(88,45,27,0.22)]"
-                style={{ background: "var(--foreground)" }}
-              >
-                <div className="p-7 sm:p-8" style={{ background: `linear-gradient(160deg, ${"color-mix(in srgb, var(--foreground) 100%, transparent)"} 0%, color-mix(in srgb, ${"var(--coral)"} 22%, var(--foreground)) 100%)` }}>
-                  <span className="mb-3 inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ background: profile.color }}>Transformación 90 días</span>
-                  <h3 className="mb-2 text-[clamp(1.5rem,5.5vw,2rem)] font-bold leading-[1.08] tracking-tight text-white">{profile.offer.promise}</h3>
-                  <p className="mb-6 text-[15px] leading-relaxed text-crema/70">{profile.offer.subhead}</p>
-
-                  <div className="mb-6 flex items-baseline gap-2">
-                    <span className="text-[clamp(2.4rem,9vw,3.2rem)] font-bold leading-none text-white">{OFFER_PRICE}</span>
-                    <span className="text-base font-semibold text-crema/55">{OFFER_CADENCE}</span>
-                  </div>
-
-                  <ul className="mb-7 space-y-2.5">
-                    {offerIncludes.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style={{ background: profile.color }}><CheckIcon size={12} /></span>
-                        <span className="text-[14.5px] leading-snug text-crema/85">{item}</span>
-                      </li>
+                {/* ¿Te suena? — white */}
+                <div className="mb-8 rounded-3xl border border-foreground/8 bg-white p-6 sm:p-7">
+                  <h3 className="mb-4 text-lg font-bold text-foreground">¿Te suena?</h3>
+                  <ul className="space-y-3">
+                    {profile.symptoms.map((s, i) => (
+                      <motion.li key={s} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05, duration: 0.32, ease: EASE }} className="flex items-start gap-3">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: profile.color }} />
+                        <span className="text-[15px] leading-snug text-foreground/75">{s}</span>
+                      </motion.li>
                     ))}
                   </ul>
+                </div>
 
-                  {/* TODO: swap mailto for Andrea's real WhatsApp (wa.me/<número>) when available. */}
-                  <a
-                    href={`mailto:hola@mueveteconandrea.com?subject=${encodeURIComponent("Quiero empezar la transformación de 90 días")}&body=${encodeURIComponent(`Hola Andrea, soy ${form.nombre.split(" ")[0] || ""} — hice el quiz y salí ${profile.name}. Quiero empezar.`)}`}
-                    className="flex w-full items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 text-base font-bold text-foreground transition-all hover:bg-crema active:scale-[0.98]"
-                  >
-                    Empezar mi transformación
-                    <ArrowRight />
-                  </a>
-                  <div className="mt-4 rounded-2xl bg-white/10 px-5 py-3.5 text-center">
-                    <p className="text-[13px] leading-relaxed text-crema/75">
-                      <span className="font-semibold text-white">Ya estás en la lista{form.nombre ? `, ${form.nombre.split(" ")[0]}` : ""} 💛</span>
-                      {" "}Andrea te escribe en 48 horas — o adelántate y escríbele tú.
-                    </p>
-                  </div>
-                  <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
-                    {["Sin compromiso", "Respuesta en 48h", "100% acompañada"].map((tag) => (
-                      <span key={tag} className="flex items-center gap-1.5 text-[11px] font-semibold text-crema/50"><CheckIcon size={11} />{tag}</span>
+                {/* La verdad — chocolate */}
+                <div className="mb-10 rounded-3xl p-6 sm:p-7" style={{ background: "var(--foreground)" }}>
+                  <h3 className="mb-4 text-lg font-bold text-crema">La verdad</h3>
+                  {profile.truth.split("\n\n").map((para) => <p key={para} className="mb-3.5 text-[15px] leading-relaxed text-crema/75 last:mb-0">{para}</p>)}
+                </div>
+
+                {/* 90-day journey — transparent, numbered month cards */}
+                <div className="mb-10">
+                  <span className="mb-2 block text-center text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: profile.color }}>Cómo se ven tus 90 días</span>
+                  <h3 className="mb-6 text-center text-[clamp(1.4rem,5vw,1.8rem)] font-bold tracking-tight text-foreground">Mes a mes, esto es lo que pasa</h3>
+                  <div className="flex flex-col gap-4">
+                    {profile.journey.map((m, i) => (
+                      <motion.div
+                        key={m.month}
+                        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                        transition={{ delay: i * 0.08, duration: 0.4, ease: EASE }}
+                        className="flex gap-4 rounded-3xl border border-foreground/8 bg-white p-5 sm:p-6"
+                      >
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-bold text-white" style={{ background: profile.color }}>{i + 1}</div>
+                        <div>
+                          <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-foreground/40">{m.month}</span>
+                          <h4 className="mb-1 text-[16px] font-bold text-foreground">{m.title}</h4>
+                          <p className="text-[14px] leading-relaxed text-foreground/70">{m.text}</p>
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
-              </motion.div>
+
+                {/* Andrea's note — white with photo */}
+                <div className="mb-10 rounded-3xl border border-foreground/8 bg-white p-6 sm:p-8">
+                  <div className="mb-4 flex items-center gap-4">
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2" style={{ borderColor: profile.color }}>
+                      <Image src="/andreacoachsevilla-55.webp" alt="Andrea" fill className="object-cover" sizes="64px" />
+                    </div>
+                    <div>
+                      <p className="text-[15px] font-bold text-foreground">Una nota de Andrea</p>
+                      <p className="text-[12px] text-foreground/50">para ti, {profile.name}</p>
+                    </div>
+                  </div>
+                  <p className="text-[15px] italic leading-relaxed text-foreground/75">“{profile.andreaNote}”</p>
+                  <p className="mt-3 text-right text-[14px] font-semibold" style={{ color: profile.color }}>— Andrea</p>
+                </div>
+
+                {/* ── 90-DAY OFFER ── */}
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                  transition={{ duration: 0.45, ease: EASE }}
+                  className="mb-10 overflow-hidden rounded-3xl text-crema shadow-[0_20px_60px_rgba(88,45,27,0.22)]"
+                >
+                  <div className="p-7 sm:p-8" style={{ background: `linear-gradient(160deg, var(--foreground) 0%, color-mix(in srgb, ${profile.color} 26%, var(--foreground)) 100%)` }}>
+                    <span className="mb-3 inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ background: profile.color }}>Transformación 90 días</span>
+                    <h3 className="mb-2 text-[clamp(1.5rem,5.5vw,2rem)] font-bold leading-[1.08] tracking-tight text-white">{profile.offer.promise}</h3>
+                    <p className="mb-6 text-[15px] leading-relaxed text-crema/70">{profile.offer.subhead}</p>
+
+                    {/* Value anchor */}
+                    <div className="mb-6 rounded-2xl bg-white/8 p-4">
+                      <p className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.15em] text-crema/50">Por separado, esto costaría</p>
+                      {valueAnchor.map((v) => (
+                        <div key={v.item} className="flex items-baseline justify-between py-1 text-[13.5px]">
+                          <span className="text-crema/70">{v.item}</span>
+                          <span className="font-semibold text-crema/45 line-through decoration-crema/35">{v.price}</span>
+                        </div>
+                      ))}
+                      <div className="mt-2 border-t border-white/15 pt-2.5 text-right text-[13px] font-semibold text-crema/80">Aquí va todo incluido ↓</div>
+                    </div>
+
+                    <div className="mb-6 flex items-baseline gap-2">
+                      <span className="text-[clamp(2.4rem,9vw,3.2rem)] font-bold leading-none text-white">{OFFER_PRICE}</span>
+                      <span className="text-base font-semibold text-crema/55">{OFFER_CADENCE}</span>
+                    </div>
+
+                    <ul className="mb-7 space-y-2.5">
+                      {offerIncludes.map((item) => (
+                        <li key={item} className="flex items-start gap-3">
+                          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style={{ background: profile.color }}><CheckIcon size={12} /></span>
+                          <span className="text-[14.5px] leading-snug text-crema/85">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* TODO: swap mailto for Andrea's real WhatsApp (wa.me/<número>) when available. */}
+                    <a
+                      href={`mailto:hola@mueveteconandrea.com?subject=${encodeURIComponent("Quiero empezar la transformación de 90 días")}&body=${encodeURIComponent(`Hola Andrea, soy ${form.nombre.split(" ")[0] || ""} — hice el quiz y salí ${profile.name}. Quiero empezar.`)}`}
+                      className="flex w-full items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 text-base font-bold text-foreground transition-all hover:bg-crema active:scale-[0.98]"
+                    >
+                      Empezar mi transformación
+                      <ArrowRight />
+                    </a>
+                    <div className="mt-4 rounded-2xl bg-white/10 px-5 py-3.5 text-center">
+                      <p className="text-[13px] leading-relaxed text-crema/75">
+                        <span className="font-semibold text-white">Ya estás en la lista{form.nombre ? `, ${form.nombre.split(" ")[0]}` : ""} 💛</span>
+                        {" "}Andrea te escribe en 48 horas — o adelántate y escríbele tú.
+                      </p>
+                    </div>
+                    <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
+                      {["Sin compromiso", "Respuesta en 48h", "100% acompañada"].map((tag) => (
+                        <span key={tag} className="flex items-center gap-1.5 text-[11px] font-semibold text-crema/50"><CheckIcon size={11} />{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* FAQ — her actual objections */}
+                <div className="mb-4">
+                  <h3 className="mb-5 text-center text-[clamp(1.3rem,4.5vw,1.6rem)] font-bold tracking-tight text-foreground">Lo que seguro te estás preguntando</h3>
+                  <div className="flex flex-col gap-3">
+                    {profile.faq.map((f) => (
+                      <div key={f.q} className="rounded-2xl border border-foreground/8 bg-white p-5">
+                        <p className="mb-1.5 text-[15px] font-bold text-foreground">{f.q}</p>
+                        <p className="text-[14px] leading-relaxed text-foreground/70">{f.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </motion.div>
           )}
 

@@ -57,6 +57,17 @@ export interface Offer {
   subhead: string;
 }
 
+export interface JourneyMonth {
+  month: string;
+  title: string;
+  text: string;
+}
+
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface Profile {
   id: ProfileId;
   name: string;
@@ -69,6 +80,14 @@ export interface Profile {
   description: string;
   symptoms: string[];
   truth: string;
+  /** 3D cartoon (public/cartoons/3d, transparent bg) for the result hero. */
+  cartoon: string;
+  /** The 90 days, month by month, in this profile's terms. */
+  journey: JourneyMonth[];
+  /** First-person note from Andrea to this profile. */
+  andreaNote: string;
+  /** The 3 objections this profile actually has, answered in her voice. */
+  faq: FaqItem[];
   offer: Offer;
 }
 
@@ -285,7 +304,7 @@ export const interstitials: Interstitial[] = [
     kind: "commit",
     text: "Vas por la mitad y ya lo estás sintiendo.<br><br><strong>Lo que sigue no es otra rutina. Es un cambio que puedes sostener.</strong>",
     buttonText: "Estoy lista",
-    image: "front.png",
+    image: "jump-front.png",
   },
   {
     afterQuestion: 12,
@@ -312,6 +331,16 @@ export const yesNoQuestions = [
 
 export const OFFER_PRICE = "$500";
 export const OFFER_CADENCE = "/ mes · 3 meses";
+
+/**
+ * Value anchor: what the pieces cost bought separately. Justifies the price
+ * without discounting or fake urgency.
+ */
+export const valueAnchor = [
+  { item: "Coach personal 1-a-1", price: "$400+/mes" },
+  { item: "Plan de nutrición aparte", price: "$150+/mes" },
+  { item: "Seguimiento y accountability", price: "$120+/mes" },
+];
 
 /** What every 90-day program includes. Sold as an outcome, not a feature list. */
 export const offerIncludes = [
@@ -347,6 +376,18 @@ Así que vuelves a empezar. Desde cero. Otra vez. Y esta vez cuesta más.`,
     truth: `El problema nunca fue tu fuerza de voluntad. Mira todo lo que has empezado: eso es alguien que no se rinde.
 
 El problema es que cada plan que probaste era rígido — al primer tropiezo te dejó sin salida, y la única opción fue caer a cero. Nadie te dio un sistema que se doblara sin romperse. Con la estructura correcta, un mal día es solo un mal día, no el final.`,
+    cartoon: "jump.png",
+    journey: [
+      { month: "Mes 1", title: "La base que no se rompe", text: "Llamada de arranque, tu plan a tu medida y un ritmo que puedes sostener — sin arrancar al 100% para quemarte en la semana 3." },
+      { month: "Mes 2", title: "La primera prueba real", text: "Va a llegar una semana mala. Esta vez hay plan B: ajustamos, retomas, y no vuelves a cero. Ahí se rompe el ciclo." },
+      { month: "Mes 3", title: "La constancia se vuelve tuya", text: "Ya no dependes de la motivación. Tienes un sistema, resultados que se quedan, y la prueba de que esta vez fue distinto." },
+    ],
+    andreaNote: "Si saliste Montaña Rusa, quiero que sepas algo: he visto a decenas de mujeres con tu mismo patrón, y ninguna era el problema. Empezar tantas veces no es debilidad — es terquedad de la buena. Solo te faltó un plan que no se rompiera contigo. Eso es exactamente lo que vamos a construir.",
+    faq: [
+      { q: "¿Y si me aburro otra vez?", a: "El plan cambia contigo cada 2 semanas. El aburrimiento aparece cuando nada cambia — aquí siempre hay un siguiente paso nuevo." },
+      { q: "¿Qué pasa si fallo una semana?", a: "Nada grave. Retomas donde quedaste — el plan ya cuenta con tus semanas malas. Eso es lo que lo hace distinto." },
+      { q: "¿Necesito gimnasio?", a: "No. El plan se arma según lo que tengas: casa, gym o aire libre. Tú lo dijiste en el quiz y Andrea lo toma de ahí." },
+    ],
     offer: {
       promise: "90 días para romper el ciclo",
       subhead: "Deja de empezar de cero. Esta vez lo sostienes — con un sistema que aguanta tus semanas reales.",
@@ -376,6 +417,18 @@ Nunca estás donde quieres estar, porque nunca empezaste de verdad.`,
     truth: `No eres floja. Postergar no es pereza — es lo que pasa cuando hay tanto ruido que empezar se siente imposible.
 
 No necesitas más información. Necesitas menos: una sola voz, un solo plan, un primer paso claro para mañana. Alguien que te quite el ruido de encima y te diga exactamente qué hacer. Ahí la parálisis desaparece.`,
+    cartoon: "phone.png",
+    journey: [
+      { month: "Mes 1", title: "Por fin arrancas", text: "Cero investigación de tu parte. Llamada de arranque, un solo plan claro, y tu primer paso definido para mañana. El ruido desaparece." },
+      { month: "Mes 2", title: "El hábito se instala", text: "Con alguien esperando tu reporte cada 2 semanas, posponer deja de ser opción. La culpa se convierte en impulso." },
+      { month: "Mes 3", title: "Ya no eres la del lunes", text: "Llevas más semanas seguidas que nunca. El «tengo que hacer algo» se acabó — ya lo estás haciendo." },
+    ],
+    andreaNote: "Si saliste La del Lunes, te entiendo más de lo que crees. Posponer no es pereza — es lo que pasa cuando hay tanta información contradictoria que empezar da miedo. Mi trabajo es simple: quitarte el ruido y darte un solo camino claro. Tú solo tienes que dar el primer paso. Yo me encargo del resto.",
+    faq: [
+      { q: "¿Y si vuelvo a posponerlo?", a: "Por eso existe la llamada de arranque: agendas una fecha y alguien te espera. Es mucho más difícil posponerle a una persona que a una app." },
+      { q: "¿Tengo que saber de fitness?", a: "Cero. Ese es el punto: tú no investigas nada. Andrea te dice exactamente qué hacer, cuándo y cómo." },
+      { q: "¿Cuánto tiempo necesito?", a: "El plan se arma según el tiempo que dijiste tener en el quiz. Con 2–3 horas a la semana alcanza para ver cambios." },
+    ],
     offer: {
       promise: "90 días para arrancar y no parar",
       subhead: "Sin ruido, sin mil opciones. Un solo plan claro — y alguien que te hace dar el primer paso.",
@@ -405,6 +458,18 @@ Y empiezas a dudar de ti, cuando en realidad hiciste tu parte. El que se quedó 
     truth: `No estás estancada por falta de esfuerzo. Estás estancada porque el cuerpo se acostumbra, y lo que te trajo hasta aquí no es lo que te lleva al siguiente nivel.
 
 Necesitas a alguien que mida, ajuste y te exija con criterio — que vea lo que tú, adentro del proceso, ya no puedes ver. Un pequeño cambio en las variables correctas rompe el estancamiento. No más esfuerzo: esfuerzo dirigido.`,
+    cartoon: "stairs.png",
+    journey: [
+      { month: "Mes 1", title: "El diagnóstico que te faltaba", text: "Evaluación completa de lo que haces hoy: entrenamiento, nutrición, recuperación. Encontramos exactamente dónde está el freno." },
+      { month: "Mes 2", title: "Las variables correctas", text: "Ajustes quirúrgicos cada 2 semanas — carga, volumen, comida. Pequeños cambios dirigidos, no más esfuerzo a ciegas." },
+      { month: "Mes 3", title: "La aguja se mueve", text: "Progreso medible otra vez: más fuerza, mejor composición, y un plan que sabe cuál es tu siguiente nivel." },
+    ],
+    andreaNote: "Si saliste La Estancada, primero: respeto. Ser constante sin ver resultados y aun así seguir — eso es lo más difícil del fitness. No necesitas entrenar más duro; necesitas a alguien que vea tu proceso desde afuera y ajuste lo que tú, adentro, ya no puedes ver. Vamos a mover esa aguja.",
+    faq: [
+      { q: "¿Qué vas a hacer distinto a lo que ya hago?", a: "Medir y ajustar. El estancamiento casi nunca es de esfuerzo — es de variables. Cada 2 semanas revisamos datos y cambiamos lo que toca." },
+      { q: "¿Vale la pena si ya sé entrenar?", a: "Justo por eso: la técnica ya la tienes. Lo que compras es criterio externo, medición y exigencia dirigida — lo que ningún plan genérico te da." },
+      { q: "¿Y la nutrición?", a: "Va incluida. En la mayoría de los estancamientos, la mitad del freno está en el plato, no en el gym." },
+    ],
     offer: {
       promise: "90 días para desbloquear tu progreso",
       subhead: "Ya haces el trabajo. Ahora alguien lo mide, lo ajusta y te exige el siguiente nivel.",
@@ -434,6 +499,18 @@ No empiezas de cero. Vuelves. Es distinto.`,
     truth: `No perdiste lo que eras — lo tienes guardado. La constancia, la fuerza mental, saber entrenar: eso no se borra. Está esperando.
 
 Pero volver como si nada cambió es como te lesionas. Tu cuerpo hoy es distinto, y merece una rampa segura: una progresión que empiece donde estás, respete lo que viviste y te devuelva a tu mejor versión sin romperte en el intento.`,
+    cartoon: "front.png",
+    journey: [
+      { month: "Mes 1", title: "La rampa segura", text: "Evaluamos dónde está tu cuerpo hoy — no donde estaba. Empiezas con una progresión que respeta lo que viviste, sin riesgo de romperte." },
+      { month: "Mes 2", title: "La memoria despierta", text: "Tu cuerpo recuerda más rápido de lo que crees. Subimos la intensidad con criterio y empiezas a reconocerte otra vez." },
+      { month: "Mes 3", title: "De vuelta — y mejor", text: "Fuerte, segura y entrenando como tuyo. No volviste a la de antes: construiste una versión que entiende su cuerpo de hoy." },
+    ],
+    andreaNote: "Si saliste La que Vuelve, esto es lo que quiero que escuches: no perdiste nada. La disciplina, la fuerza mental, saber entrenar — todo eso sigue ahí, guardado. Mi trabajo es darte la rampa segura para volver sin lesionarte y sin frustrarte. Tu cuerpo cambió, sí. Pero tú sigues siendo tú. Vamos a demostrarlo.",
+    faq: [
+      { q: "¿Y si mi cuerpo ya no responde igual?", a: "No va a responder igual — va a responder distinto, y el plan se construye para eso. Progresión desde donde estás hoy, con la técnica que ya tienes." },
+      { q: "Tuve un bebé / una lesión. ¿Es seguro?", a: "Ese es el punto de la evaluación inicial: mapear tu historia antes de cargar un solo kilo. Nada genérico, nada que tu cuerpo no esté listo para hacer." },
+      { q: "¿Cuánto tardo en volver a mi nivel?", a: "Menos de lo que temes. La memoria muscular es real — con guía correcta, en 90 días estás entrenando fuerte y sintiéndote tú otra vez." },
+    ],
     offer: {
       promise: "90 días para volver a tu mejor versión",
       subhead: "Sin empezar de cero y sin lesionarte. Una vuelta segura y guiada, a tu ritmo, hasta reencontrarte.",

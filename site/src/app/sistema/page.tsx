@@ -123,10 +123,10 @@ function ProblemSection() {
               </div>
               <div className="mt-8 sm:mt-10">
                 <Link
-                  href="/contacto/sistema#formulario"
+                  href="/contacto/sistema"
                   className={SISTEMA_CTA_ON_LIGHT}
                 >
-                  Quiero empezar hoy
+                  Descubre tu perfil — 2 min
                   <svg
                     width="20"
                     height="20"
@@ -214,6 +214,63 @@ function ProblemSection() {
   );
 }
 
+/** Mini profile preview → quiz. Identity hook: curiosity over pitch. */
+const QUIZ_HOOK_PROFILES = [
+  { name: "La Montaña Rusa", line: "Empiezas, lo dejas, vuelves a cero", cartoon: "jump.png", color: "var(--coral)" },
+  { name: "La del Lunes", line: "Siempre «la próxima semana»", cartoon: "phone.png", color: "var(--blue)" },
+  { name: "La Estancada", line: "Entrenas, pero la aguja no se mueve", cartoon: "stairs.png", color: "var(--verde-dark)" },
+  { name: "La que Vuelve", line: "Antes entrenabas. La vida te sacó", cartoon: "front.png", color: "var(--naranja-vivo)" },
+];
+
+function QuizHookSection() {
+  return (
+    <section className="relative overflow-hidden py-14 md:py-24" style={{ background: "var(--crema)" }}>
+      <BlobShape color="var(--verde)" size={300} className="-top-20 -right-20" opacity={0.1} />
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <AnimatedSection light>
+          <div className="mx-auto mb-10 max-w-2xl text-center md:mb-14">
+            <span className="mb-3 block text-sm font-semibold uppercase tracking-[0.2em] text-foreground/50">
+              El test — 2 minutos
+            </span>
+            <h2 className="text-4xl font-bold leading-[1] tracking-tight md:text-5xl">
+              ¿Qué tipo de <span className="italic font-light">movida</span> eres?
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-gray">
+              Hay cuatro patrones que explican por qué el fitness no te ha funcionado. Descubre el tuyo — y el plan exacto para salir de él.
+            </p>
+          </div>
+        </AnimatedSection>
+
+        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-4 lg:grid-cols-4">
+          {QUIZ_HOOK_PROFILES.map((p, i) => (
+            <AnimatedSection key={p.name} delay={0.06 * i} light>
+              <Link href="/contacto/sistema" className="group block h-full rounded-3xl border border-foreground/8 bg-white p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_36px_rgba(88,45,27,0.12)]">
+                <div className="relative mx-auto mb-3 h-24 w-24 transition-transform duration-300 group-hover:scale-105">
+                  <Image src={cartoon3dPath(p.cartoon)} alt="" fill className="object-contain" sizes="96px" />
+                </div>
+                <p className="text-[15px] font-bold leading-tight" style={{ color: p.color }}>{p.name}</p>
+                <p className="mt-1 text-[12px] leading-snug text-gray">{p.line}</p>
+              </Link>
+            </AnimatedSection>
+          ))}
+        </div>
+
+        <AnimatedSection delay={0.3} light>
+          <div className="mt-10 text-center">
+            <Link href="/contacto/sistema" className={SISTEMA_CTA_ON_LIGHT}>
+              Descubre tu perfil — 2 min
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform group-hover:translate-x-1" aria-hidden>
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+            <p className="mt-4 text-sm text-gray">15 preguntas · sin registro · resultado al momento</p>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
 function PhilosophySection() {
   return (
     <section className="pt-0 pb-0 bg-foreground text-background relative overflow-hidden">
@@ -280,10 +337,10 @@ function PhilosophySection() {
 
             <div className="mt-8 flex justify-center sm:mt-10 lg:justify-end">
               <Link
-                href="/contacto/sistema#formulario"
+                href="/contacto/sistema"
                 className={SISTEMA_CTA_ON_DARK}
               >
-                Quiero empezar hoy
+                Descubre tu perfil — 2 min
                 <svg
                   width="20"
                   height="20"
@@ -453,10 +510,10 @@ function WhatIsSection() {
         <AnimatedSection light delay={0.2}>
           <div className="mt-20 flex justify-center sm:mt-14 md:mt-14">
             <Link
-              href="/contacto/sistema#formulario"
+              href="/contacto/sistema"
               className={SISTEMA_CTA_ON_LIGHT}
             >
-              Quiero empezar hoy
+              Descubre tu perfil — 2 min
               <svg
                 width="20"
                 height="20"
@@ -1042,7 +1099,7 @@ function HowItWorksSection() {
               href="/contacto/sistema"
               className="group inline-flex items-center justify-center gap-3 bg-white text-foreground px-8 py-4 md:px-10 md:py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:bg-white/90 shadow-lg shadow-black/30"
             >
-              Quiero empezar hoy
+              Descubre tu perfil — 2 min
               <svg
                 width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" strokeWidth="2"
@@ -1118,7 +1175,7 @@ function CTASection() {
             href="/contacto/sistema"
             className="group inline-flex items-center justify-center gap-3 bg-foreground text-background px-10 py-5 rounded-full text-lg font-medium hover:bg-foreground/90 transition-all duration-300 shadow-lg shadow-black/10"
           >
-            Quiero empezar hoy
+            Descubre tu perfil — 2 min
             <svg
               width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="2"
@@ -1333,13 +1390,14 @@ export default function SistemaPage() {
     <div className="bg-white min-h-screen">
       <TeamsHomeHero
         swapThatSystemHero
-        contactHref="/contacto/sistema#formulario"
+        contactHref="/contacto/sistema"
         secondaryHref={SISTEMA_APP_DOWNLOAD_HREF}
       />
       <MarqueeBanner />
       <TeamsPhilosophyOrbitSection sistemaVariant />
       <SistemaFilosofiaToProblemFade />
       <ProblemSection />
+      <QuizHookSection />
       <HowItWorksSection />
       <WhatIsSection />
       <PhilosophySection />
