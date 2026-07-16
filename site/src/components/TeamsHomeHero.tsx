@@ -1015,7 +1015,7 @@ export function TeamsHomeHero({
                     : "text-[0.8125rem]"
                 } font-semibold uppercase tracking-[0.2em] ${eyebrowLabelClass} ${HERO_TEXT_GLOW}`}
               >
-                Muévete con Andrea
+                Swap that app
               </span>
             </motion.div>
           </div>

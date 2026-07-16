@@ -52,7 +52,7 @@ export function BrandLockupStacked({
 }) {
   return (
     <div
-      className={`font-brand flex flex-col items-center leading-[1.05] tracking-[0.02em] ${textClassName} ${className}`}
+      className={`font-sans flex flex-col items-center leading-[1.05] tracking-[0.02em] font-bold ${textClassName} ${className}`}
       style={{ color: fill }}
     >
       {/* Icon leads on its own line, sized a touch above the cap-height so it
@@ -85,7 +85,7 @@ export default function BrandLockup({
 }) {
   const word = (
     <span
-      className={`font-brand leading-none tracking-[0.04em] whitespace-nowrap ${textClassName}`}
+      className={`font-sans leading-none tracking-[0.04em] whitespace-nowrap font-bold ${textClassName}`}
       style={{ color: fill }}
     >
       Muévete con Andrea
