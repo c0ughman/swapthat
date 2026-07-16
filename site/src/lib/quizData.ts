@@ -46,6 +46,8 @@ export interface Interstitial {
   kind: InterstitialKind;
   text: string;
   buttonText: string;
+  /** 3D cartoon (public/cartoons/3d, transparent bg) shown above the text. */
+  image: string;
 }
 
 export interface Offer {
@@ -269,24 +271,28 @@ export const interstitials: Interstitial[] = [
     kind: "reframe",
     text: "Ese «el lunes empiezo» no es falta de disciplina.<br><br><strong>Es lo que pasa cuando un plan no cuenta con la vida real.</strong>",
     buttonText: "Sigue",
+    image: "couch.png",
   },
   {
     afterQuestion: 6,
     kind: "reframe",
     text: "La mayoría de los programas se diseñan para semanas perfectas.<br><br><strong>Y cuando la tuya no lo es, te culpas tú. No debería ser así.</strong>",
     buttonText: "Uf, sí",
+    image: "clock.png",
   },
   {
     afterQuestion: 9,
     kind: "commit",
     text: "Vas por la mitad y ya lo estás sintiendo.<br><br><strong>Lo que sigue no es otra rutina. Es un cambio que puedes sostener.</strong>",
     buttonText: "Estoy lista",
+    image: "front.png",
   },
   {
     afterQuestion: 12,
     kind: "commit",
     text: "Ya casi sabemos quién eres y qué necesitas.<br><br><strong>Solo falta una cosa: que decidas que esta vez sí.</strong>",
     buttonText: "Voy con todo",
+    image: "run.png",
   },
 ];
 
@@ -410,8 +416,8 @@ Necesitas a alguien que mida, ajuste y te exija con criterio — que vea lo que 
     emoji: "🌅",
     tagline: "Antes entrenabas. Un bebé, una lesión, la vida — y te saliste.",
     hook: "Tu cuerpo cambió. Tú sigues siendo tú.",
-    color: "var(--foreground)",
-    accent: "var(--beige-dark)",
+    color: "var(--naranja-calido)",
+    accent: "color-mix(in srgb, var(--naranja-calido) 30%, white)",
     description: `Hubo una época en que esto era tuyo. Entrenabas, sabías lo que hacías, te sentías fuerte. Y entonces llegó algo más grande — un embarazo, una lesión, un año imposible — y te saliste.
 
 Ahora te miras al espejo y no siempre te reconoces. Una parte de ti extraña a la que eras. Otra tiene miedo de que sea tarde, de que el cuerpo ya no responda. Y otra, impaciente, odia estar en la casilla de salida sabiendo dónde estabas.

@@ -28,6 +28,7 @@ import {
   type ProfileId,
 } from "@/lib/quizData";
 import { submitNetlifyForm } from "@/lib/submitNetlifyForm";
+import { cartoon3dPath } from "@/lib/cartoonAssets";
 
 type Screen = "question" | "interstitial" | "analyzing" | "email" | "result";
 
@@ -69,7 +70,7 @@ function StickerFan({ seed }: { seed: number }) {
           <motion.div
             key={i}
             className="absolute drop-shadow-[0_4px_12px_rgba(88,45,27,0.14)]"
-            style={{ left: s.dx, zIndex: s.z, width: 60, height: 60 }}
+            style={{ left: s.dx - 30, zIndex: s.z, width: 60, height: 60 }}
             initial={{ scale: 0.4, rotate: s.rot - 18, opacity: 0 }}
             animate={{ scale: 1, rotate: s.rot, opacity: 1 }}
             transition={{ type: "spring", stiffness: 240, damping: 14, delay: i * 0.07 }}
@@ -314,13 +315,18 @@ export default function SistemaQuiz() {
           {screen === "interstitial" && inter && (
             <motion.div key={`int-${pendingInterstitial}`} {...screenMotion} className="text-center">
               <motion.div
-                className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full text-2xl"
-                style={{ background: inter.kind === "commit" ? "var(--coral)" : "var(--verde)" }}
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 240, damping: 14 }}
+                className="relative mx-auto mb-6 h-44 w-44 sm:h-52 sm:w-52"
+                initial={{ scale: 0.7, y: 12, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 16 }}
               >
-                {inter.kind === "commit" ? "🔥" : "💛"}
+                <Image
+                  src={cartoon3dPath(inter.image)}
+                  alt=""
+                  fill
+                  className="object-contain drop-shadow-[0_10px_28px_rgba(88,45,27,0.18)]"
+                  sizes="208px"
+                />
               </motion.div>
               <p className="mb-9 text-[clamp(1.15rem,4vw,1.5rem)] font-medium leading-[1.5] text-foreground [&_strong]:font-bold" dangerouslySetInnerHTML={{ __html: inter.text }} />
               <button
@@ -417,8 +423,8 @@ export default function SistemaQuiz() {
                 <p className="text-[17px] font-bold leading-snug text-crema">{profile.hook}</p>
               </motion.div>
 
-              <div className="mb-5 rounded-3xl border border-foreground/8 bg-white p-6 sm:p-7">
-                {profile.description.split("\n\n").map((para) => <p key={para} className="mb-3.5 text-[15px] leading-relaxed text-foreground/75 last:mb-0">{para}</p>)}
+              <div className="mb-7 px-1 sm:px-2">
+                {profile.description.split("\n\n").map((para) => <p key={para} className="mb-4 text-[15.5px] leading-relaxed text-foreground/75 last:mb-0">{para}</p>)}
               </div>
 
               <div className="mb-5 rounded-3xl border border-foreground/8 bg-white p-6 sm:p-7">
