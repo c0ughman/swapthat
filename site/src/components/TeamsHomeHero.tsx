@@ -1132,7 +1132,7 @@ export function TeamsHomeHero({
                 }
               >
                 <Link href={contactHref} className={primaryCtaClass}>
-                  {swapThatSystemHero ? "Quiero empezar hoy" : "Quiero entrenar a mi ritmo"}
+                  {swapThatSystemHero ? "Descubre tu perfil — 2 min" : "Quiero entrenar a mi ritmo"}
                   <svg
                     width={swapThatSystemHero ? 20 : 15}
                     height={swapThatSystemHero ? 20 : 15}

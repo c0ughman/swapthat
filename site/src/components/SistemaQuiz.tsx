@@ -20,11 +20,8 @@ import {
   interstitials,
   loadingChecks,
   offerIncludes,
-  OFFER_CADENCE,
-  OFFER_PRICE,
   profiles,
   quizQuestions,
-  valueAnchor,
   yesNoQuestions,
   type ProfileId,
 } from "@/lib/quizData";
@@ -425,43 +422,33 @@ export default function SistemaQuiz() {
           {screen === "result" && (
             <motion.div key="result" {...screenMotion} className="w-full">
 
-              {/* Full-bleed color splash hero */}
-              <div className="relative overflow-hidden px-5 pb-24 pt-16 text-center sm:pt-20" style={{ background: profile.color }}>
-                <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" aria-hidden />
-                <div className="pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-white/8 blur-3xl" aria-hidden />
-                <StickerFan seed={profileId.length + 2} />
-                <motion.span
-                  className="mb-3 block text-[11px] font-bold uppercase tracking-[0.28em] text-white/70"
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15, duration: 0.4 }}
-                >
-                  Tu perfil
-                </motion.span>
-                <motion.h1
-                  className="mx-auto mb-4 max-w-3xl text-[clamp(2.6rem,9vw,4.5rem)] font-bold leading-[0.96] tracking-tight text-white"
-                  initial={{ opacity: 0, y: 18, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
-                >
-                  {profile.name}
-                </motion.h1>
-                <motion.p
-                  className="mx-auto max-w-md text-lg font-medium italic text-white/80 sm:text-xl"
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.45, ease: EASE }}
-                >
-                  {profile.tagline}
-                </motion.p>
-                <div className="absolute bottom-0 left-0 w-full leading-none" aria-hidden>
-                  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" className="block h-8 w-full sm:h-10"><path fill="var(--crema)" d="M0 30 Q720 -30 1440 30 L1440 60 L0 60 Z" /></svg>
-                </div>
-              </div>
-
-              <div className="relative z-10 mx-auto max-w-3xl px-5 pb-14">
-                {/* Hook chip overlapping the hero curve */}
+              <div className="mx-auto max-w-3xl px-5 pt-8 pb-14 sm:pt-12">
+                {/* Result hero — one self-contained color squircle */}
                 <motion.div
-                  initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.4, ease: EASE }}
-                  className="-mt-9 mb-8 rounded-2xl border-2 bg-white px-6 py-5 text-center shadow-[0_14px_40px_rgba(88,45,27,0.14)]"
-                  style={{ borderColor: profile.color }}
+                  initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="relative mb-8 overflow-hidden rounded-[2rem] px-6 py-10 text-center shadow-[0_20px_60px_rgba(88,45,27,0.18)] sm:px-10 sm:py-12"
+                  style={{ background: profile.color }}
                 >
-                  <p className="text-[17px] font-bold leading-snug text-foreground">{profile.hook}</p>
+                  <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-white/12 blur-2xl" aria-hidden />
+                  <div className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-white/8 blur-2xl" aria-hidden />
+
+                  <div className="relative">
+                    <StickerFan seed={profileId.length + 2} />
+                    <span className="mb-2.5 block text-[11px] font-bold uppercase tracking-[0.28em] text-white/70">Tu perfil</span>
+                    <h1 className="mx-auto mb-4 max-w-xl text-[clamp(2.3rem,8vw,3.8rem)] font-bold leading-[0.98] tracking-tight text-white">
+                      {profile.name}
+                    </h1>
+                    <p className="mx-auto mb-7 max-w-md text-lg font-medium italic text-white/80">{profile.tagline}</p>
+
+                    {/* Hook — inside the card, clearly separated */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.4, ease: EASE }}
+                      className="mx-auto max-w-lg rounded-2xl bg-white px-6 py-5"
+                    >
+                      <p className="text-[17px] font-bold leading-snug text-foreground">{profile.hook}</p>
+                    </motion.div>
+                  </div>
                 </motion.div>
 
                 {/* Story — transparent on cream */}
@@ -537,23 +524,7 @@ export default function SistemaQuiz() {
                     <h3 className="mb-2 text-[clamp(1.5rem,5.5vw,2rem)] font-bold leading-[1.08] tracking-tight text-white">{profile.offer.promise}</h3>
                     <p className="mb-6 text-[15px] leading-relaxed text-crema/70">{profile.offer.subhead}</p>
 
-                    {/* Value anchor */}
-                    <div className="mb-6 rounded-2xl bg-white/8 p-4">
-                      <p className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.15em] text-crema/50">Por separado, esto costaría</p>
-                      {valueAnchor.map((v) => (
-                        <div key={v.item} className="flex items-baseline justify-between py-1 text-[13.5px]">
-                          <span className="text-crema/70">{v.item}</span>
-                          <span className="font-semibold text-crema/45 line-through decoration-crema/35">{v.price}</span>
-                        </div>
-                      ))}
-                      <div className="mt-2 border-t border-white/15 pt-2.5 text-right text-[13px] font-semibold text-crema/80">Aquí va todo incluido ↓</div>
-                    </div>
-
-                    <div className="mb-6 flex items-baseline gap-2">
-                      <span className="text-[clamp(2.4rem,9vw,3.2rem)] font-bold leading-none text-white">{OFFER_PRICE}</span>
-                      <span className="text-base font-semibold text-crema/55">{OFFER_CADENCE}</span>
-                    </div>
-
+                    <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.15em] text-crema/50">Qué incluye</p>
                     <ul className="mb-7 space-y-2.5">
                       {offerIncludes.map((item) => (
                         <li key={item} className="flex items-start gap-3">
