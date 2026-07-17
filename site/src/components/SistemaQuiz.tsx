@@ -249,18 +249,26 @@ export default function SistemaQuiz() {
     transition: { duration: 0.4, ease: EASE },
   };
 
-  const inter = pendingInterstitial !== null ? interstitials[pendingInterstitial] : null;
+  // Resolve the interstitial, applying the per-answer variant matching the
+  // answer the person gave to its `afterQuestion` (if any).
+  const inter = (() => {
+    if (pendingInterstitial === null) return null;
+    const base = interstitials[pendingInterstitial];
+    const variant = base.variants?.[answers[base.afterQuestion]];
+    return variant ? { ...base, text: variant.text, image: variant.image ?? base.image } : base;
+  })();
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip" style={{ background: "var(--crema)" }}>
       <Blobs />
 
-      {/* Warm the interstitial cartoons from first paint: same box + sizes as the
-          visible ones, so the optimizer URLs are cached before any interstitial mounts. */}
+      {/* Warm every interstitial cartoon (base + per-answer variants) from first
+          paint, same box + sizes as the visible ones, so they're cached before
+          any interstitial mounts. */}
       <div className="pointer-events-none fixed -left-[9999px] top-0" aria-hidden>
-        {interstitials.map((i) => (
-          <div key={i.image} className="relative h-64 w-64 sm:h-80 sm:w-80">
-            <Image src={cartoon3dPath(i.image)} alt="" fill priority sizes="(min-width: 640px) 320px, 256px" />
+        {[...new Set(interstitials.flatMap((i) => [i.image, ...Object.values(i.variants ?? {}).map((v) => v.image).filter(Boolean) as string[]]))].map((img) => (
+          <div key={img} className="relative h-64 w-64 sm:h-80 sm:w-80">
+            <Image src={cartoon3dPath(img)} alt="" fill priority sizes="(min-width: 640px) 320px, 256px" />
           </div>
         ))}
       </div>

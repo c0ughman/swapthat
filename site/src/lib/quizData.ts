@@ -48,6 +48,12 @@ export interface Interstitial {
   buttonText: string;
   /** 3D cartoon (public/cartoons/3d, transparent bg) shown above the text. */
   image: string;
+  /**
+   * Per-answer versions, keyed by the option id chosen for `afterQuestion`.
+   * When the person's answer matches a key, that text/image override the base.
+   * Falls back to `text`/`image` for any unlisted answer.
+   */
+  variants?: Record<string, { text: string; image?: string }>;
 }
 
 export interface Offer {
@@ -286,9 +292,32 @@ export const interstitials: Interstitial[] = [
   {
     afterQuestion: 3,
     kind: "reframe",
-    text: "Ese «el lunes empiezo» no es falta de disciplina.<br><br><strong>Es lo que pasa cuando un plan no cuenta con la vida real.</strong>",
+    // Base (fallback). Overridden per Q3 answer via `variants`.
+    text: "Faltar una semana no te define.<br><br><strong>Lo que define es tener un plan que te espera cuando vuelves.</strong>",
     buttonText: "Sigue",
     image: "couch.png",
+    variants: {
+      // A · "Vuelvo a cero, como siempre" → montaña rusa
+      A: {
+        text: "Volver a cero no es tu culpa.<br><br><strong>Es lo que pasa cuando el plan no tiene forma de retomar — solo de reiniciar.</strong>",
+        image: "stairs.png",
+      },
+      // B · "«El lunes empiezo»… otra vez" → del lunes
+      B: {
+        text: "Ese «el lunes empiezo» no es falta de disciplina.<br><br><strong>Es lo que pasa cuando un plan no cuenta con la vida real.</strong>",
+        image: "couch.png",
+      },
+      // C · "Retomo sin drama" → estancada / disciplinada
+      C: {
+        text: "Que retomes sin drama dice mucho de ti.<br><br><strong>Ya tienes lo más difícil: la constancia. Solo falta que dé resultados.</strong>",
+        image: "run.png",
+      },
+      // D · "Me cuesta más de lo que quisiera" → que vuelve
+      D: {
+        text: "Que cueste volver no significa que sea tarde.<br><br><strong>Tu cuerpo cambió — el punto de partida también. Y está bien.</strong>",
+        image: "clock.png",
+      },
+    },
   },
   {
     afterQuestion: 6,
