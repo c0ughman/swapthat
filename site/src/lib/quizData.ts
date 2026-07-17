@@ -385,8 +385,8 @@ export const profiles: Record<ProfileId, Profile> = {
     emoji: "🎢",
     tagline: "Empiezas, ves resultados, lo dejas. Y otra vez.",
     hook: "No es que falles. Es que siempre vuelves a empezar.",
-    color: "var(--coral)",
-    accent: "var(--coral-light)",
+    color: "var(--naranja-vivo)",
+    accent: "color-mix(in srgb, var(--naranja-vivo) 30%, white)",
     description: `Lo conoces de memoria. Arrancas con todo, las primeras semanas se sienten increíbles, ves cambios. Y justo cuando agarras ritmo, la vida aprieta — trabajo, viaje, cansancio — o simplemente te aburres.
 
 Lo dejas. «Es solo esta semana». Pero una semana se vuelve un mes, y cuando quieres volver, ya perdiste casi todo lo que ganaste.
@@ -425,7 +425,7 @@ El problema es que cada plan que probaste era rígido — al primer tropiezo te 
     emoji: "📅",
     tagline: "Siempre «la próxima semana». Y cuando buscas cómo, te ahogas.",
     hook: "Lo estás posponiendo tanto que ya duele.",
-    color: "var(--blue)",
+    color: "var(--blue-dark)",
     accent: "var(--blue-light)",
     description: `Sabes que tienes que hacer algo. Lo sabes hace tiempo. Pero nunca es el momento — la semana que viene, cuando baje el trabajo, cuando esté más tranquila.
 
@@ -465,7 +465,7 @@ No necesitas más información. Necesitas menos: una sola voz, un solo plan, un 
     emoji: "📈",
     tagline: "Entrenas. Lo haces bien. Pero la aguja dejó de moverse.",
     hook: "Trabajas duro. ¿Por qué no avanzas?",
-    color: "var(--verde-dark)",
+    color: "color-mix(in srgb, var(--verde) 90%, var(--chocolatito))",
     accent: "var(--verde-light)",
     description: `Tú sí apareces. Entrenas, cumples, sudas. No eres de las que abandonan — llevas tiempo siendo constante y estás orgullosa de eso.
 
@@ -505,8 +505,8 @@ Necesitas a alguien que mida, ajuste y te exija con criterio — que vea lo que 
     emoji: "🌅",
     tagline: "Antes entrenabas. Un bebé, una lesión, la vida — y te saliste.",
     hook: "Tu cuerpo cambió. Tú sigues siendo tú.",
-    color: "var(--naranja-calido)",
-    accent: "color-mix(in srgb, var(--naranja-calido) 30%, white)",
+    color: "color-mix(in srgb, var(--amarillito) 42%, var(--naranja-calido))",
+    accent: "color-mix(in srgb, var(--amarillito) 55%, white)",
     description: `Hubo una época en que esto era tuyo. Entrenabas, sabías lo que hacías, te sentías fuerte. Y entonces llegó algo más grande — un embarazo, una lesión, un año imposible — y te saliste.
 
 Ahora te miras al espejo y no siempre te reconoces. Una parte de ti extraña a la que eras. Otra tiene miedo de que sea tarde, de que el cuerpo ya no responda. Y otra, impaciente, odia estar en la casilla de salida sabiendo dónde estabas.
