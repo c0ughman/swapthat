@@ -430,7 +430,7 @@ export default function SistemaQuiz() {
           {screen === "result" && (
             <motion.div key="result" {...screenMotion} className="w-full">
 
-              <div className="mx-auto max-w-3xl px-5 pt-8 pb-14 sm:pt-12">
+              <div className="mx-auto max-w-4xl px-5 pt-8 pb-14 sm:pt-12">
                 {/* Result hero — one self-contained color squircle */}
                 <motion.div
                   initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }}
