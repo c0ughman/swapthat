@@ -258,6 +258,16 @@ export default function SistemaQuiz() {
     <div className="relative min-h-[100dvh] overflow-x-clip" style={{ background: "var(--crema)" }}>
       <Blobs />
 
+      {/* Warm the interstitial cartoons from first paint: same box + sizes as the
+          visible ones, so the optimizer URLs are cached before any interstitial mounts. */}
+      <div className="pointer-events-none fixed -left-[9999px] top-0" aria-hidden>
+        {interstitials.map((i) => (
+          <div key={i.image} className="relative h-64 w-64 sm:h-80 sm:w-80">
+            <Image src={cartoon3dPath(i.image)} alt="" fill priority sizes="(min-width: 640px) 320px, 256px" />
+          </div>
+        ))}
+      </div>
+
       {(screen === "question" || screen === "interstitial") && (
         <div className="sticky top-0 z-30 px-5 pt-5 pb-3 backdrop-blur-md" style={{ background: "color-mix(in srgb, var(--crema) 85%, transparent)" }}>
           <div className="mx-auto max-w-xl">
@@ -316,8 +326,8 @@ export default function SistemaQuiz() {
           {screen === "interstitial" && inter && (
             <motion.div key={`int-${pendingInterstitial}`} {...screenMotion} className="text-center">
               <motion.div
-                className="relative mx-auto mb-6 h-44 w-44 sm:h-52 sm:w-52"
-                initial={{ scale: 0.7, y: 12, opacity: 0 }}
+                className="relative mx-auto mb-6 h-64 w-64 sm:h-80 sm:w-80"
+                initial={{ scale: 0.8, y: 10, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 16 }}
               >
@@ -325,8 +335,9 @@ export default function SistemaQuiz() {
                   src={cartoon3dPath(inter.image)}
                   alt=""
                   fill
-                  className="object-contain drop-shadow-[0_10px_28px_rgba(88,45,27,0.18)]"
-                  sizes="208px"
+                  priority
+                  className="object-contain drop-shadow-[0_12px_32px_rgba(88,45,27,0.18)]"
+                  sizes="(min-width: 640px) 320px, 256px"
                 />
               </motion.div>
               <p className="mb-9 text-[clamp(1.15rem,4vw,1.5rem)] font-medium leading-[1.5] text-foreground [&_strong]:font-bold" dangerouslySetInnerHTML={{ __html: inter.text }} />
@@ -415,31 +426,35 @@ export default function SistemaQuiz() {
             <motion.div key="result" {...screenMotion} className="w-full">
 
               {/* Full-bleed color splash hero */}
-              <div className="relative overflow-hidden px-5 pb-20 pt-14 text-center" style={{ background: profile.color }}>
+              <div className="relative overflow-hidden px-5 pb-24 pt-16 text-center sm:pt-20" style={{ background: profile.color }}>
                 <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" aria-hidden />
                 <div className="pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-white/8 blur-3xl" aria-hidden />
-                <motion.div
-                  className="relative mx-auto mb-4 h-52 w-52 sm:h-60 sm:w-60"
-                  initial={{ scale: 0.6, y: 24, opacity: 0 }}
-                  animate={{ scale: 1, y: 0, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 180, damping: 15, delay: 0.1 }}
+                <StickerFan seed={profileId.length + 2} />
+                <motion.span
+                  className="mb-3 block text-[11px] font-bold uppercase tracking-[0.28em] text-white/70"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15, duration: 0.4 }}
                 >
-                  <Image src={cartoon3dPath(profile.cartoon)} alt="" fill className="object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.25)]" sizes="240px" priority />
-                </motion.div>
-                <span className="mb-2 block text-[11px] font-bold uppercase tracking-[0.25em] text-white/70">Tu perfil</span>
+                  Tu perfil
+                </motion.span>
                 <motion.h1
-                  className="mb-3 text-[clamp(2.3rem,8vw,3.6rem)] font-bold leading-[0.98] tracking-tight text-white"
-                  initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.45, ease: EASE }}
+                  className="mx-auto mb-4 max-w-3xl text-[clamp(2.6rem,9vw,4.5rem)] font-bold leading-[0.96] tracking-tight text-white"
+                  initial={{ opacity: 0, y: 18, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
                 >
                   {profile.name}
                 </motion.h1>
-                <p className="mx-auto max-w-md text-lg font-medium italic text-white/80">{profile.tagline}</p>
+                <motion.p
+                  className="mx-auto max-w-md text-lg font-medium italic text-white/80 sm:text-xl"
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.45, ease: EASE }}
+                >
+                  {profile.tagline}
+                </motion.p>
                 <div className="absolute bottom-0 left-0 w-full leading-none" aria-hidden>
                   <svg viewBox="0 0 1440 60" preserveAspectRatio="none" className="block h-8 w-full sm:h-10"><path fill="var(--crema)" d="M0 30 Q720 -30 1440 30 L1440 60 L0 60 Z" /></svg>
                 </div>
               </div>
 
-              <div className="relative z-10 mx-auto max-w-xl px-5 pb-14">
+              <div className="relative z-10 mx-auto max-w-3xl px-5 pb-14">
                 {/* Hook chip overlapping the hero curve */}
                 <motion.div
                   initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.4, ease: EASE }}

@@ -80,8 +80,6 @@ export interface Profile {
   description: string;
   symptoms: string[];
   truth: string;
-  /** 3D cartoon (public/cartoons/3d, transparent bg) for the result hero. */
-  cartoon: string;
   /** The 90 days, month by month, in this profile's terms. */
   journey: JourneyMonth[];
   /** First-person note from Andrea to this profile. */
@@ -329,7 +327,7 @@ export const yesNoQuestions = [
   "¿Confías en que con la guía correcta lo logras?",
 ];
 
-export const OFFER_PRICE = "$500";
+export const OFFER_PRICE = "$200";
 export const OFFER_CADENCE = "/ mes · 3 meses";
 
 /**
@@ -376,7 +374,6 @@ Así que vuelves a empezar. Desde cero. Otra vez. Y esta vez cuesta más.`,
     truth: `El problema nunca fue tu fuerza de voluntad. Mira todo lo que has empezado: eso es alguien que no se rinde.
 
 El problema es que cada plan que probaste era rígido — al primer tropiezo te dejó sin salida, y la única opción fue caer a cero. Nadie te dio un sistema que se doblara sin romperse. Con la estructura correcta, un mal día es solo un mal día, no el final.`,
-    cartoon: "jump.png",
     journey: [
       { month: "Mes 1", title: "La base que no se rompe", text: "Llamada de arranque, tu plan a tu medida y un ritmo que puedes sostener — sin arrancar al 100% para quemarte en la semana 3." },
       { month: "Mes 2", title: "La primera prueba real", text: "Va a llegar una semana mala. Esta vez hay plan B: ajustamos, retomas, y no vuelves a cero. Ahí se rompe el ciclo." },
@@ -417,7 +414,6 @@ Nunca estás donde quieres estar, porque nunca empezaste de verdad.`,
     truth: `No eres floja. Postergar no es pereza — es lo que pasa cuando hay tanto ruido que empezar se siente imposible.
 
 No necesitas más información. Necesitas menos: una sola voz, un solo plan, un primer paso claro para mañana. Alguien que te quite el ruido de encima y te diga exactamente qué hacer. Ahí la parálisis desaparece.`,
-    cartoon: "phone.png",
     journey: [
       { month: "Mes 1", title: "Por fin arrancas", text: "Cero investigación de tu parte. Llamada de arranque, un solo plan claro, y tu primer paso definido para mañana. El ruido desaparece." },
       { month: "Mes 2", title: "El hábito se instala", text: "Con alguien esperando tu reporte cada 2 semanas, posponer deja de ser opción. La culpa se convierte en impulso." },
@@ -458,7 +454,6 @@ Y empiezas a dudar de ti, cuando en realidad hiciste tu parte. El que se quedó 
     truth: `No estás estancada por falta de esfuerzo. Estás estancada porque el cuerpo se acostumbra, y lo que te trajo hasta aquí no es lo que te lleva al siguiente nivel.
 
 Necesitas a alguien que mida, ajuste y te exija con criterio — que vea lo que tú, adentro del proceso, ya no puedes ver. Un pequeño cambio en las variables correctas rompe el estancamiento. No más esfuerzo: esfuerzo dirigido.`,
-    cartoon: "stairs.png",
     journey: [
       { month: "Mes 1", title: "El diagnóstico que te faltaba", text: "Evaluación completa de lo que haces hoy: entrenamiento, nutrición, recuperación. Encontramos exactamente dónde está el freno." },
       { month: "Mes 2", title: "Las variables correctas", text: "Ajustes quirúrgicos cada 2 semanas — carga, volumen, comida. Pequeños cambios dirigidos, no más esfuerzo a ciegas." },
@@ -499,7 +494,6 @@ No empiezas de cero. Vuelves. Es distinto.`,
     truth: `No perdiste lo que eras — lo tienes guardado. La constancia, la fuerza mental, saber entrenar: eso no se borra. Está esperando.
 
 Pero volver como si nada cambió es como te lesionas. Tu cuerpo hoy es distinto, y merece una rampa segura: una progresión que empiece donde estás, respete lo que viviste y te devuelva a tu mejor versión sin romperte en el intento.`,
-    cartoon: "front.png",
     journey: [
       { month: "Mes 1", title: "La rampa segura", text: "Evaluamos dónde está tu cuerpo hoy — no donde estaba. Empiezas con una progresión que respeta lo que viviste, sin riesgo de romperte." },
       { month: "Mes 2", title: "La memoria despierta", text: "Tu cuerpo recuerda más rápido de lo que crees. Subimos la intensidad con criterio y empiezas a reconocerte otra vez." },
