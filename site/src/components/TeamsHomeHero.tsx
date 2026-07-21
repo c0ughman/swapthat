@@ -934,7 +934,7 @@ export function TeamsHomeHero({
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
         className={`relative z-[2] mx-5 mt-0 flex min-w-0 flex-col rounded-[2.5rem] border border-beige-dark/55 bg-white shadow-[0_14px_44px_-12px_rgba(26,26,26,0.11)] md:mx-8 md:rounded-[3rem] lg:mx-10 ${
           swapThatSystemHero
-            ? "min-h-[min(128vh,1475px)] overflow-visible pt-6 pb-[min(10vh,180px)] md:min-h-[min(165vh,1475px)] md:pt-8 md:pb-[min(22vh,200px)] lg:pt-9"
+            ? "min-h-[min(96vh,1100px)] md:min-h-[min(128vh,1475px)] overflow-visible pt-6 pb-[min(10vh,180px)] md:min-h-[min(165vh,1475px)] md:pt-8 md:pb-[min(22vh,200px)] lg:pt-9"
             : "min-h-0 min-w-0 flex-1 overflow-hidden pt-8"
         }`}
       >
@@ -1181,7 +1181,7 @@ export function TeamsHomeHero({
 
           {swapThatSystemHero ? (
             <div
-              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[40px] md:-translate-y-[90px]"
+              className="relative flex w-full shrink-0 flex-1 items-end justify-center overflow-visible px-2 pb-8 pt-0 sm:px-4 md:px-6 md:pb-10 -translate-y-[40px] md:-translate-y-[90px] max-md:flex-none max-md:items-start max-md:pb-0 max-md:-translate-y-[10px]"
               style={{ zIndex: SISTEMA_HERO_FLANK_Z }}
             >
               <div className="flex w-full max-w-[min(100%,1180px)] items-end justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
