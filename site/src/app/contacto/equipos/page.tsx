@@ -141,32 +141,32 @@ export default function ContactoEquiposPage() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:flex items-center justify-center"
           >
-            <div className="relative aspect-[4/5] h-auto w-full max-w-md">
+            <div className="relative aspect-[4/5] h-auto w-full max-w-lg">
               {/* Main photo */}
-              <div className="absolute left-0 top-[5%] h-[58%] w-[72%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_color-mix(in_srgb,var(--blue)_12%,transparent)]">
+              <div className="absolute left-0 top-0 h-[88%] w-[92%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_color-mix(in_srgb,var(--blue)_12%,transparent)]">
                 <Image
                   src="/experience/charla.webp"
                   alt="Andrea dando una charla para equipos"
                   fill
                   className="object-cover"
-                  sizes="380px"
+                  sizes="(min-width: 1024px) 512px, 90vw"
                   quality={Q.photo}
                 />
               </div>
-              {/* Sticker — blue, no shadow */}
-              <div className="absolute bottom-[2%] right-[-4%] h-[46%] w-[52%]">
+              {/* Sticker — small accent, bottom-right */}
+              <div className="absolute bottom-0 right-0 h-[24%] w-[26%]">
                 <Image
                   src="/icons/equipo.webp"
                   alt=""
                   fill
                   className="object-contain"
-                  sizes="260px"
+                  sizes="140px"
                   quality={Q.section}
                   draggable={false}
                 />
               </div>
               {/* Accent badge */}
-              <div className="absolute bottom-[41%] left-[47%] z-10 max-w-[11rem] -translate-x-1 rounded-2xl border border-blue/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+              <div className="absolute bottom-[6%] left-[6%] z-10 max-w-[11rem] rounded-2xl border border-blue/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.10)]">
                 <div className="mb-1.5"><FiveStars /></div>
                 <p className="text-xs font-bold text-foreground">+40 empresas</p>
                 <p className="text-[11px] text-foreground/45">confían en Muévete con Andrea</p>

@@ -193,31 +193,31 @@ export default function ContactoMarketingPage() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:flex items-center justify-center"
           >
-            <div className="relative aspect-[4/5] h-auto w-full max-w-md">
-              <div className="absolute right-0 top-[5%] h-[55%] w-[68%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_rgba(232,93,117,0.12)]">
+            <div className="relative aspect-[4/5] h-auto w-full max-w-lg">
+              <div className="absolute right-0 top-0 h-[88%] w-[92%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_rgba(232,93,117,0.12)]">
                 <Image
                   src="/andreacoachsevilla-55.webp"
                   alt="Andrea, consultora de marketing y performance"
                   fill
                   className="object-cover object-center"
-                  sizes="360px"
+                  sizes="(min-width: 1024px) 512px, 90vw"
                   quality={Q.photo}
                 />
               </div>
-              {/* Sticker — warm/coral, no shadow */}
-              <div className="absolute bottom-[2%] left-[-4%] h-[46%] w-[52%]">
+              {/* Sticker — small accent, bottom-left */}
+              <div className="absolute bottom-0 left-0 h-[24%] w-[26%]">
                 <Image
                   src="/icons/estrategia.webp"
                   alt=""
                   fill
                   className="object-contain"
-                  sizes="260px"
+                  sizes="140px"
                   quality={Q.section}
                   draggable={false}
                 />
               </div>
               {/* Coral accent badge */}
-              <div className="absolute bottom-[43%] right-[42%] z-10 max-w-[11rem] translate-x-1 rounded-2xl border border-coral/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+              <div className="absolute bottom-[6%] right-[6%] z-10 max-w-[11rem] rounded-2xl border border-coral/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.10)]">
                 <div className="mb-1.5"><FiveStars /></div>
                 <p className="text-xs font-bold text-coral">Resultados medibles</p>
                 <p className="text-[11px] text-foreground/45">desde la primera semana</p>
