@@ -18,27 +18,18 @@
 <html>
   <head><meta charset="utf-8" /></head>
   <body>
+    <!--
+      Also receives the quiz funnel (/contacto/sistema). The quiz submits twice
+      per person: once when she unlocks her result, and again if she taps
+      "Empezar mi transformación" — `situacion` carries the stage tag plus her
+      profile, `mensaje` carries all 15 answers. Same nombre/email pairs them.
+    -->
     <form name="sistema" data-netlify="true" hidden>
       <input type="text" name="nombre" />
       <input type="email" name="email" />
       <input type="tel" name="whatsapp" />
       <input type="text" name="situacion" />
       <textarea name="mensaje"></textarea>
-    </form>
-
-    <!--
-      Quiz funnel (/contacto/sistema). Submitted twice per person:
-      once when she unlocks her result (etapa = "Vio su resultado"), and again
-      if she taps "Empezar mi transformación" (etapa = "QUIERE EMPEZAR").
-      The second row is the hot lead — same nombre/email identify the pair.
-    -->
-    <form name="sistema-quiz" data-netlify="true" hidden>
-      <input type="text" name="nombre" />
-      <input type="email" name="email" />
-      <input type="tel" name="whatsapp" />
-      <input type="text" name="perfil" />
-      <input type="text" name="etapa" />
-      <textarea name="respuestas"></textarea>
     </form>
 
     <form name="equipos" data-netlify="true" hidden>

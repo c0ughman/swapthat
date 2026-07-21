@@ -230,13 +230,12 @@ export default function SistemaQuiz() {
     e.preventDefault();
     setStatus("submitting");
     try {
-      await submitNetlifyForm("sistema-quiz", {
+      await submitNetlifyForm("sistema", {
         nombre: form.nombre,
         email: form.email,
         whatsapp: form.whatsapp,
-        perfil: `${profile.name} — ${profile.tagline}`,
-        etapa: "Vio su resultado",
-        respuestas: buildRespuestas(),
+        situacion: `Vio su resultado · ${profile.name}`,
+        mensaje: buildRespuestas(),
       });
       setStatus("success");
       setScreen("result");
@@ -257,13 +256,12 @@ export default function SistemaQuiz() {
     if (ctaState !== "idle") return;
     setCtaState("sending");
     try {
-      await submitNetlifyForm("sistema-quiz", {
+      await submitNetlifyForm("sistema", {
         nombre: form.nombre,
         email: form.email,
         whatsapp: form.whatsapp,
-        perfil: `${profile.name} — ${profile.tagline}`,
-        etapa: "🔥 QUIERE EMPEZAR",
-        respuestas: buildRespuestas(),
+        situacion: `🔥 QUIERE EMPEZAR · ${profile.name}`,
+        mensaje: buildRespuestas(),
       });
     } catch {
       // Already captured at the gate — don't block her on a network hiccup.
@@ -443,7 +441,7 @@ export default function SistemaQuiz() {
                 <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3.5">
                   <input required name="nombre" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} placeholder="¿Cómo te llamas?" className="w-full rounded-xl border border-foreground/12 bg-crema/40 px-4 py-3.5 text-[15px] text-foreground outline-none transition-all placeholder:text-foreground/30 focus:border-foreground/40 focus:ring-2 focus:ring-foreground/8" />
                   <input required type="email" name="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="tu@email.com" className="w-full rounded-xl border border-foreground/12 bg-crema/40 px-4 py-3.5 text-[15px] text-foreground outline-none transition-all placeholder:text-foreground/30 focus:border-foreground/40 focus:ring-2 focus:ring-foreground/8" />
-                  <input type="tel" name="whatsapp" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} placeholder="WhatsApp (opcional)" className="w-full rounded-xl border border-foreground/12 bg-crema/40 px-4 py-3.5 text-[15px] text-foreground outline-none transition-all placeholder:text-foreground/30 focus:border-foreground/40 focus:ring-2 focus:ring-foreground/8" />
+                  <input required type="tel" name="whatsapp" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} placeholder="WhatsApp — para escribirte" className="w-full rounded-xl border border-foreground/12 bg-crema/40 px-4 py-3.5 text-[15px] text-foreground outline-none transition-all placeholder:text-foreground/30 focus:border-foreground/40 focus:ring-2 focus:ring-foreground/8" />
                   <button type="submit" disabled={status === "submitting"} className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-foreground px-8 py-4.5 text-base font-semibold text-crema shadow-[0_10px_34px_rgba(88,45,27,0.22)] transition-all hover:bg-foreground/88 active:scale-[0.98] disabled:opacity-60">
                     {status === "submitting" ? "Un momento…" : "Ver mi resultado"}
                     {status !== "submitting" && <span className="transition-transform group-hover:translate-x-1"><ArrowRight /></span>}
