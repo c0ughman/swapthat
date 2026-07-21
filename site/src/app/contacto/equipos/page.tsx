@@ -89,7 +89,7 @@ export default function ContactoEquiposPage() {
       {/* ════════════════════════════════════════════════════════════════════
           HERO — 100vh
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-[100dvh] min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8">
+      <section className="relative flex flex-col items-center justify-center overflow-hidden px-6 pb-16 pt-28 lg:px-8 md:pb-20 md:pt-32">
         <BlobShape color="var(--blue)" size={560} className="-top-48 -right-48 opacity-[0.05]" blur />
         <BlobShape color="var(--blue-light)" size={360} className="-bottom-24 -left-24 opacity-[0.04]" blur />
 
@@ -101,14 +101,14 @@ export default function ContactoEquiposPage() {
           </FadeUp>
 
           <FadeUp delay={0.15}>
-            <h1 className="mb-6 text-[clamp(2.4rem,6.5vw,4.6rem)] font-bold leading-[1.02] tracking-tight text-foreground">
+            <h1 className="mb-6 text-[clamp(2.1rem,5vw,3.4rem)] font-bold leading-[1.02] tracking-tight text-foreground">
               Tu equipo merece{" "}
               <span className="gradient-text-blue italic">más que una charla motivacional.</span>
             </h1>
           </FadeUp>
 
           <FadeUp delay={0.25}>
-            <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-gray md:text-xl">
+            <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-gray md:text-lg">
               Diseñamos espacios de bienestar reales para equipos que trabajan bajo presión.
               Práctico, humano y aplicable desde el lunes.
             </p>
@@ -122,13 +122,6 @@ export default function ContactoEquiposPage() {
                   {t}
                 </span>
               ))}
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.4}>
-            <div className="mt-12 flex flex-col items-center gap-2">
-              <span className="text-xs font-medium uppercase tracking-[0.18em] text-foreground/30">Completa el formulario</span>
-              <div className="animate-scroll-bounce h-6 w-[1px] bg-gradient-to-b from-blue/40 to-transparent" />
             </div>
           </FadeUp>
         </div>
@@ -174,6 +167,7 @@ export default function ContactoEquiposPage() {
               </div>
               {/* Accent badge */}
               <div className="absolute bottom-[41%] left-[47%] z-10 max-w-[11rem] -translate-x-1 rounded-2xl border border-blue/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+                <div className="mb-1.5"><FiveStars /></div>
                 <p className="text-xs font-bold text-foreground">+40 empresas</p>
                 <p className="text-[11px] text-foreground/45">confían en Muévete con Andrea</p>
               </div>
@@ -253,7 +247,7 @@ export default function ContactoEquiposPage() {
             <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl">
               Empecemos con una conversación.
             </h2>
-            <p className="mb-10 text-lg leading-relaxed text-gray">
+            <p className="mb-8 text-base leading-relaxed text-gray">
               Sin compromiso. Respondemos con una propuesta personalizada en menos de 48 horas.
             </p>
           </motion.div>

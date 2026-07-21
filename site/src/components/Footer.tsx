@@ -296,24 +296,7 @@ export default function Footer() {
                   <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
                 </svg>
               </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-blue transition-colors"
-                aria-label="TikTok"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.98a8.18 8.18 0 004.76 1.52V7.05a4.84 4.84 0 01-1-.36z" />
-                </svg>
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-blue transition-colors"
-                aria-label="YouTube"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                </svg>
-              </a>
+              {/* TikTok / YouTube removed — no accounts to link to yet. */}
             </div>
 
             <p className="text-foreground/35 text-[0.7rem] mt-4 leading-snug md:mt-8 md:text-xs">
@@ -338,13 +321,8 @@ export default function Footer() {
               </Link>
             </nav>
             <nav className="flex flex-col gap-2">
+              {/* Privacidad / Términos removed — no pages behind them yet. */}
               <span className="text-foreground/50 text-xs font-medium">hola@mueveteconandrea.com</span>
-              <Link href="#" className="text-foreground/40 text-xs font-bold uppercase tracking-wide hover:text-foreground/70 transition-colors">
-                Privacidad
-              </Link>
-              <Link href="#" className="text-foreground/40 text-xs font-bold uppercase tracking-wide hover:text-foreground/70 transition-colors">
-                Términos
-              </Link>
             </nav>
           </div>
         </div>

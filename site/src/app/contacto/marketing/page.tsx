@@ -90,8 +90,8 @@ export default function ContactoMarketingPage() {
           HERO — 100vh
       ════════════════════════════════════════════════════════════════════ */}
       <section
-        className="relative flex h-[100dvh] min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 pb-12 pt-12 lg:px-8"
-        style={{ background: "radial-gradient(ellipse 65% 55% at 80% 0%, rgba(232,93,117,0.09), transparent 60%), radial-gradient(ellipse 40% 45% at 5% 95%, rgba(232,93,117,0.06), transparent 55%), #ffffff" }}
+        className="relative flex flex-col items-center justify-center overflow-hidden px-6 pb-16 pt-28 lg:px-8 md:pb-20 md:pt-32"
+        style={{ background: "radial-gradient(ellipse 65% 55% at 80% 0%, rgba(232,93,117,0.10), transparent 60%), radial-gradient(ellipse 40% 45% at 5% 95%, rgba(232,93,117,0.07), transparent 55%), #fdf9f9" }}
       >
         {/* Top coral line */}
         <motion.div
@@ -112,7 +112,7 @@ export default function ContactoMarketingPage() {
           </FadeUp>
 
           <FadeUp delay={0.15}>
-            <h1 className="mb-6 text-[clamp(2.4rem,6.5vw,4.5rem)] font-bold leading-[1.02] tracking-tight text-foreground">
+            <h1 className="mb-6 text-[clamp(2.1rem,5vw,3.4rem)] font-bold leading-[1.02] tracking-tight text-foreground">
               Tu marca tiene potencial.
               <br />
               <span className="gradient-text-coral italic">Le falta sistema.</span>
@@ -120,7 +120,7 @@ export default function ContactoMarketingPage() {
           </FadeUp>
 
           <FadeUp delay={0.25}>
-            <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-gray md:text-xl">
+            <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-gray md:text-lg">
               Si estás invirtiendo en contenido, en ads o en estrategia y los resultados no son claros
               — el problema no es tu marca. Es la falta de estructura.
             </p>
@@ -135,20 +135,13 @@ export default function ContactoMarketingPage() {
               ))}
             </div>
           </FadeUp>
-
-          <FadeUp delay={0.4}>
-            <div className="mt-12 flex flex-col items-center gap-2">
-              <span className="text-xs font-medium uppercase tracking-[0.18em] text-foreground/30">Cuéntanos sobre tu marca</span>
-              <div className="animate-scroll-bounce h-6 w-[1px] bg-gradient-to-b from-coral/40 to-transparent" />
-            </div>
-          </FadeUp>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════════════
           MIDDLE — 100vh: photos + benefits + social proof
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex items-center overflow-hidden border-y border-foreground/6 py-16 md:py-20" style={{ background: "#fdf9f9" }}>
+      <section className="relative flex items-center overflow-hidden border-y border-foreground/6 bg-white py-14 md:py-16">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
 
           {/* Left — benefits + social proof */}
@@ -225,6 +218,7 @@ export default function ContactoMarketingPage() {
               </div>
               {/* Coral accent badge */}
               <div className="absolute bottom-[43%] right-[42%] z-10 max-w-[11rem] translate-x-1 rounded-2xl border border-coral/15 bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+                <div className="mb-1.5"><FiveStars /></div>
                 <p className="text-xs font-bold text-coral">Resultados medibles</p>
                 <p className="text-[11px] text-foreground/45">desde la primera semana</p>
               </div>
@@ -240,14 +234,14 @@ export default function ContactoMarketingPage() {
           <div className="relative flex-1 flex items-end justify-center pb-2">
             <Image src="/icons/estrategia.webp" alt="" width={110} height={110} className="object-contain opacity-80" quality={Q.section} draggable={false} />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#fdf9f9] via-[#fdf9f9]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent" />
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════════════
           FORM
       ════════════════════════════════════════════════════════════════════ */}
-      <section id="formulario" className="relative overflow-hidden py-24 md:py-32">
+      <section id="formulario" className="relative overflow-hidden py-16 md:py-24" style={{ background: "#fdf9f9" }}>
         <BlobShape color="var(--coral)" size={380} className="-bottom-24 -left-20 opacity-[0.04]" blur />
 
         <div className="mx-auto max-w-2xl px-6 lg:px-8">
@@ -263,7 +257,7 @@ export default function ContactoMarketingPage() {
             <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl">
               Cuéntanos dónde estás y a dónde quieres llegar.
             </h2>
-            <p className="mb-10 text-lg leading-relaxed text-gray">
+            <p className="mb-8 text-base leading-relaxed text-gray">
               Primera llamada sin costo. Solo necesitamos entender tu situación.
             </p>
           </motion.div>

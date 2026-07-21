@@ -275,7 +275,7 @@ export function SistemaLandingHero() {
       </motion.div>
 
       <Link
-        href="/contacto/marketing#formulario"
+        href="/marketing"
         className="group absolute top-[120px] right-[20px] z-[40] hidden origin-top-right lg:block"
         style={{ transform: "scale(0.88)" }}
       >
