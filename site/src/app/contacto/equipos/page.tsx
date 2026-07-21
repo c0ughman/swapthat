@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import BlobShape from "@/components/BlobShape";
+import ClientsStrip from "@/components/ClientsStrip";
 import { submitNetlifyForm } from "@/lib/submitNetlifyForm";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
@@ -136,8 +137,8 @@ export default function ContactoEquiposPage() {
       {/* ════════════════════════════════════════════════════════════════════
           MIDDLE — 100vh: photos + benefits + social proof
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-[100dvh] min-h-[640px] items-center overflow-hidden border-y border-foreground/6 bg-white">
-        <div className="mx-auto grid h-full w-full max-w-6xl grid-cols-1 px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
+      <section className="relative flex items-center overflow-hidden border-y border-foreground/6 bg-white py-16 md:py-20">
+        <div className="mx-auto grid w-full max-w-6xl items-center grid-cols-1 px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
 
           {/* Left — photo collage */}
           <motion.div
@@ -145,9 +146,9 @@ export default function ContactoEquiposPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:flex items-center justify-center py-12"
+            className="hidden lg:flex items-center justify-center"
           >
-            <div className="relative h-full w-full max-h-[72vh]">
+            <div className="relative aspect-[4/5] h-auto w-full max-w-md">
               {/* Main photo */}
               <div className="absolute left-0 top-[5%] h-[58%] w-[72%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_color-mix(in_srgb,var(--blue)_12%,transparent)]">
                 <Image
@@ -216,36 +217,8 @@ export default function ContactoEquiposPage() {
               </ul>
             </motion.div>
 
-            {/* Social proof */}
-            <div className="space-y-4">
-              {[
-                {
-                  quote: "Por fin una charla que no nos dejó con culpa. Herramientas concretas que el equipo sí usó.",
-                  name: "Laura Méndez", role: "People & Culture · Fintech",
-                },
-                {
-                  quote: "El tono fue clave: cercano, sin postureo. Diseñado para equipos reales.",
-                  name: "Diego Ríos", role: "Director de Operaciones · Retail",
-                },
-              ].map((t, i) => (
-                <motion.div
-                  key={t.name}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-2xl border border-foreground/8 bg-background p-5"
-                >
-                  <FiveStars />
-                  <p className="mt-2.5 text-[13px] font-medium italic leading-snug text-foreground/70">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/35">
-                    — {t.name} · {t.role}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+            {/* Social proof — real client logos (replaced invented testimonials) */}
+            <ClientsStrip accent="var(--blue-dark)" className="mt-2" />
           </div>
         </div>
 
@@ -264,7 +237,7 @@ export default function ContactoEquiposPage() {
       {/* ════════════════════════════════════════════════════════════════════
           FORM
       ════════════════════════════════════════════════════════════════════ */}
-      <section id="formulario" className="relative py-24 md:py-32">
+      <section id="formulario" className="relative overflow-hidden py-24 md:py-32">
         <BlobShape color="var(--blue)" size={400} className="-bottom-32 right-0 opacity-[0.04]" blur />
 
         <div className="mx-auto max-w-2xl px-6 lg:px-8">

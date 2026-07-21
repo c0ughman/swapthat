@@ -3,7 +3,7 @@ import SistemaQuiz from "@/components/SistemaQuiz";
 
 /**
  * The quiz replaced the contact form here. The original form page is preserved
- * verbatim at `/contacto/sistema-form` in case we want to bring it back.
+ * verbatim in git history (commit 794ff01) if it's ever needed again.
  */
 
 export const metadata: Metadata = {

@@ -980,7 +980,7 @@ function ServicesPreview() {
         <div className="grid md:grid-cols-5 gap-6 max-w-5xl mx-auto">
           {/* Marketing card — spans 3 cols, landscape */}
           <AnimatedSection delay={0.1} className="md:col-span-3">
-            <Link href="/contacto/marketing#formulario" className="group block h-full">
+            <Link href="/marketing" className="group block h-full">
               <div className="relative h-full bg-background/95 backdrop-blur-sm rounded-[2rem] p-10 md:p-12 border border-coral/15 hover:border-coral/30 transition-all duration-500 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
                 {/* Decorative accent */}
                 <div className="absolute top-0 left-0 w-1 h-24 bg-gradient-to-b from-coral to-coral/0 rounded-full" />

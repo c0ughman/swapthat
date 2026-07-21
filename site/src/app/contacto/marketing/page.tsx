@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import BlobShape from "@/components/BlobShape";
+import ClientsStrip from "@/components/ClientsStrip";
 import { submitNetlifyForm } from "@/lib/submitNetlifyForm";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
@@ -147,8 +148,8 @@ export default function ContactoMarketingPage() {
       {/* ════════════════════════════════════════════════════════════════════
           MIDDLE — 100vh: photos + benefits + social proof
       ════════════════════════════════════════════════════════════════════ */}
-      <section className="relative flex h-[100dvh] min-h-[640px] items-center overflow-hidden border-y border-foreground/6" style={{ background: "#fdf9f9" }}>
-        <div className="mx-auto grid h-full w-full max-w-6xl grid-cols-1 px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
+      <section className="relative flex items-center overflow-hidden border-y border-foreground/6 py-16 md:py-20" style={{ background: "#fdf9f9" }}>
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
 
           {/* Left — benefits + social proof */}
           <div className="flex flex-col justify-center py-10 lg:py-14">
@@ -187,36 +188,8 @@ export default function ContactoMarketingPage() {
               </ul>
             </motion.div>
 
-            {/* Social proof */}
-            <div className="space-y-4">
-              {[
-                {
-                  quote: "En tres semanas teníamos una estrategia real y los números empezaron a moverse.",
-                  name: "Sofía R.", role: "Fundadora · Marca de lifestyle",
-                },
-                {
-                  quote: "Por primera vez entendimos qué estábamos haciendo y por qué funcionaba.",
-                  name: "Carlos V.", role: "CEO · E-commerce moda",
-                },
-              ].map((t, i) => (
-                <motion.div
-                  key={t.name}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-2xl border border-foreground/8 bg-white p-5"
-                >
-                  <FiveStars />
-                  <p className="mt-2.5 text-[13px] font-medium italic leading-snug text-foreground/70">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/35">
-                    — {t.name} · {t.role}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+            {/* Social proof — real client logos (replaced invented testimonials) */}
+            <ClientsStrip accent="var(--coral)" className="mt-2" />
           </div>
 
           {/* Right — photo collage */}
@@ -225,9 +198,9 @@ export default function ContactoMarketingPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:flex items-center justify-center py-12"
+            className="hidden lg:flex items-center justify-center"
           >
-            <div className="relative h-full w-full max-h-[72vh]">
+            <div className="relative aspect-[4/5] h-auto w-full max-w-md">
               <div className="absolute right-0 top-[5%] h-[55%] w-[68%] overflow-hidden rounded-[1.75rem] shadow-[0_16px_48px_rgba(232,93,117,0.12)]">
                 <Image
                   src="/andreacoachsevilla-55.webp"
@@ -260,7 +233,7 @@ export default function ContactoMarketingPage() {
         </div>
 
         {/* Mobile photo strip */}
-        <div className="absolute bottom-0 left-0 right-0 flex h-28 gap-2 overflow-hidden lg:hidden">
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 -z-10 flex h-28 gap-2 overflow-hidden lg:hidden">
           <div className="relative flex-1 overflow-hidden">
             <Image src="/andreacoachsevilla-55.webp" alt="" fill className="object-cover object-center opacity-60" sizes="50vw" quality={Q.section} />
           </div>
@@ -274,7 +247,7 @@ export default function ContactoMarketingPage() {
       {/* ════════════════════════════════════════════════════════════════════
           FORM
       ════════════════════════════════════════════════════════════════════ */}
-      <section id="formulario" className="relative py-24 md:py-32">
+      <section id="formulario" className="relative overflow-hidden py-24 md:py-32">
         <BlobShape color="var(--coral)" size={380} className="-bottom-24 -left-20 opacity-[0.04]" blur />
 
         <div className="mx-auto max-w-2xl px-6 lg:px-8">
