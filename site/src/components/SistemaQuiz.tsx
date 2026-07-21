@@ -217,22 +217,26 @@ export default function SistemaQuiz() {
     setAnalysisStep((s) => s + 1);
   };
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("submitting");
-    const respuestas = quizQuestions
+  /** All 15 Q→A pairs, one per line, for the Netlify submission. */
+  const buildRespuestas = () =>
+    quizQuestions
       .map((q) => {
         const opt = q.options.find((o) => o.id === answers[q.id]);
         return `${q.text} → ${opt?.text ?? "—"}`;
       })
       .join("\n");
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("submitting");
     try {
-      await submitNetlifyForm("sistema", {
+      await submitNetlifyForm("sistema-quiz", {
         nombre: form.nombre,
         email: form.email,
         whatsapp: form.whatsapp,
-        situacion: `${profile.name} — ${profile.tagline}`,
-        mensaje: respuestas,
+        perfil: `${profile.name} — ${profile.tagline}`,
+        etapa: "Vio su resultado",
+        respuestas: buildRespuestas(),
       });
       setStatus("success");
       setScreen("result");
@@ -240,6 +244,31 @@ export default function SistemaQuiz() {
     } catch {
       setStatus("error");
     }
+  };
+
+  /**
+   * "Empezar mi transformación" — the high-intent tap. Files a second row so
+   * Andrea can tell who merely saw the result from who asked to start.
+   * Fires at most once; failure is silent because the lead is already captured
+   * by the email-gate submission above.
+   */
+  const [ctaState, setCtaState] = useState<"idle" | "sending" | "sent">("idle");
+  const handleStartTransformation = async () => {
+    if (ctaState !== "idle") return;
+    setCtaState("sending");
+    try {
+      await submitNetlifyForm("sistema-quiz", {
+        nombre: form.nombre,
+        email: form.email,
+        whatsapp: form.whatsapp,
+        perfil: `${profile.name} — ${profile.tagline}`,
+        etapa: "🔥 QUIERE EMPEZAR",
+        respuestas: buildRespuestas(),
+      });
+    } catch {
+      // Already captured at the gate — don't block her on a network hiccup.
+    }
+    setCtaState("sent");
   };
 
   const screenMotion = {
@@ -477,10 +506,10 @@ export default function SistemaQuiz() {
                   </ul>
                 </div>
 
-                {/* La verdad — chocolate */}
-                <div className="mb-10 rounded-3xl p-6 sm:p-7" style={{ background: "var(--foreground)" }}>
-                  <h3 className="mb-4 text-lg font-bold text-crema">La verdad</h3>
-                  {profile.truth.split("\n\n").map((para) => <p key={para} className="mb-3.5 text-[15px] leading-relaxed text-crema/75 last:mb-0">{para}</p>)}
+                {/* La verdad — transparent, bold on cream */}
+                <div className="mb-10 px-1 sm:px-2">
+                  <h3 className="mb-4 text-lg font-bold text-foreground">La verdad</h3>
+                  {profile.truth.split("\n\n").map((para) => <p key={para} className="mb-4 text-[16px] font-semibold leading-relaxed text-foreground last:mb-0">{para}</p>)}
                 </div>
 
                 {/* 90-day journey — transparent, numbered month cards */}
@@ -493,7 +522,7 @@ export default function SistemaQuiz() {
                         key={m.month}
                         initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                         transition={{ delay: i * 0.08, duration: 0.4, ease: EASE }}
-                        className="flex gap-4 rounded-3xl border border-foreground/8 bg-white p-5 sm:p-6"
+                        className="flex gap-4 rounded-3xl border border-foreground/12 p-5 sm:p-6"
                       >
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-bold text-white" style={{ background: profile.color }}>{i + 1}</div>
                         <div>
@@ -542,20 +571,37 @@ export default function SistemaQuiz() {
                       ))}
                     </ul>
 
-                    {/* TODO: swap mailto for Andrea's real WhatsApp (wa.me/<número>) when available. */}
-                    <a
-                      href={`mailto:hola@mueveteconandrea.com?subject=${encodeURIComponent("Quiero empezar la transformación de 90 días")}&body=${encodeURIComponent(`Hola Andrea, soy ${form.nombre.split(" ")[0] || ""} — hice el quiz y salí ${profile.name}. Quiero empezar.`)}`}
-                      className="flex w-full items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 text-base font-bold text-foreground transition-all hover:bg-crema active:scale-[0.98]"
-                    >
-                      Empezar mi transformación
-                      <ArrowRight />
-                    </a>
-                    <div className="mt-4 rounded-2xl bg-white/10 px-5 py-3.5 text-center">
-                      <p className="text-[13px] leading-relaxed text-crema/75">
-                        <span className="font-semibold text-white">Ya estás en la lista{form.nombre ? `, ${form.nombre.split(" ")[0]}` : ""} 💛</span>
-                        {" "}Andrea te escribe en 48 horas — o adelántate y escríbele tú.
-                      </p>
-                    </div>
+                    {ctaState === "sent" ? (
+                      <div className="rounded-2xl bg-white px-6 py-5 text-center">
+                        <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full" style={{ background: profile.color }}>
+                          <span className="text-white"><CheckIcon size={20} /></span>
+                        </div>
+                        <p className="text-[16px] font-bold text-foreground">
+                          Listo{form.nombre ? `, ${form.nombre.split(" ")[0]}` : ""} 💛
+                        </p>
+                        <p className="mt-1.5 text-[14px] leading-relaxed text-foreground/65">
+                          Andrea ya tiene tu resultado y te escribe en las próximas 48 horas para arrancar.
+                        </p>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleStartTransformation}
+                        disabled={ctaState === "sending"}
+                        className="flex w-full items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 text-base font-bold text-foreground transition-all hover:bg-crema active:scale-[0.98] disabled:opacity-70"
+                      >
+                        {ctaState === "sending" ? "Enviando…" : "Empezar mi transformación"}
+                        {ctaState === "idle" && <ArrowRight />}
+                      </button>
+                    )}
+                    {ctaState !== "sent" && (
+                      <div className="mt-4 rounded-2xl bg-white/10 px-5 py-3.5 text-center">
+                        <p className="text-[13px] leading-relaxed text-crema/75">
+                          <span className="font-semibold text-white">Ya estás en la lista{form.nombre ? `, ${form.nombre.split(" ")[0]}` : ""} 💛</span>
+                          {" "}Andrea te escribe en 48 horas — toca arriba si quieres empezar ya.
+                        </p>
+                      </div>
+                    )}
                     <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
                       {["Sin compromiso", "Respuesta en 48h", "100% acompañada"].map((tag) => (
                         <span key={tag} className="flex items-center gap-1.5 text-[11px] font-semibold text-crema/50"><CheckIcon size={11} />{tag}</span>
