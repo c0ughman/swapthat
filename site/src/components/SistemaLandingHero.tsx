@@ -174,7 +174,7 @@ export function SistemaLandingHero() {
           />
         </div>
 
-        <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-end px-6 py-8 max-md:pb-6 sm:px-8 md:items-center md:min-h-0 md:px-14 lg:px-16">
+        <div className="relative z-10 flex h-full min-h-[min(100%,28rem)] items-end px-6 py-8 max-md:pb-[calc(1.5rem+50px)] sm:px-8 md:items-center md:min-h-0 md:px-14 lg:px-16">
           <div className="w-full max-w-2xl text-white">
             <motion.div
               initial={skippedInitialAnimation ? false : { opacity: 0, y: 20 }}
