@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Q } from "@/lib/imageQuality";
 import BlobShape from "@/components/BlobShape";
 import { submitNetlifyForm } from "@/lib/submitNetlifyForm";
+import { SHOW_PLACEHOLDER_CONTENT } from "@/lib/placeholderContent";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -234,9 +235,9 @@ export default function ContactoSistemaPage() {
               </ul>
             </motion.div>
 
-            {/* Social proof */}
+            {/* Social proof — invented quotes, gated off until real testimonials exist. */}
             <div className="space-y-4">
-              {[
+              {(SHOW_PLACEHOLDER_CONTENT ? [
                 {
                   quote: "Por primera vez en años no siento que fracasé cuando me salteo un día. El sistema me sostiene.",
                   name: "María G.", role: "Mamá de 2 · Trabaja full time",
@@ -245,7 +246,7 @@ export default function ContactoSistemaPage() {
                   quote: "Andrea no te exige. Te acompaña. Eso cambia todo.",
                   name: "Valentina C.", role: "Profesional independiente",
                 },
-              ].map((t, i) => (
+              ] : []).map((t, i) => (
                 <motion.div
                   key={t.name}
                   initial={{ opacity: 0, y: 12 }}
